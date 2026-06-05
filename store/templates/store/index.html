@@ -1,0 +1,937 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="csrf-token" content="{{ csrf_token }}">
+<script>window.MALOLA_AUTH={% if user.is_authenticated %}{"authenticated":true,"name":"{{ user.first_name|default:user.username|escapejs }}"}{% else %}{"authenticated":false}{% endif %};</script>
+<title>Malola — Healthy Snacks & Natural Foods</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Cormorant+Garamond:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+</head>
+<body>
+
+<!-- ══ SEARCH OVERLAY ══ -->
+<div class="search-overlay" id="searchOverlay"></div>
+
+<!-- ══ SEARCH WIDGET ══ -->
+<div class="search-modal" id="searchModal" aria-hidden="true">
+  <div class="sm-header">
+    <button class="sm-back" id="smBack" aria-label="Close search"><i class="fa-solid fa-arrow-left"></i></button>
+    <div class="sm-input-wrap">
+      <i class="fa-solid fa-magnifying-glass sm-icon"></i>
+      <input type="text" id="smInput" placeholder='Search for "Millet Choco"' autocomplete="off" spellcheck="false"/>
+      <button class="sm-clear" id="smClear" aria-label="Clear"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  </div>
+  <div class="sm-body" id="smBody">
+    <!-- Popular Searches -->
+    <div class="sm-section">
+      <div class="sm-sec-title"><i class="fa-solid fa-arrow-trend-up"></i> Popular Searches</div>
+      <div class="sm-tags">
+        <span class="sm-tag" data-q="Millet Vanilla">Millet Vanilla</span>
+        <span class="sm-tag" data-q="Millet Choco">Millet Choco</span>
+        <span class="sm-tag" data-q="Blueberry Pancake">Blueberry Pancake</span>
+        <span class="sm-tag" data-q="Quinoa Puffs">Quinoa Puffs</span>
+        <span class="sm-tag" data-q="Millet">Millet Snacks</span>
+        <span class="sm-tag" data-q="Puffs">Puff Snacks</span>
+      </div>
+    </div>
+    <!-- What's New -->
+    <div class="sm-section">
+      <div class="sm-sec-title">What's New <span class="sm-sparkle">✨</span></div>
+      <div class="sm-new-grid">
+        <div class="sm-new-card" onclick="window.location.href='product/?id=milletvanilla'">
+          <div class="sm-new-img" style="background:#edf5e1"><img src="{% static 'images/green.png' %}" alt="Millet Vanilla"></div>
+          <div class="sm-new-name">Millet Vanilla</div>
+          <div class="sm-new-sub">Millet Snack · 100g</div>
+          <div class="sm-new-foot">
+            <span class="sm-new-price">₹299</span>
+            <button class="sm-add-btn add-to-cart-btn" data-name="Millet Vanilla" data-price="299" data-image="/static/images/green.png">ADD</button>
+          </div>
+        </div>
+        <div class="sm-new-card" onclick="window.location.href='product/?id=milletchoco'">
+          <div class="sm-new-img" style="background:#f5ede6"><img src="{% static 'images/a6bf2fb7-be25-4e5c-94f4-ba9215f70999_removalai_preview.png' %}" alt="Millet Choco"></div>
+          <div class="sm-new-name">Millet Choco</div>
+          <div class="sm-new-sub">Millet Snack · 100g</div>
+          <div class="sm-new-foot">
+            <span class="sm-new-price">₹299</span>
+            <button class="sm-add-btn add-to-cart-btn" data-name="Millet Choco" data-price="299" data-image="/static/images/a6bf2fb7-be25-4e5c-94f4-ba9215f70999_removalai_preview.png">ADD</button>
+          </div>
+        </div>
+        <div class="sm-new-card" onclick="window.location.href='product/?id=blueberrypancake'">
+          <div class="sm-new-img" style="background:#ede8fb"><img src="{% static 'images/b3e47e53-7399-423b-a88a-c4cadb4de3b3_removalai_preview.png' %}" alt="Blueberry Pancake"></div>
+          <div class="sm-new-name">Blueberry Pancake</div>
+          <div class="sm-new-sub">Pancake Snack · 100g</div>
+          <div class="sm-new-foot">
+            <span class="sm-new-price">₹299</span>
+            <button class="sm-add-btn add-to-cart-btn" data-name="Blueberry Pancake" data-price="299" data-image="/static/images/b3e47e53-7399-423b-a88a-c4cadb4de3b3_removalai_preview.png">ADD</button>
+          </div>
+        </div>
+        <div class="sm-new-card" onclick="window.location.href='product/?id=quinoapuffs'">
+          <div class="sm-new-img" style="background:#fdf0e2"><img src="{% static 'images/red.png' %}" alt="Quinoa Puffs"></div>
+          <div class="sm-new-name">Quinoa Puffs</div>
+          <div class="sm-new-sub">Puff Snack · 100g</div>
+          <div class="sm-new-foot">
+            <span class="sm-new-price">₹299</span>
+            <button class="sm-add-btn add-to-cart-btn" data-name="Quinoa Puffs" data-price="299" data-image="/static/images/red.png">ADD</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Live Results -->
+  <div class="sm-results" id="smResults"></div>
+</div>
+
+<!-- ══ CART SIDEBAR ══ -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-sidebar" id="cartSidebar" aria-label="Shopping cart">
+  <div class="cart-header">
+    <div class="cart-title"><i class="fa-solid fa-basket-shopping"></i> Your Cart</div>
+    <button class="cart-close" id="cartClose" aria-label="Close cart">&#10005;</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">
+      <i class="fa-solid fa-seedling"></i>
+      <p>Your cart is empty</p>
+      <span>Add some natural goodness!</span>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-subtotal">
+      <span>Subtotal</span>
+      <strong id="cartTotal">&#8377;0.00</strong>
+    </div>
+    <button class="checkout-btn">Checkout &nbsp;<i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</aside>
+
+<!-- ══ AUTH MODAL ══ -->
+<div class="auth-overlay" id="authOverlay"></div>
+<div class="auth-modal" id="authModal" role="dialog" aria-modal="true">
+  <button class="auth-close" id="authClose" aria-label="Close">&#10005;</button>
+  <div class="auth-brand">
+    <div class="auth-logo-ring">NN</div>
+    <div class="auth-logo-text">NaturNest<small>Pure &amp; Natural</small></div>
+  </div>
+  <div class="auth-tabs">
+    <button class="auth-tab active" data-tab="login">Login</button>
+    <button class="auth-tab" data-tab="register">Register</button>
+  </div>
+  <form class="auth-form" id="loginForm" novalidate>
+    <div class="form-group"><label>Email Address</label><div class="input-icon-wrap"><i class="fa-solid fa-envelope"></i><input type="email" placeholder="you@email.com" required></div></div>
+    <div class="form-group"><label>Password</label><div class="input-icon-wrap"><i class="fa-solid fa-lock"></i><input type="password" placeholder="••••••••" required></div></div>
+    <button type="submit" class="auth-submit">Login &nbsp;<i class="fa-solid fa-arrow-right"></i></button>
+    <p class="auth-switch">Don't have an account? <a href="#" class="switch-link" data-switch="register">Register</a></p>
+  </form>
+  <form class="auth-form" id="registerForm" style="display:none" novalidate>
+    <div class="form-group"><label>Full Name</label><div class="input-icon-wrap"><i class="fa-solid fa-user"></i><input type="text" placeholder="Your full name" required></div></div>
+    <div class="form-group"><label>Email Address</label><div class="input-icon-wrap"><i class="fa-solid fa-envelope"></i><input type="email" placeholder="you@email.com" required></div></div>
+    <div class="form-group"><label>Password</label><div class="input-icon-wrap"><i class="fa-solid fa-lock"></i><input type="password" placeholder="Min. 8 characters" required></div></div>
+    <button type="submit" class="auth-submit">Create Account &nbsp;<i class="fa-solid fa-arrow-right"></i></button>
+    <p class="auth-switch">Already have an account? <a href="#" class="switch-link" data-switch="login">Login</a></p>
+  </form>
+</div>
+
+<!-- ══ TOAST ══ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ══ HERO ══ -->
+<div id="hero">
+  <nav id="mainNav">
+    <div class="logo">
+      <img src="{% static 'images/Malola_Logo_600x300-01-1536x768.webp' %}" alt="NaturNest" class="nav-logo-img">
+    </div>
+    <ul class="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#kids-about">About</a></li>
+
+      <!-- SHOP MEGA MENU -->
+      <li class="has-mega">
+        <a href="#kids-shop" class="mega-trigger">Shop <i class="fa-solid fa-chevron-down nav-caret"></i></a>
+        <div class="nav-mega">
+          <div class="mega-inner">
+            <div class="mega-header">
+              <span>Our Products</span>
+              <a href="#kids-shop" class="mega-view-all">View All <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="mega-grid">
+              <div class="mega-item" data-pdp="milletvanilla">
+                <div class="mega-item-text">
+                  <div class="mega-item-cat">Millet Snack</div>
+                  <div class="mega-item-name">Millet Vanilla</div>
+                  <div class="mega-item-price">₹299</div>
+                </div>
+                <img src="{% static 'images/green.png' %}" alt="Millet Vanilla" class="mega-item-img">
+              </div>
+              <div class="mega-item" data-pdp="milletchoco">
+                <div class="mega-item-text">
+                  <div class="mega-item-cat">Millet Snack</div>
+                  <div class="mega-item-name">Millet Choco</div>
+                  <div class="mega-item-price">₹299</div>
+                </div>
+                <img src="{% static 'images/a6bf2fb7-be25-4e5c-94f4-ba9215f70999_removalai_preview.png' %}" alt="Millet Choco" class="mega-item-img">
+              </div>
+              <div class="mega-item" data-pdp="blueberrypancake">
+                <div class="mega-item-text">
+                  <div class="mega-item-cat">Pancake Snack</div>
+                  <div class="mega-item-name">Blueberry Pancake</div>
+                  <div class="mega-item-price">₹299</div>
+                </div>
+                <img src="{% static 'images/b3e47e53-7399-423b-a88a-c4cadb4de3b3_removalai_preview.png' %}" alt="Blueberry Pancake" class="mega-item-img">
+              </div>
+              <div class="mega-item" data-pdp="quinoapuffs">
+                <div class="mega-item-text">
+                  <div class="mega-item-cat">Puff Snack</div>
+                  <div class="mega-item-name">Quinoa Puffs</div>
+                  <div class="mega-item-price">₹299</div>
+                </div>
+                <img src="{% static 'images/red.png' %}" alt="Quinoa Puffs" class="mega-item-img">
+              </div>
+              <div class="mega-item mega-soon">
+                <div class="mega-item-text">
+                  <div class="mega-item-cat">Dry Nut</div>
+                  <div class="mega-item-name">Organic Walnuts</div>
+                  <div class="mega-soon-tag">Coming Soon</div>
+                </div>
+                <div class="mega-item-emoji">🌰</div>
+              </div>
+              <div class="mega-item mega-soon">
+                <div class="mega-item-text">
+                  <div class="mega-item-cat">Dry Nut</div>
+                  <div class="mega-item-name">Roasted Pistachios</div>
+                  <div class="mega-soon-tag">Coming Soon</div>
+                </div>
+                <div class="mega-item-emoji">🫘</div>
+              </div>
+              <div class="mega-item mega-soon">
+                <div class="mega-item-text">
+                  <div class="mega-item-cat">Dried Fruit</div>
+                  <div class="mega-item-name">Turkish Figs</div>
+                  <div class="mega-soon-tag">Coming Soon</div>
+                </div>
+                <div class="mega-item-emoji">🫐</div>
+              </div>
+              <div class="mega-item mega-soon">
+                <div class="mega-item-text">
+                  <div class="mega-item-cat">Dried Fruit</div>
+                  <div class="mega-item-name">Golden Raisins</div>
+                  <div class="mega-soon-tag">Coming Soon</div>
+                </div>
+                <div class="mega-item-emoji">🍇</div>
+              </div>
+              <div class="mega-item mega-soon">
+                <div class="mega-item-text">
+                  <div class="mega-item-cat">Premium Nut</div>
+                  <div class="mega-item-name">Pecan Nuts</div>
+                  <div class="mega-soon-tag">Coming Soon</div>
+                </div>
+                <div class="mega-item-emoji">🥜</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <!-- NEW ARRIVALS DROPDOWN -->
+      <li class="has-drop">
+        <a href="#" class="drop-trigger">New Arrivals <i class="fa-solid fa-chevron-down nav-caret"></i></a>
+        <div class="nav-drop">
+          {% if db_new_arrivals %}
+          <div class="drop-head">🆕 New Arrivals</div>
+          <div class="drop-items">
+            {% for p in db_new_arrivals|slice:":4" %}
+            <div class="drop-item" onclick="window.location.href='/product/?id={{ p.slug }}'" style="cursor:pointer">
+              <img src="{{ p.image.url }}" alt="{{ p.title }}"
+                   style="width:40px;height:40px;object-fit:contain;border-radius:10px;background:{{ p.card_bg }};padding:4px;flex-shrink:0">
+              <div class="drop-item-body">
+                <div class="drop-item-name">{{ p.title }}</div>
+                <div class="drop-item-sub">₹{{ p.price }}</div>
+              </div>
+              {% if p.badge %}
+              <div class="drop-badge" style="background:{{ p.badge_color }};color:#fff">{{ p.badge }}</div>
+              {% else %}
+              <div class="drop-badge drop-badge-hot">New</div>
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          <a href="/#new-arrivals" class="drop-notify-btn" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px">
+            🆕 View All New Arrivals
+          </a>
+          {% else %}
+          <div class="drop-head">🆕 Coming This Season</div>
+          <div class="drop-items">
+            <div class="drop-item">
+              <div class="drop-item-emoji">🌰</div>
+              <div class="drop-item-body">
+                <div class="drop-item-name">Organic Walnuts</div>
+                <div class="drop-item-sub">Californian · Cold-Pressed</div>
+              </div>
+              <div class="drop-badge">Soon</div>
+            </div>
+            <div class="drop-item">
+              <div class="drop-item-emoji">🫘</div>
+              <div class="drop-item-body">
+                <div class="drop-item-name">Roasted Pistachios</div>
+                <div class="drop-item-sub">Iranian · Lightly Salted</div>
+              </div>
+              <div class="drop-badge">Soon</div>
+            </div>
+            <div class="drop-item">
+              <div class="drop-item-emoji">🎁</div>
+              <div class="drop-item-body">
+                <div class="drop-item-name">Saffron Gift Box</div>
+                <div class="drop-item-sub">Premium · Limited Edition</div>
+              </div>
+              <div class="drop-badge drop-badge-hot">Limited</div>
+            </div>
+          </div>
+          <button class="drop-notify-btn" onclick="showToast('<i class=\'fa-solid fa-bell\'></i> You\'ll be first to know when they land!')">🔔 Notify Me</button>
+          {% endif %}
+        </div>
+      </li>
+
+      <li><a href="#kids-video">Videos</a></li>
+      <li><a href="#kids-contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <!-- Search -->
+      <div class="nav-search-wrap" id="navSearchWrap">
+        <button class="nav-search-btn" id="navSearchBtn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <div class="nav-search-box" id="navSearchBox">
+          <input type="text" id="navSearchInput" placeholder="Search products..." autocomplete="off"/>
+          <button class="nav-search-close" id="navSearchClose"><i class="fa-solid fa-xmark"></i></button>
+          <div class="nav-search-results" id="navSearchResults"></div>
+        </div>
+      </div>
+      <button class="nav-cart-btn" id="navCartBtn" aria-label="Open cart">
+        <i class="fa-solid fa-basket-shopping"></i>
+        <span class="cart-badge" id="cartBadge" style="display:none">0</span>
+      </button>
+      {% if user.is_authenticated %}
+      <div class="nav-profile-wrap" id="navProfileWrap">
+        <button class="nav-profile-btn" id="navProfileBtn">
+          <span class="nav-profile-avatar">{{ user.first_name|default:user.username|slice:":1"|upper }}</span>
+          <span class="nav-profile-name">{{ user.first_name|default:user.username }}</span>
+          <i class="fa-solid fa-chevron-down nav-profile-caret"></i>
+        </button>
+        <div class="nav-profile-drop">
+          <div class="npd-header">
+            <div class="npd-avatar-lg">{{ user.first_name|default:user.username|slice:":1"|upper }}</div>
+            <div class="npd-info">
+              <div class="npd-name">{{ user.get_full_name|default:user.username }}</div>
+              <div class="npd-email">{{ user.email }}</div>
+            </div>
+          </div>
+          <div class="npd-divider"></div>
+          <a href="/orders/" class="npd-item"><i class="fa-solid fa-bag-shopping"></i> My Orders</a>
+          <div class="npd-divider"></div>
+          <button class="npd-item npd-logout" id="navLogoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+      </div>
+      {% else %}
+      <button class="btn-login" id="navLoginBtn">Login</button>
+      <button class="btn-signup" id="navSignupBtn">Sign Up</button>
+      {% endif %}
+      <!-- Hamburger -->
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mob-menu-overlay" id="mobMenuOverlay"></div>
+  <div class="mob-menu" id="mobMenu">
+    <div class="mob-menu-head">
+      <img src="{% static 'images/Malola_Logo_600x300-01-1536x768.webp' %}" alt="Malola" class="mob-logo">
+      <button class="mob-menu-close" id="mobMenuClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="mob-search-wrap">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="mobSearchInput" placeholder="Search products..."/>
+    </div>
+    <ul class="mob-nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#kids-about">About</a></li>
+      <li><a href="#kids-shop">Shop</a></li>
+      <li><a href="#kids-video">Videos</a></li>
+      <li><a href="#kids-contact">Contact</a></li>
+    </ul>
+    <div class="mob-products">
+      <div class="mob-prod-title">Our Products</div>
+      <div class="mob-prod-item" data-pdp="milletvanilla"><img src="{% static 'images/green.png' %}" alt=""><span>Millet Vanilla</span><small>₹299</small></div>
+      <div class="mob-prod-item" data-pdp="milletchoco"><img src="{% static 'images/a6bf2fb7-be25-4e5c-94f4-ba9215f70999_removalai_preview.png' %}" alt=""><span>Millet Choco</span><small>₹299</small></div>
+      <div class="mob-prod-item" data-pdp="blueberrypancake"><img src="{% static 'images/b3e47e53-7399-423b-a88a-c4cadb4de3b3_removalai_preview.png' %}" alt=""><span>Blueberry Pancake</span><small>₹299</small></div>
+      <div class="mob-prod-item" data-pdp="quinoapuffs"><img src="{% static 'images/red.png' %}" alt=""><span>Quinoa Puffs</span><small>₹299</small></div>
+      {% for p in db_our_products %}
+      <div class="mob-prod-item" onclick="window.location.href='/product/?id={{ p.slug }}'">
+        <img src="{{ p.image.url }}" alt="{{ p.title }}"><span>{{ p.title }}</span><small>₹{{ p.price }}</small>
+      </div>
+      {% endfor %}
+    </div>
+    {% if db_new_arrivals %}
+    <div class="mob-products">
+      <div class="mob-prod-title" style="color:#1565C0">🆕 New Arrivals</div>
+      {% for p in db_new_arrivals %}
+      <div class="mob-prod-item" onclick="window.location.href='/product/?id={{ p.slug }}'">
+        <img src="{{ p.image.url }}" alt="{{ p.title }}"><span>{{ p.title }}</span><small>₹{{ p.price }}</small>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="mob-menu-actions">
+      {% if user.is_authenticated %}
+      <a href="/orders/" style="text-decoration:none;width:100%"><button class="mob-signup-btn" style="width:100%"><i class="fa-solid fa-bag-shopping"></i> My Orders</button></a>
+      <button class="mob-login-btn" id="mobLogoutBtn" style="width:100%">Logout</button>
+      {% else %}
+      <button class="mob-login-btn" id="mobLoginBtn">Login</button>
+      <button class="mob-signup-btn" id="mobSignupBtn">Sign Up</button>
+      {% endif %}
+    </div>
+  </div>
+  <div id="bgWord">VANILLA</div>
+  <canvas id="beansCanvas"></canvas>
+  <div class="side-cup left" id="leftCup">
+    <svg viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#c8956a"/><stop offset="100%" stop-color="#8b5c2e"/></linearGradient></defs>
+      <ellipse cx="40" cy="18" rx="28" ry="8" fill="#e8d5b8" opacity=".9"/>
+      <rect x="12" y="18" width="56" height="70" rx="6" fill="url(#lg1)"/>
+      <ellipse cx="40" cy="88" rx="22" ry="6" fill="#7a4f22"/>
+      <rect x="14" y="20" width="52" height="8" rx="3" fill="rgba(255,255,255,.15)"/>
+      <circle cx="40" cy="14" r="10" fill="#f0e4cc"/>
+      <path d="M32 14 Q40 6 48 14" stroke="#d4c4a0" stroke-width="2" fill="none"/>
+    </svg>
+  </div>
+  <div class="side-cup right" id="rightCup">
+    <svg viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e8a04a"/><stop offset="100%" stop-color="#b8621a"/></linearGradient></defs>
+      <ellipse cx="40" cy="18" rx="28" ry="8" fill="#f5d8a8" opacity=".9"/>
+      <rect x="12" y="18" width="56" height="70" rx="6" fill="url(#lg2)"/>
+      <ellipse cx="40" cy="88" rx="22" ry="6" fill="#a0521a"/>
+      <rect x="14" y="20" width="52" height="8" rx="3" fill="rgba(255,255,255,.15)"/>
+      <circle cx="40" cy="12" r="12" fill="#fce8cc"/>
+      <line x1="40" y1="0" x2="40" y2="14" stroke="#4e8a2e" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div id="productStage">
+    <div class="product-ring" id="productRing">
+      <img class="product-image" id="productImage" src="{% static 'images/green.png' %}" alt="Millet Vanilla"/>
+      <div class="product-badge" id="productBadge">New</div>
+    </div>
+    <div class="product-label" id="productLabel">Millet Vanilla</div>
+  </div>
+  <div id="leftContent">
+    <div class="slide-tag" id="slideTag">Best Seller</div>
+    <h1 class="slide-title" id="slideTitle">Millet<br/>Vanilla</h1>
+    <p class="slide-desc" id="slideDesc">Creamy vanilla meets wholesome millet in every delightful bite. A smooth, guilt-free treat packed with fibre and natural goodness — loved by kids and parents alike.</p>
+    <div class="cta-row">
+      <button class="btn-cta" id="heroAddCart" data-name="Millet Vanilla" data-price="299" data-image="/static/images/green.png">Add to Cart</button>
+      <div class="price" id="slidePrice"><sup>₹</sup>299</div>
+    </div>
+  </div>
+  <div id="rightThumbs"></div>
+  <div id="bottomBar">
+    <p class="bottom-desc">Explore a realm of rich aromas with our exclusive coffee selection. At Fresh Brews, we harness the essence of nature's best beans.</p>
+    <div class="nav-controls">
+      <button class="nav-btn" id="prevBtn">&#8592;</button>
+      <div class="dots" id="dotsContainer"></div>
+      <button class="nav-btn" id="nextBtn">&#8594;</button>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">4+</div><div class="stat-label">Snack Varieties</div></div>
+      <div class="stat"><div class="stat-num">20K+</div><div class="stat-label">Happy Customers</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Natural Ingredients</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ KIDS PAGE ══ -->
+<div class="kids-page">
+
+  <div class="kids-divider">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,60 L0,60 Z" fill="#fffde7"/></svg>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="kids-about k-reveal" id="kids-about">
+    <div class="k-deco k-star" style="top:10%;left:5%;width:50px;height:50px;--d:-0.5s"></div>
+    <div class="k-deco k-circle" style="top:20%;right:8%;width:70px;height:70px;--d:-2s"></div>
+    <div class="k-deco k-triangle" style="bottom:15%;left:12%;--d:-3s"></div>
+    <div class="k-deco k-star" style="bottom:20%;right:5%;width:35px;height:35px;--d:-4s"></div>
+    <div class="k-deco k-circle" style="top:60%;left:3%;width:40px;height:40px;background:#1976D2;--d:-1.5s"></div>
+    <div class="kids-about-grid">
+      <div class="kids-about-text">
+        <div class="k-eyebrow">🌱 Rooted in Nature</div>
+        <h2>Healthy can be <span>tasty.</span> We prove it daily.</h2>
+        <p>Malola bridges the gap between health and indulgence — blending the goodness of millets, ragi, and quinoa with fun formats like puffs, bytes, granola, and soups. Every product is built to nourish without compromise, designed for families who want better snacking.</p>
+        <button class="kids-about-cta" onclick="document.getElementById('kids-shop').scrollIntoView({behavior:'smooth'})">
+          Explore Collection <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+      <div class="kids-about-visual">
+        <svg class="ka-zigzag" viewBox="0 0 200 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polyline class="ka-zz-line" points="0,55 25,5 50,55 75,5 100,55 125,5 150,55 175,5 200,55"/>
+        </svg>
+        <img class="ka-main-img" src="{% static 'images/Choco Bytes Front.png' %}" alt="Malola Choco Bytes">
+        <div class="ka-badge2">🌿 100% Natural
+          <div class="stars-row"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="kids-products k-reveal" id="kids-shop">
+    <div class="k-section-head">
+      <div class="k-eyebrow">⭐ Our Bestsellers</div>
+      <h2>Snack smart. Live better!</h2>
+      <p>From crunchy millet bites to power-packed granola and heritage soups — something wholesome for every craving.</p>
+    </div>
+    <div class="kids-product-grid">
+      <!-- Choco Bytes -->
+      <div class="k-prod-card" onclick="window.location.href='product/?id=chocobytes'" style="cursor:pointer">
+        <div class="k-prod-img" style="background:#fbe8d8">
+          <img src="{% static 'images/Choco Bytes Front.png' %}" alt="Choco Bytes">
+          <div class="k-prod-badge" style="background:#4a2000">Kids Pick 🍫</div>
+        </div>
+        <div class="k-prod-info">
+          <div class="k-prod-type">Bites & Crunchies</div>
+          <div class="k-prod-name">Choco Bytes</div>
+          <div class="k-prod-desc">Bite-sized millet snacks in rich chocolate — crunchy, guilt-free and loved by every kid.</div>
+          <div class="k-prod-footer">
+            <div class="k-prod-price"><sup>₹</sup>199</div>
+            <button class="k-add-btn add-to-cart-btn" data-name="Choco Bytes" data-price="199" data-image="/static/images/Choco Bytes Front.png">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <!-- Butter Makhana -->
+      <div class="k-prod-card" onclick="window.location.href='product/?id=buttermakhana'" style="cursor:pointer">
+        <div class="k-prod-img" style="background:#fef8e7">
+          <img src="{% static 'images/butter makhana front.png' %}" alt="Butter Makhana">
+          <div class="k-prod-badge" style="background:#4e3700">Premium 🌟</div>
+        </div>
+        <div class="k-prod-info">
+          <div class="k-prod-type">Bites & Crunchies</div>
+          <div class="k-prod-name">Butter Makhana</div>
+          <div class="k-prod-desc">Premium lotus seeds roasted in real butter — protein-rich and completely wholesome.</div>
+          <div class="k-prod-footer">
+            <div class="k-prod-price"><sup>₹</sup>249</div>
+            <button class="k-add-btn add-to-cart-btn" data-name="Butter Makhana" data-price="249" data-image="/static/images/butter makhana front.png">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <!-- Banana Granola -->
+      <div class="k-prod-card" onclick="window.location.href='product/?id=bananagranola'" style="cursor:pointer">
+        <div class="k-prod-img" style="background:#fff8e1">
+          <img src="{% static 'images/Banana Granola.png' %}" alt="Banana Granola">
+          <div class="k-prod-badge" style="background:#c77700">Breakfast 🍌</div>
+        </div>
+        <div class="k-prod-info">
+          <div class="k-prod-type">Cereals & Granola</div>
+          <div class="k-prod-name">Banana Granola</div>
+          <div class="k-prod-desc">Sun-dried banana, toasted oats and honey — a naturally sweet energising morning bowl.</div>
+          <div class="k-prod-footer">
+            <div class="k-prod-price"><sup>₹</sup>349</div>
+            <button class="k-add-btn add-to-cart-btn" data-name="Banana Granola" data-price="349" data-image="/static/images/Banana Granola.png">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <!-- Choco Delight Muesli -->
+      <div class="k-prod-card" onclick="window.location.href='product/?id=chocodelightmuesli'" style="cursor:pointer">
+        <div class="k-prod-img" style="background:#fde8d0">
+          <img src="{% static 'images/Choco Delight Muesli.png' %}" alt="Choco Delight Muesli">
+          <div class="k-prod-badge" style="background:#4a2000">Choco Boost 🍫</div>
+        </div>
+        <div class="k-prod-info">
+          <div class="k-prod-type">Cereals & Granola</div>
+          <div class="k-prod-name">Choco Delight Muesli</div>
+          <div class="k-prod-desc">Multigrain flakes, dark chocolate chips and roasted nuts — breakfast that feels like a treat.</div>
+          <div class="k-prod-footer">
+            <div class="k-prod-price"><sup>₹</sup>349</div>
+            <button class="k-add-btn add-to-cart-btn" data-name="Choco Delight Muesli" data-price="349" data-image="/static/images/Choco Delight Muesli.png">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <!-- Blueberry Pancake -->
+      <div class="k-prod-card" onclick="window.location.href='product/?id=blueberrypancake'" style="cursor:pointer">
+        <div class="k-prod-img" style="background:#ede8fb">
+          <img src="{% static 'images/Blueberry Pancake.png' %}" alt="Blueberry Pancake">
+          <div class="k-prod-badge" style="background:#4a2070">Limited 🌿</div>
+        </div>
+        <div class="k-prod-info">
+          <div class="k-prod-type">Pancakes & Mixes</div>
+          <div class="k-prod-name">Blueberry Pancake</div>
+          <div class="k-prod-desc">Fluffy pancake bites with real blueberry — wholesome grains, no artificial colours.</div>
+          <div class="k-prod-footer">
+            <div class="k-prod-price"><sup>₹</sup>249</div>
+            <button class="k-add-btn add-to-cart-btn" data-name="Blueberry Pancake" data-price="249" data-image="/static/images/Blueberry Pancake.png">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <!-- Choco Pancake -->
+      <div class="k-prod-card" onclick="window.location.href='product/?id=chocopancake'" style="cursor:pointer">
+        <div class="k-prod-img" style="background:#fbe8d8">
+          <img src="{% static 'images/Choco Pancake Front.png' %}" alt="Choco Pancake Mix">
+          <div class="k-prod-badge" style="background:#3b1800">Choco Joy 🍫</div>
+        </div>
+        <div class="k-prod-info">
+          <div class="k-prod-type">Pancakes & Mixes</div>
+          <div class="k-prod-name">Choco Pancake Mix</div>
+          <div class="k-prod-desc">Fluffy chocolate pancakes with millet flour — quick, wholesome and loved by kids.</div>
+          <div class="k-prod-footer">
+            <div class="k-prod-price"><sup>₹</sup>249</div>
+            <button class="k-add-btn add-to-cart-btn" data-name="Choco Pancake Mix" data-price="249" data-image="/static/images/Choco Pancake Front.png">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <!-- Moringa Soup -->
+      <div class="k-prod-card" onclick="window.location.href='product/?id=moringasoup'" style="cursor:pointer">
+        <div class="k-prod-img" style="background:#f1f8e9">
+          <img src="{% static 'images/Morniga Soup Front.png' %}" alt="Moringa Soup Mix">
+          <div class="k-prod-badge" style="background:#2e5c00">Superfood 🌱</div>
+        </div>
+        <div class="k-prod-info">
+          <div class="k-prod-type">Noodles & Soups</div>
+          <div class="k-prod-name">Moringa Soup Mix</div>
+          <div class="k-prod-desc">Moringa — the miracle tree — in a warming immunity-boosting soup. Iron, vitamins A & C.</div>
+          <div class="k-prod-footer">
+            <div class="k-prod-price"><sup>₹</sup>249</div>
+            <button class="k-add-btn add-to-cart-btn" data-name="Moringa Soup Mix" data-price="249" data-image="/static/images/Morniga Soup Front.png">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <!-- Dates Powder -->
+      <div class="k-prod-card" onclick="window.location.href='product/?id=datespowder'" style="cursor:pointer">
+        <div class="k-prod-img" style="background:#fef3e2">
+          <img src="{% static 'images/Dates Powder.png' %}" alt="Dates Powder">
+          <div class="k-prod-badge" style="background:#5c2d00">Natural Sweet 🍯</div>
+        </div>
+        <div class="k-prod-info">
+          <div class="k-prod-type">Health Mixes & Staples</div>
+          <div class="k-prod-name">Dates Powder</div>
+          <div class="k-prod-desc">Pure sun-dried date powder — nature's sweetener. Rich in iron, potassium and fibre.</div>
+          <div class="k-prod-footer">
+            <div class="k-prod-price"><sup>₹</sup>299</div>
+            <button class="k-add-btn add-to-cart-btn" data-name="Dates Powder" data-price="299" data-image="/static/images/Dates Powder.png">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      <!-- ── DB: Our Products (added via admin panel) ── -->
+      {% for p in db_our_products %}
+      <div class="k-prod-card" onclick="window.location.href='/product/?id={{ p.slug }}'" style="cursor:pointer">
+        <div class="k-prod-img" style="background:{{ p.card_bg }}">
+          <img src="{{ p.image.url }}" alt="{{ p.title }}">
+          {% if p.badge %}<div class="k-prod-badge" style="background:{{ p.badge_color }}">{{ p.badge }}</div>{% endif %}
+        </div>
+        <div class="k-prod-info">
+          <div class="k-prod-type">{{ p.get_category_display }}</div>
+          <div class="k-prod-name">{{ p.title }}</div>
+          <div class="k-prod-desc">{{ p.description }}</div>
+          <div class="k-prod-footer">
+            <div class="k-prod-price"><sup>₹</sup>{{ p.price }}</div>
+            <button class="k-add-btn add-to-cart-btn" data-name="{{ p.title }}" data-price="{{ p.price }}" data-image="{{ p.image.url }}">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <a href="/shop/" style="display:inline-flex;align-items:center;gap:10px;padding:16px 40px;background:#0d2b6b;color:#FECF0A;border-radius:999px;font-family:'Fredoka One',cursive;font-size:1.1rem;text-decoration:none;box-shadow:5px 5px 0 #FECF0A;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translate(-3px,-3px)';this.style.boxShadow='8px 8px 0 #FECF0A'" onmouseout="this.style.transform='';this.style.boxShadow='5px 5px 0 #FECF0A'">
+        Explore All Products <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── NEW ARRIVALS (from admin panel) ── -->
+  {% if db_new_arrivals %}
+  <section class="kids-products k-reveal k-visible" id="new-arrivals" style="background:var(--kids-bg)">
+    <div class="k-section-head">
+      <div class="k-eyebrow">🆕 Just In</div>
+      <h2>New Arrivals</h2>
+      <p>Fresh additions to our collection — naturally made, freshly launched.</p>
+    </div>
+    <div class="kids-product-grid">
+      {% for p in db_new_arrivals %}
+      <div class="k-prod-card" onclick="window.location.href='/product/?id={{ p.slug }}'" style="cursor:pointer">
+        <div class="k-prod-img" style="background:{{ p.card_bg }}">
+          <img src="{{ p.image.url }}" alt="{{ p.title }}">
+          {% if p.badge %}<div class="k-prod-badge" style="background:{{ p.badge_color }}">{{ p.badge }}</div>{% endif %}
+        </div>
+        <div class="k-prod-info">
+          <div class="k-prod-type">New Arrival</div>
+          <div class="k-prod-name">{{ p.title }}</div>
+          <div class="k-prod-desc">{{ p.description }}</div>
+          <div class="k-prod-footer">
+            <div class="k-prod-price"><sup>₹</sup>{{ p.price }}</div>
+            <button class="k-add-btn add-to-cart-btn" data-name="{{ p.title }}" data-price="{{ p.price }}" data-image="{{ p.image.url }}">+ Cart</button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- VIDEO REELS SLIDER -->
+  <section class="kids-video k-reveal" id="kids-video">
+    <div class="k-section-head" style="position:relative;z-index:2">
+      <div class="k-eyebrow">🎬 Watch &amp; Learn</div>
+      <h2>Real Stories. Real Goodness.</h2>
+      <p>Swipe or use arrows — center reel plays automatically.</p>
+    </div>
+
+    <div class="reels-slider-wrap">
+      <button class="reel-nav reel-prev" id="reelPrev" aria-label="Previous reel">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <div class="reels-viewport" id="reelsViewport">
+        <div class="reels-track" id="reelsTrack">
+
+          <div class="reel-card" data-index="0">
+            <video class="reel-video" src="{% static 'images/video/reel-food-alternatives.mp4' %}" muted playsinline preload="metadata"></video>
+            <div class="reel-top"><button class="reel-mute-btn"><i class="fa-solid fa-volume-xmark"></i></button></div>
+            <div class="reel-pause-icon"><i class="fa-solid fa-pause"></i></div>
+          </div>
+
+          <div class="reel-card" data-index="1">
+            <video class="reel-video" src="{% static 'images/video/reel-healthy-drinks.mp4' %}" muted playsinline preload="metadata"></video>
+            <div class="reel-top"><button class="reel-mute-btn"><i class="fa-solid fa-volume-xmark"></i></button></div>
+            <div class="reel-pause-icon"><i class="fa-solid fa-pause"></i></div>
+          </div>
+
+          <div class="reel-card" data-index="2">
+            <video class="reel-video" src="{% static 'images/video/reel-millet-noodles.mp4' %}" muted playsinline preload="metadata"></video>
+            <div class="reel-top"><button class="reel-mute-btn"><i class="fa-solid fa-volume-xmark"></i></button></div>
+            <div class="reel-pause-icon"><i class="fa-solid fa-pause"></i></div>
+          </div>
+
+          <div class="reel-card" data-index="3">
+            <video class="reel-video" src="{% static 'images/video/reel-homemade-snacks.mp4' %}" muted playsinline preload="metadata"></video>
+            <div class="reel-top"><button class="reel-mute-btn"><i class="fa-solid fa-volume-xmark"></i></button></div>
+            <div class="reel-pause-icon"><i class="fa-solid fa-pause"></i></div>
+          </div>
+
+        </div>
+      </div>
+
+      <button class="reel-nav reel-next" id="reelNext" aria-label="Next reel">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <div class="reels-dots" id="reelsDots"></div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="kids-benefits k-reveal" id="kids-benefits">
+    <div class="kids-benefits-grid">
+      <div class="kb-img-side">
+
+        <!-- squiggly line — right side -->
+        <svg class="kb-squig kb-squig-r" viewBox="0 0 70 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path class="kb-squig-path" d="M35,8 C65,30 65,70 35,95 C5,120 5,160 35,185 C65,210 65,240 35,252" fill="none" stroke="#FECF0A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <!-- squiggly line — top left -->
+        <svg class="kb-squig kb-squig-l" viewBox="0 0 60 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path class="kb-squig-path2" d="M30,6 C52,24 52,55 30,72 C8,89 8,120 30,138 C52,156 52,170 30,174" fill="none" stroke="#1565C0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <!-- scattered dashes — bottom left -->
+        <div class="kb-dashes">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
+
+        <!-- floating dot accents -->
+        <div class="kb-dot kb-dot1"></div>
+        <div class="kb-dot kb-dot2"></div>
+        <div class="kb-dot kb-dot3"></div>
+
+        <img class="kb-main-img" src="{% static 'images/Fruit and Nut muesli.png' %}" alt="Fruit and Nut Muesli">
+      </div>
+      <div class="kb-text">
+        <div class="k-eyebrow">💪 Health Benefits</div>
+        <h2>Pure nutrition, <span>extraordinary</span> flavour.</h2>
+        <p>Each product is selected like a fine ingredient — layered nourishment, luminous freshness, and a nutritional profile that moves from light snack to complete meal supplement.</p>
+        <ul class="kb-features">
+          <li><div class="k-check"><i class="fa-solid fa-check"></i></div> 100% Natural — No Preservatives</li>
+          <li><div class="k-check"><i class="fa-solid fa-check"></i></div> Ethically Sourced from Certified Farms</li>
+          <li><div class="k-check"><i class="fa-solid fa-check"></i></div> No Artificial Colours or Additives</li>
+          <li><div class="k-check"><i class="fa-solid fa-check"></i></div> Cold-Pressed &amp; Sun-Dried Processing</li>
+        </ul>
+        <button class="kids-about-cta" style="margin-top:28px" onclick="document.getElementById('kids-shop').scrollIntoView({behavior:'smooth'})">
+          Shop Now <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="kids-stats k-reveal">
+    <div class="k-section-head">
+      <div class="k-eyebrow">📊 Why Malola</div>
+      <h2>Healthy snacking, by the numbers.</h2>
+      <p>Every number tells the story of our commitment to taste, health and trust.</p>
+    </div>
+    <div class="k-stat-grid">
+      <div class="k-stat-card">
+        <strong data-count="20">0</strong>
+        <div class="k-stat-label">Products &amp; Growing</div>
+        <p>Unique wholesome products across snacks, cereals, soups and health mixes.</p>
+      </div>
+      <div class="k-stat-card">
+        <strong data-count="20">0</strong>
+        <div class="k-stat-label">Happy Customers (K)</div>
+        <p>Families choosing Malola's millet-powered snacks every single day.</p>
+      </div>
+      <div class="k-stat-card">
+        <strong data-count="100">0</strong>
+        <div class="k-stat-label">% Pure &amp; Natural</div>
+        <p>Zero preservatives, no artificial colours or additives — always guaranteed.</p>
+      </div>
+      <div class="k-stat-card">
+        <strong data-count="6">0</strong>
+        <div class="k-stat-label">Product Categories</div>
+        <p>From bites &amp; granola to soups &amp; health mixes — wholesome for every moment.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="kids-reviews k-reveal">
+    <div class="k-section-head">
+      <div class="k-eyebrow" style="background:var(--yellow);color:var(--kids-dark)">💬 Customer Stories</div>
+      <h2>Loved by families across India!</h2>
+      <p>Real words from real health lovers who taste the Malola difference.</p>
+    </div>
+    <div class="owl-carousel kids-testimonial-carousel" style="max-width:1220px;margin:0 auto;position:relative;z-index:2">
+      <div>
+        <div class="k-review-card">
+          <div class="k-quote">"</div>
+          <p class="k-review-text">The Choco Bytes are my kids' favourite! They come home from school and grab a pack straight away. So happy I found a snack that's healthy and they actually love.</p>
+          <div class="k-review-footer">
+            <div class="k-avatar" style="background:#1565C0">P</div>
+            <div><div class="k-review-name">Priya M.</div><div class="k-stars">★★★★★</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="k-review-card">
+          <div class="k-quote">"</div>
+          <p class="k-review-text">Malola Banana Granola has replaced my morning cereal completely. It's naturally sweet, filling, and I love that there's no refined sugar. Fantastic product!</p>
+          <div class="k-review-footer">
+            <div class="k-avatar" style="background:#1976D2">R</div>
+            <div><div class="k-review-name">Rohit S.</div><div class="k-stars">★★★★★</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="k-review-card">
+          <div class="k-quote">"</div>
+          <p class="k-review-text">The Moringa Soup is a daily ritual now. My nutritionist recommended it and the taste is amazing — warm, comforting and packed with goodness. Highly recommend!</p>
+          <div class="k-review-footer">
+            <div class="k-avatar" style="background:#1565C0">A</div>
+            <div><div class="k-review-name">Ananya K.</div><div class="k-stars">★★★★★</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="k-review-card">
+          <div class="k-quote">"</div>
+          <p class="k-review-text">Blueberry Pancake Mix is a weekend staple at home. Ready in minutes, the kids love it, and I love that it's millet-based. Guilt-free Sunday mornings!</p>
+          <div class="k-review-footer">
+            <div class="k-avatar" style="background:#FECF0A">S</div>
+            <div><div class="k-review-name">Sunita L.</div><div class="k-stars">★★★★★</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="k-review-card">
+          <div class="k-quote">"</div>
+          <p class="k-review-text">Malola has completely changed how our family snacks. The Butter Makhana is addictive in the best way — light, flavourful and so much better than chips!</p>
+          <div class="k-review-footer">
+            <div class="k-avatar" style="background:#1976D2">V</div>
+            <div><div class="k-review-name">Vikram T.</div><div class="k-stars">★★★★★</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="kids-gallery k-reveal">
+    <div class="k-section-head">
+      <div class="k-eyebrow" style="background:var(--yellow);color:var(--kids-dark)">📸 Gallery</div>
+      <h2>Nature's beauty in every product!</h2>
+    </div>
+    <div class="k-gallery-grid" style="max-width:1220px;margin:0 auto">
+      <div class="k-gal-item tall">
+        <img src="{% static 'images/Banana Granola.png' %}" alt="Banana Granola">
+        <div class="k-gal-overlay"><div class="k-gal-label">Banana Granola</div></div>
+      </div>
+      <div class="k-gal-item">
+        <img src="{% static 'images/Choco Bytes Front.png' %}" alt="Choco Bytes">
+        <div class="k-gal-overlay"><div class="k-gal-label">Choco Bytes</div></div>
+      </div>
+      <div class="k-gal-item">
+        <img src="{% static 'images/Pirandai Soup Front.png' %}" alt="Pirandai Soup">
+        <div class="k-gal-overlay"><div class="k-gal-label">Pirandai Soup Mix</div></div>
+      </div>
+      <div class="k-gal-item wide">
+        <img src="{% static 'images/Fruit and Nut muesli.png' %}" alt="Fruit and Nut Muesli">
+        <div class="k-gal-overlay"><div class="k-gal-label">Fruit &amp; Nut Muesli</div></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /kids-page -->
+
+<!-- FOOTER -->
+<footer class="kids-footer" id="kids-contact">
+  <div class="k-footer-grid">
+    <div>
+      <div class="k-footer-logo">
+        <img src="{% static 'images/Malola_Logo_600x300-01-1536x768.webp' %}" alt="NaturNest" style="height:56px;width:auto;object-fit:contain;filter:brightness(0) invert(1) drop-shadow(0 2px 8px rgba(254,207,10,.4))">
+      </div>
+      <p>Bridging health and indulgence through millets, ragi, quinoa and nature's finest ingredients — snacks families trust and kids love.</p>
+      <div class="k-social-links">
+        <a class="k-social-link" href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a class="k-social-link" href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+        <a class="k-social-link" href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a class="k-social-link" href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a class="k-social-link" href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+    <div>
+      <div class="k-eyebrow" style="background:var(--yellow);color:var(--kids-dark);display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:8px 22px;font-family:'Fredoka One',cursive;font-size:.9rem;margin-bottom:10px">📧 Stay Connected</div>
+      <div class="k-footer-heading">Join the harvest list!</div>
+      <form class="k-footer-form" id="footerForm">
+        <input type="text" placeholder="Your Name" aria-label="Name">
+        <input type="email" placeholder="Email Address" aria-label="Email">
+        <button type="submit">Subscribe &nbsp;<i class="fa-solid fa-arrow-right"></i></button>
+      </form>
+    </div>
+  </div>
+  <div class="k-footer-bottom">
+    <span>© 2025 Malola. All rights reserved.</span>
+    <div class="k-footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Products</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
+

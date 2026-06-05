@@ -1,0 +1,784 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="csrf-token" content="{{ csrf_token }}">
+<title>Checkout — Malola</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height:100vh}
+
+/* ── HEADER ── */
+.co-header{background:#fff;border-bottom:2px solid rgba(13,43,107,.08);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(13,43,107,.06)}
+.co-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.co-logo img{height:40px;object-fit:contain}
+.co-header-center{display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:800;color:rgba(13,43,107,.5)}
+.co-header-center i{color:#2e7d32;font-size:.9rem}
+.co-steps{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:800;color:rgba(13,43,107,.35)}
+.co-step{display:flex;align-items:center;gap:5px}
+.co-step.done{color:#2e7d32}
+.co-step.active{color:#0d2b6b}
+.co-step-num{width:22px;height:22px;border-radius:50%;background:rgba(13,43,107,.1);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:900}
+.co-step.done .co-step-num{background:#2e7d32;color:#fff}
+.co-step.active .co-step-num{background:#0d2b6b;color:#FECF0A}
+.co-step-sep{width:20px;height:2px;background:rgba(13,43,107,.1);border-radius:2px}
+
+/* ── BODY LAYOUT ── */
+.co-body{max-width:1100px;margin:0 auto;padding:32px 24px;display:grid;grid-template-columns:1fr 400px;gap:28px;align-items:start}
+
+/* ── PAYMENT SECTION ── */
+.co-payment-card{background:#fff;border-radius:24px;box-shadow:0 4px 24px rgba(13,43,107,.08);overflow:hidden}
+.co-card-header{padding:22px 28px;border-bottom:2px solid rgba(13,43,107,.07);display:flex;align-items:center;gap:12px}
+.co-card-header h2{font-family:'Fredoka One',cursive;font-size:1.35rem;color:#0d2b6b;margin:0}
+.co-card-icon{width:40px;height:40px;border-radius:12px;background:#0d2b6b;display:flex;align-items:center;justify-content:center;color:#FECF0A;font-size:1rem;flex-shrink:0}
+
+/* ── METHOD SELECTOR ── */
+.co-method{border-bottom:1.5px solid rgba(13,43,107,.06);transition:background .15s}
+.co-method:last-of-type{border-bottom:none}
+.co-method-label{display:flex;align-items:center;gap:14px;padding:18px 24px;cursor:pointer;transition:background .15s}
+.co-method-label:hover{background:#f7f9ff}
+.co-method input[type=radio]{display:none}
+.co-radio{width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(13,43,107,.2);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .2s}
+.co-radio::after{content:'';width:11px;height:11px;border-radius:50%;background:#0d2b6b;transform:scale(0);transition:transform .2s}
+.co-method input:checked ~ .co-method-label .co-radio,
+.co-method.selected .co-radio{border-color:#0d2b6b}
+.co-method input:checked ~ .co-method-label .co-radio::after,
+.co-method.selected .co-radio::after{transform:scale(1)}
+.co-method-icon{font-size:1.5rem;line-height:1;flex-shrink:0;width:36px;text-align:center}
+.co-method-info{flex:1;min-width:0}
+.co-method-title{font-weight:900;font-size:.95rem;color:#0d2b6b}
+.co-method-sub{font-size:.75rem;font-weight:700;color:rgba(13,43,107,.45);margin-top:2px}
+.co-method-logos{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.co-badge-logo{height:20px;background:#f0f4ff;border-radius:4px;padding:2px 6px;font-size:.62rem;font-weight:900;color:#0d2b6b;display:flex;align-items:center;white-space:nowrap}
+
+/* method detail panel */
+.co-method-detail{display:none;padding:0 24px 20px 24px}
+.co-method.selected .co-method-detail{display:block}
+
+/* UPI apps grid */
+.co-upi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.co-upi-app{border:2px solid rgba(13,43,107,.12);border-radius:14px;padding:12px 8px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:#fff}
+.co-upi-app:hover{border-color:#FECF0A;background:#fffde7}
+.co-upi-app.active{border-color:#0d2b6b;background:#f0f4ff}
+.co-upi-app-icon{font-size:1.6rem;margin-bottom:4px;display:block}
+.co-upi-app-name{font-size:.7rem;font-weight:800;color:#0d2b6b}
+.co-upi-input-wrap{display:none;margin-top:6px}
+.co-upi-input-wrap.show{display:block}
+.co-upi-input{width:100%;height:46px;border:2px solid rgba(13,43,107,.14);border-radius:12px;padding:0 16px;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;color:#0d2b6b;background:#fff;outline:none;transition:border-color .2s}
+.co-upi-input:focus{border-color:#FECF0A}
+
+/* net banking list */
+.co-bank-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px}
+.co-bank{border:2px solid rgba(13,43,107,.1);border-radius:12px;padding:10px 8px;text-align:center;cursor:pointer;background:#fff;transition:border-color .2s,background .2s;font-size:.75rem;font-weight:800;color:#0d2b6b}
+.co-bank:hover,.co-bank.active{border-color:#0d2b6b;background:#f0f4ff}
+.co-bank-icon{font-size:1.2rem;display:block;margin-bottom:3px}
+
+/* wallet list */
+.co-wallet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:4px}
+.co-wallet{border:2px solid rgba(13,43,107,.1);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;background:#fff;transition:all .2s}
+.co-wallet:hover,.co-wallet.active{border-color:#0d2b6b;background:#f0f4ff}
+.co-wallet-icon{font-size:1.5rem;margin-bottom:3px;display:block}
+.co-wallet-name{font-size:.65rem;font-weight:800;color:#0d2b6b}
+
+/* powered by */
+.co-powered{display:flex;align-items:center;gap:6px;font-size:.72rem;font-weight:800;color:rgba(13,43,107,.4);margin-top:10px}
+.co-powered i{color:#0d2b6b}
+
+/* COD detail */
+.co-cod-info{background:#f0f9f0;border:1.5px solid rgba(46,125,50,.2);border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
+.co-cod-info i{color:#2e7d32;font-size:1rem;margin-top:2px;flex-shrink:0}
+.co-cod-info-text{font-size:.82rem;font-weight:700;color:rgba(13,43,107,.65);line-height:1.6}
+.co-cod-info-title{font-weight:900;color:#0d2b6b;margin-bottom:3px;font-size:.88rem}
+
+/* ── PAY BUTTON ── */
+.co-pay-wrap{padding:20px 24px;background:#fff;border-top:2px solid rgba(13,43,107,.07)}
+.co-pay-btn{width:100%;height:58px;border:none;border-radius:999px;background:#0d2b6b;color:#FECF0A;font-family:'Fredoka One',cursive;font-size:1.15rem;letter-spacing:.04em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 8px 28px rgba(13,43,107,.3);transition:transform .2s,box-shadow .2s}
+.co-pay-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(13,43,107,.4)}
+.co-pay-btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.co-pay-note{font-size:.72rem;font-weight:700;color:rgba(13,43,107,.4);text-align:center;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px}
+
+/* trust bar */
+.co-trust-bar{display:flex;justify-content:center;gap:20px;padding:18px 24px;border-top:1.5px solid rgba(13,43,107,.06);flex-wrap:wrap}
+.co-trust-item{display:flex;align-items:center;gap:6px;font-size:.72rem;font-weight:800;color:rgba(13,43,107,.45)}
+.co-trust-item i{font-size:.8rem}
+.co-trust-item.green{color:#2e7d32}
+
+/* ── ORDER SUMMARY ── */
+.co-summary-card{background:#fff;border-radius:24px;box-shadow:0 4px 24px rgba(13,43,107,.08);overflow:hidden;position:sticky;top:88px}
+.co-summary-head{padding:18px 24px;border-bottom:2px solid rgba(13,43,107,.07);font-family:'Fredoka One',cursive;font-size:1.1rem;color:#0d2b6b;display:flex;justify-content:space-between;align-items:center}
+.co-summary-count{background:#0d2b6b;color:#FECF0A;border-radius:999px;padding:2px 12px;font-size:.78rem}
+.co-items-list{padding:12px 20px;max-height:260px;overflow-y:auto}
+.co-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px dashed rgba(13,43,107,.1)}
+.co-item:last-child{border-bottom:none}
+.co-item-img{width:54px;height:54px;object-fit:contain;border-radius:10px;background:#f0f4ff;padding:5px;flex-shrink:0;border:1.5px solid rgba(13,43,107,.08)}
+.co-item-body{flex:1;min-width:0}
+.co-item-name{font-weight:800;font-size:.85rem;color:#0d2b6b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.co-item-qty{font-size:.72rem;color:rgba(13,43,107,.45);margin-top:2px}
+.co-item-price{font-family:'Fredoka One',cursive;font-size:1rem;color:#1565C0;flex-shrink:0}
+
+.co-totals{padding:14px 22px;border-top:1.5px solid rgba(13,43,107,.07)}
+.co-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:.82rem}
+.co-total-row span{font-weight:700;color:rgba(13,43,107,.55)}
+.co-total-row strong{font-weight:800;color:#0d2b6b}
+.co-total-row.grand{border-top:2px solid rgba(13,43,107,.08);padding-top:10px;margin-top:6px}
+.co-total-row.grand span{font-weight:900;font-size:.88rem;color:#0d2b6b}
+.co-total-row.grand strong{font-family:'Fredoka One',cursive;font-size:1.5rem;color:#0d2b6b}
+.co-free-badge{background:#d4edda;color:#155724;font-size:.65rem;font-weight:800;padding:2px 8px;border-radius:999px}
+
+.co-delivery-box{margin:0 22px 18px;background:#f7f9ff;border-radius:14px;padding:14px 16px;border:1.5px solid rgba(13,43,107,.08)}
+.co-delivery-label{font-size:.68rem;font-weight:900;color:rgba(13,43,107,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.co-delivery-name{font-weight:900;font-size:.9rem;color:#0d2b6b;margin-bottom:2px}
+.co-delivery-addr{font-size:.78rem;color:rgba(13,43,107,.55);line-height:1.5}
+
+/* ── ERROR TOAST ── */
+.co-error{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#c62828;color:#fff;padding:14px 24px;border-radius:14px;font-weight:800;font-size:.88rem;display:flex;align-items:center;gap:10px;box-shadow:0 12px 40px rgba(0,0,0,.25);z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s}
+.co-error.show{opacity:1;pointer-events:all}
+
+/* ── SUCCESS OVERLAY ── */
+.co-success{position:fixed;inset:0;background:rgba(10,31,94,.7);z-index:5000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.co-success.show{display:flex}
+.co-success-card{background:#fff;border-radius:28px;padding:44px 40px;text-align:center;max-width:420px;width:90%;box-shadow:0 40px 100px rgba(0,0,0,.3);border-top:5px solid #FECF0A}
+.co-success-icon{width:80px;height:80px;border-radius:50%;background:#d4edda;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2rem;color:#2e7d32}
+.co-success-title{font-family:'Fredoka One',cursive;font-size:1.9rem;color:#0d2b6b;margin-bottom:8px}
+.co-success-sub{font-size:.9rem;color:rgba(13,43,107,.55);font-weight:700;line-height:1.6;margin-bottom:8px}
+.co-order-num{background:#f0f4ff;border-radius:12px;padding:10px 20px;display:inline-block;font-family:'Fredoka One',cursive;font-size:1.1rem;color:#1565C0;margin-bottom:24px}
+.co-success-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:#0d2b6b;color:#FECF0A;border-radius:999px;font-family:'Fredoka One',cursive;font-size:1rem;text-decoration:none;box-shadow:0 8px 24px rgba(13,43,107,.3)}
+
+/* ── BRAND LOGO HELPERS ── */
+.bl{display:inline-flex;align-items:center;justify-content:center;border-radius:8px;overflow:hidden;flex-shrink:0}
+/* UPI app cards */
+.co-upi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.co-upi-app{border:2px solid rgba(13,43,107,.1);border-radius:14px;padding:14px 8px 10px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s,transform .15s;background:#fff}
+.co-upi-app:hover{border-color:#FECF0A;background:#fffde7;transform:translateY(-2px)}
+.co-upi-app.active{border-color:#0d2b6b;background:#f0f4ff}
+.co-upi-logo{height:44px;margin:0 auto 6px;display:flex;align-items:center;justify-content:center}
+.co-upi-app-name{font-size:.7rem;font-weight:800;color:#0d2b6b}
+/* card logos strip */
+.co-card-logos-strip{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.co-card-logo{height:28px;border-radius:6px;overflow:hidden;border:1.5px solid #e8eaf6}
+/* bank grid */
+.co-bank-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px}
+.co-bank{border:2px solid rgba(13,43,107,.1);border-radius:12px;padding:12px 6px;text-align:center;cursor:pointer;background:#fff;transition:border-color .2s,background .2s,transform .15s}
+.co-bank:hover,.co-bank.active{border-color:#0d2b6b;background:#f0f4ff;transform:translateY(-2px)}
+.co-bank-logo{height:32px;display:flex;align-items:center;justify-content:center;margin:0 auto 5px}
+.co-bank-name{font-size:.68rem;font-weight:800;color:#0d2b6b}
+/* wallet grid */
+.co-wallet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:4px}
+.co-wallet{border:2px solid rgba(13,43,107,.1);border-radius:12px;padding:12px 6px;text-align:center;cursor:pointer;background:#fff;transition:all .2s}
+.co-wallet:hover,.co-wallet.active{border-color:#0d2b6b;background:#f0f4ff;transform:translateY(-2px)}
+.co-wallet-logo{height:34px;display:flex;align-items:center;justify-content:center;margin:0 auto 4px}
+.co-wallet-name{font-size:.65rem;font-weight:800;color:#0d2b6b}
+/* method header logos */
+.co-method-logos{display:flex;align-items:center;gap:5px;flex-shrink:0}
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  .co-body{grid-template-columns:1fr;padding:20px 16px}
+  .co-summary-card{position:static}
+  .co-steps{display:none}
+  .co-header{padding:0 16px}
+  .co-upi-grid{grid-template-columns:repeat(2,1fr)}
+  .co-wallet-grid{grid-template-columns:repeat(2,1fr)}
+  .co-bank-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:540px){
+  .co-upi-grid{grid-template-columns:repeat(2,1fr)}
+  .co-wallet-grid{grid-template-columns:repeat(2,1fr)}
+  .co-bank-grid{grid-template-columns:repeat(2,1fr)}
+  .co-card-logos-strip{flex-wrap:wrap}
+}
+@media(max-width:480px){
+  .co-method-logos{display:none}
+  .co-method-label{padding:14px 16px}
+  .co-method-detail{padding:0 16px 16px}
+  .co-pay-wrap{padding:16px}
+  .co-trust-bar{gap:12px}
+}
+</style>
+</head>
+<body>
+
+<!-- SUCCESS OVERLAY -->
+<div class="co-success" id="coSuccess">
+  <div class="co-success-card">
+    <div class="co-success-icon"><i class="fa-solid fa-check"></i></div>
+    <div class="co-success-title" id="successTitle">Order Confirmed!</div>
+    <p class="co-success-sub" id="successSub">Thank you! Your order has been placed successfully.</p>
+    <div class="co-order-num">Order #{{ order.id }}</div><br>
+    <a href="/orders/" class="co-success-btn"><i class="fa-solid fa-bag-shopping"></i> View My Orders</a>
+  </div>
+</div>
+
+<!-- ERROR TOAST -->
+<div class="co-error" id="coError"><i class="fa-solid fa-circle-exclamation"></i> <span id="coErrorMsg"></span></div>
+
+<!-- HEADER -->
+<header class="co-header">
+  <a href="/" class="co-logo">
+    <img src="{% static 'images/Malola_Logo_600x300-01-1536x768.webp' %}" alt="Malola">
+  </a>
+  <div class="co-header-center">
+    <i class="fa-solid fa-lock"></i> 100% Secure Checkout
+  </div>
+  <div class="co-steps">
+    <div class="co-step done">
+      <div class="co-step-num"><i class="fa-solid fa-check" style="font-size:.5rem"></i></div>Cart
+    </div>
+    <div class="co-step-sep"></div>
+    <div class="co-step done">
+      <div class="co-step-num"><i class="fa-solid fa-check" style="font-size:.5rem"></i></div>Details
+    </div>
+    <div class="co-step-sep"></div>
+    <div class="co-step active">
+      <div class="co-step-num">3</div>Payment
+    </div>
+  </div>
+</header>
+
+<!-- BODY -->
+<div class="co-body">
+
+  <!-- ── PAYMENT METHODS ── -->
+  <div class="co-payment-card">
+    <div class="co-card-header">
+      <div class="co-card-icon"><i class="fa-solid fa-credit-card"></i></div>
+      <h2>Choose Payment Method</h2>
+    </div>
+
+    <!-- ① UPI -->
+    <div class="co-method" id="method-upi">
+      <label class="co-method-label" onclick="selectMethod('upi')">
+        <div class="co-radio" id="radio-upi"></div>
+        <!-- UPI icon -->
+        <svg width="38" height="24" viewBox="0 0 38 24" fill="none" style="flex-shrink:0">
+          <rect width="38" height="24" rx="5" fill="#fff" stroke="#e0e0e0"/>
+          <text x="3" y="17" font-family="Arial Black,Arial" font-size="13" font-weight="900" fill="#4285F4">U</text>
+          <text x="14" y="17" font-family="Arial Black,Arial" font-size="13" font-weight="900" fill="#e8001d">P</text>
+          <text x="25" y="17" font-family="Arial Black,Arial" font-size="13" font-weight="900" fill="#4285F4">I</text>
+        </svg>
+        <div class="co-method-info">
+          <div class="co-method-title">UPI</div>
+          <div class="co-method-sub">Google Pay · PhonePe · Paytm · BHIM &amp; more</div>
+        </div>
+        <div class="co-method-logos">
+          <!-- GPay mini badge -->
+          <svg width="38" height="22" viewBox="0 0 38 22" fill="none"><rect width="38" height="22" rx="4" fill="white" stroke="#e0e0e0"/><text x="3" y="15" font-family="Arial Black" font-size="12" fill="#4285F4">G</text><text x="16" y="15" font-family="Arial" font-size="9" font-weight="700" fill="#5f6368">Pay</text></svg>
+          <!-- PhonePe mini badge -->
+          <svg width="38" height="22" viewBox="0 0 38 22" fill="none"><rect width="38" height="22" rx="4" fill="#5f259f"/><text x="7" y="15" font-family="Arial Black" font-size="11" fill="white" font-weight="900">Pe</text></svg>
+          <!-- Paytm mini badge -->
+          <svg width="38" height="22" viewBox="0 0 38 22" fill="none"><rect width="38" height="22" rx="4" fill="#002970"/><text x="3" y="11" font-family="Arial" font-size="7" fill="#00baf2" font-weight="900">pay</text><text x="3" y="19" font-family="Arial" font-size="7" fill="white" font-weight="900">tm</text></svg>
+        </div>
+      </label>
+      <div class="co-method-detail">
+        <div class="co-upi-grid">
+
+          <!-- Google Pay -->
+          <div class="co-upi-app" onclick="selectUPI('gpay',this)">
+            <div class="co-upi-logo">
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                <rect width="44" height="44" rx="10" fill="white" stroke="#e8eaf6" stroke-width="1.5"/>
+                <text x="3" y="30" font-family="Arial Black,Arial" font-size="20" fill="#4285F4">G</text>
+                <text x="23" y="30" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#3c4043">Pay</text>
+              </svg>
+            </div>
+            <div class="co-upi-app-name">Google Pay</div>
+          </div>
+
+          <!-- PhonePe -->
+          <div class="co-upi-app" onclick="selectUPI('phonepe',this)">
+            <div class="co-upi-logo">
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                <rect width="44" height="44" rx="10" fill="#5f259f"/>
+                <text x="6" y="28" font-family="Arial Black,Arial" font-size="16" fill="white" font-weight="900">Ph</text>
+                <circle cx="34" cy="30" r="5" fill="white" opacity=".25"/>
+              </svg>
+            </div>
+            <div class="co-upi-app-name">PhonePe</div>
+          </div>
+
+          <!-- Paytm -->
+          <div class="co-upi-app" onclick="selectUPI('paytm',this)">
+            <div class="co-upi-logo">
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                <rect width="44" height="44" rx="10" fill="#002970"/>
+                <text x="5" y="20" font-family="Arial,sans-serif" font-size="10" fill="#00baf2" font-weight="900" letter-spacing="0">pay</text>
+                <text x="5" y="33" font-family="Arial,sans-serif" font-size="10" fill="white" font-weight="900">tm</text>
+              </svg>
+            </div>
+            <div class="co-upi-app-name">Paytm</div>
+          </div>
+
+          <!-- BHIM / Other UPI -->
+          <div class="co-upi-app" onclick="selectUPI('other',this)">
+            <div class="co-upi-logo">
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                <rect width="44" height="44" rx="10" fill="#f5f5f5" stroke="#e0e0e0"/>
+                <text x="3" y="17" font-family="Arial Black" font-size="9" fill="#4285F4" font-weight="900">U</text>
+                <text x="14" y="17" font-family="Arial Black" font-size="9" fill="#e8001d" font-weight="900">P</text>
+                <text x="25" y="17" font-family="Arial Black" font-size="9" fill="#4285F4" font-weight="900">I</text>
+                <text x="4" y="32" font-family="Arial" font-size="8" fill="#5f6368" font-weight="700">& more</text>
+              </svg>
+            </div>
+            <div class="co-upi-app-name">Other UPI</div>
+          </div>
+
+        </div>
+        <div class="co-upi-input-wrap" id="upiInputWrap">
+          <input type="text" class="co-upi-input" id="upiIdInput" placeholder="Enter UPI ID  e.g. name@okaxis">
+        </div>
+        <div class="co-powered"><i class="fa-solid fa-shield-halved"></i> Payments secured by Razorpay</div>
+      </div>
+    </div>
+
+    <!-- ② Credit / Debit Card -->
+    <div class="co-method" id="method-card">
+      <label class="co-method-label" onclick="selectMethod('card')">
+        <div class="co-radio" id="radio-card"></div>
+        <!-- Card icon -->
+        <svg width="38" height="24" viewBox="0 0 38 24" fill="none" style="flex-shrink:0">
+          <rect width="38" height="24" rx="5" fill="#1a1f71"/>
+          <rect x="0" y="7" width="38" height="7" fill="#fff" opacity=".15"/>
+          <rect x="4" y="14" width="10" height="3" rx="1" fill="#FECF0A"/>
+          <rect x="17" y="14" width="6" height="3" rx="1" fill="white" opacity=".5"/>
+        </svg>
+        <div class="co-method-info">
+          <div class="co-method-title">Credit / Debit Card</div>
+          <div class="co-method-sub">Visa · Mastercard · RuPay · Amex</div>
+        </div>
+        <div class="co-method-logos">
+          <!-- Visa -->
+          <svg class="co-card-logo" width="42" height="26" viewBox="0 0 42 26" fill="none"><rect width="42" height="26" rx="4" fill="white" stroke="#e0e0e0"/><text x="5" y="19" font-family="Arial" font-size="14" font-weight="900" font-style="italic" fill="#1a1f71">VISA</text></svg>
+          <!-- Mastercard -->
+          <svg class="co-card-logo" width="42" height="26" viewBox="0 0 42 26" fill="none"><rect width="42" height="26" rx="4" fill="white" stroke="#e0e0e0"/><circle cx="16" cy="13" r="8" fill="#eb001b"/><circle cx="26" cy="13" r="8" fill="#f79e1b"/><path d="M21 6.5 C23.5 8.5 25 10.6 25 13 C25 15.4 23.5 17.5 21 19.5 C18.5 17.5 17 15.4 17 13 C17 10.6 18.5 8.5 21 6.5Z" fill="#ff5f00"/></svg>
+          <!-- RuPay -->
+          <svg class="co-card-logo" width="42" height="26" viewBox="0 0 42 26" fill="none"><rect width="42" height="26" rx="4" fill="white" stroke="#e0e0e0"/><text x="3" y="15" font-family="Arial" font-size="8" font-weight="900" fill="#006a4e">Ru</text><text x="18" y="15" font-family="Arial" font-size="8" font-weight="900" fill="#f77f00">Pay</text><line x1="3" y1="18" x2="39" y2="18" stroke="#f77f00" stroke-width="2"/></svg>
+        </div>
+      </label>
+      <div class="co-method-detail">
+        <!-- Card brand strip -->
+        <div class="co-card-logos-strip" style="margin-bottom:12px">
+          <svg class="co-card-logo" width="52" height="32" viewBox="0 0 52 32" fill="none"><rect width="52" height="32" rx="5" fill="white" stroke="#e0e0e0"/><text x="5" y="23" font-family="Arial" font-size="17" font-weight="900" font-style="italic" fill="#1a1f71">VISA</text></svg>
+          <svg class="co-card-logo" width="52" height="32" viewBox="0 0 52 32" fill="none"><rect width="52" height="32" rx="5" fill="white" stroke="#e0e0e0"/><circle cx="19" cy="16" r="10" fill="#eb001b"/><circle cx="33" cy="16" r="10" fill="#f79e1b"/><path d="M26 8 C29 10.5 31 13.1 31 16 C31 18.9 29 21.5 26 24 C23 21.5 21 18.9 21 16 C21 13.1 23 10.5 26 8Z" fill="#ff5f00"/></svg>
+          <svg class="co-card-logo" width="52" height="32" viewBox="0 0 52 32" fill="none"><rect width="52" height="32" rx="5" fill="white" stroke="#e0e0e0"/><text x="3" y="18" font-family="Arial" font-size="10" font-weight="900" fill="#006a4e">Ru</text><text x="24" y="18" font-family="Arial" font-size="10" font-weight="900" fill="#f77f00">Pay</text><line x1="3" y1="22" x2="49" y2="22" stroke="#f77f00" stroke-width="2.5"/></svg>
+          <svg class="co-card-logo" width="52" height="32" viewBox="0 0 52 32" fill="none"><rect width="52" height="32" rx="5" fill="#006fcf"/><text x="5" y="21" font-family="Arial Black,Arial" font-size="11" fill="white" font-weight="900">AMEX</text></svg>
+        </div>
+        <p style="font-size:.82rem;font-weight:700;color:rgba(13,43,107,.5);line-height:1.6">
+          <i class="fa-solid fa-circle-info" style="color:#1565C0"></i>
+          &nbsp;A secure Razorpay popup will open for card entry. All transactions are 256-bit SSL encrypted.
+        </p>
+        <div class="co-powered" style="margin-top:10px"><i class="fa-solid fa-shield-halved"></i> Powered by Razorpay</div>
+      </div>
+    </div>
+
+    <!-- ③ Net Banking -->
+    <div class="co-method" id="method-netbanking">
+      <label class="co-method-label" onclick="selectMethod('netbanking')">
+        <div class="co-radio" id="radio-netbanking"></div>
+        <!-- Net banking icon -->
+        <svg width="38" height="24" viewBox="0 0 38 24" fill="none" style="flex-shrink:0">
+          <rect width="38" height="24" rx="5" fill="#0033a0"/>
+          <rect x="3" y="5" width="32" height="3" rx="1.5" fill="white" opacity=".9"/>
+          <rect x="5" y="11" width="4" height="8" rx="1" fill="white" opacity=".7"/>
+          <rect x="12" y="11" width="4" height="8" rx="1" fill="white" opacity=".7"/>
+          <rect x="19" y="11" width="4" height="8" rx="1" fill="white" opacity=".7"/>
+          <rect x="26" y="11" width="5" height="8" rx="1" fill="white" opacity=".7"/>
+        </svg>
+        <div class="co-method-info">
+          <div class="co-method-title">Net Banking</div>
+          <div class="co-method-sub">All major Indian banks supported</div>
+        </div>
+        <div class="co-method-logos">
+          <svg width="36" height="22" viewBox="0 0 36 22" fill="none"><rect width="36" height="22" rx="4" fill="#0033a0"/><text x="4" y="15" font-family="Arial Black" font-size="9" fill="white" font-weight="900">SBI</text></svg>
+          <svg width="36" height="22" viewBox="0 0 36 22" fill="none"><rect width="36" height="22" rx="4" fill="#e5173f"/><text x="2" y="15" font-family="Arial Black" font-size="8" fill="white" font-weight="900">HDFC</text></svg>
+          <svg width="36" height="22" viewBox="0 0 36 22" fill="none"><rect width="36" height="22" rx="4" fill="#f77f00"/><text x="1" y="15" font-family="Arial Black" font-size="8" fill="white" font-weight="900">ICICI</text></svg>
+        </div>
+      </label>
+      <div class="co-method-detail">
+        <div class="co-bank-grid">
+
+          <!-- SBI -->
+          <div class="co-bank" onclick="toggleBank(this,'sbi')">
+            <div class="co-bank-logo">
+              <svg width="40" height="32" viewBox="0 0 40 32" fill="none"><rect width="40" height="32" rx="8" fill="#0033a0"/><text x="7" y="22" font-family="Arial Black" font-size="13" fill="white" font-weight="900">SBI</text></svg>
+            </div>
+            <div class="co-bank-name">SBI</div>
+          </div>
+
+          <!-- HDFC -->
+          <div class="co-bank" onclick="toggleBank(this,'hdfc')">
+            <div class="co-bank-logo">
+              <svg width="40" height="32" viewBox="0 0 40 32" fill="none"><rect width="40" height="32" rx="8" fill="#e5173f"/><text x="3" y="22" font-family="Arial Black" font-size="12" fill="white" font-weight="900">HDFC</text></svg>
+            </div>
+            <div class="co-bank-name">HDFC</div>
+          </div>
+
+          <!-- ICICI -->
+          <div class="co-bank" onclick="toggleBank(this,'icici')">
+            <div class="co-bank-logo">
+              <svg width="40" height="32" viewBox="0 0 40 32" fill="none"><rect width="40" height="32" rx="8" fill="#f77f00"/><text x="2" y="22" font-family="Arial Black" font-size="11" fill="white" font-weight="900">ICICI</text></svg>
+            </div>
+            <div class="co-bank-name">ICICI</div>
+          </div>
+
+          <!-- Axis -->
+          <div class="co-bank" onclick="toggleBank(this,'axis')">
+            <div class="co-bank-logo">
+              <svg width="40" height="32" viewBox="0 0 40 32" fill="none"><rect width="40" height="32" rx="8" fill="#97144d"/><text x="5" y="22" font-family="Arial Black" font-size="12" fill="white" font-weight="900">Axis</text></svg>
+            </div>
+            <div class="co-bank-name">Axis</div>
+          </div>
+
+          <!-- Kotak -->
+          <div class="co-bank" onclick="toggleBank(this,'kotak')">
+            <div class="co-bank-logo">
+              <svg width="40" height="32" viewBox="0 0 40 32" fill="none"><rect width="40" height="32" rx="8" fill="#e3242b"/><text x="3" y="22" font-family="Arial Black" font-size="10" fill="white" font-weight="900">Kotak</text></svg>
+            </div>
+            <div class="co-bank-name">Kotak</div>
+          </div>
+
+          <!-- Other Banks -->
+          <div class="co-bank" onclick="toggleBank(this,'other')">
+            <div class="co-bank-logo">
+              <svg width="40" height="32" viewBox="0 0 40 32" fill="none"><rect width="40" height="32" rx="8" fill="#546e7a"/><text x="5" y="16" font-family="Arial" font-size="8" fill="white" font-weight="700">All</text><text x="4" y="27" font-family="Arial" font-size="8" fill="white" font-weight="700">Banks</text></svg>
+            </div>
+            <div class="co-bank-name">Others</div>
+          </div>
+
+        </div>
+        <div class="co-powered" style="margin-top:8px"><i class="fa-solid fa-shield-halved"></i> Redirects to your bank's secure page via Razorpay</div>
+      </div>
+    </div>
+
+    <!-- ④ Wallets -->
+    <div class="co-method" id="method-wallet">
+      <label class="co-method-label" onclick="selectMethod('wallet')">
+        <div class="co-radio" id="radio-wallet"></div>
+        <!-- Wallet icon -->
+        <svg width="38" height="24" viewBox="0 0 38 24" fill="none" style="flex-shrink:0">
+          <rect width="38" height="24" rx="5" fill="#002970"/>
+          <rect x="4" y="6" width="22" height="12" rx="3" fill="none" stroke="white" stroke-width="1.5"/>
+          <circle cx="30" cy="12" r="5" fill="#00baf2"/>
+          <circle cx="30" cy="12" r="2.5" fill="white"/>
+        </svg>
+        <div class="co-method-info">
+          <div class="co-method-title">Wallets</div>
+          <div class="co-method-sub">Paytm · Amazon Pay · Mobikwik · Freecharge</div>
+        </div>
+        <div class="co-method-logos">
+          <svg width="36" height="22" viewBox="0 0 36 22" fill="none"><rect width="36" height="22" rx="4" fill="#002970"/><text x="2" y="10" font-family="Arial" font-size="6" fill="#00baf2" font-weight="900">pay</text><text x="2" y="18" font-family="Arial" font-size="6" fill="white" font-weight="900">tm</text></svg>
+          <svg width="36" height="22" viewBox="0 0 36 22" fill="none"><rect width="36" height="22" rx="4" fill="#232f3e"/><text x="3" y="14" font-family="Arial Black" font-size="10" fill="#f90" font-weight="900">a</text><text x="14" y="14" font-family="Arial" font-size="7" fill="white" font-weight="700">Pay</text></svg>
+        </div>
+      </label>
+      <div class="co-method-detail">
+        <div class="co-wallet-grid">
+
+          <!-- Paytm -->
+          <div class="co-wallet" onclick="toggleWallet(this,'paytm')">
+            <div class="co-wallet-logo">
+              <svg width="44" height="34" viewBox="0 0 44 34" fill="none"><rect width="44" height="34" rx="8" fill="#002970"/><text x="5" y="16" font-family="Arial" font-size="9" fill="#00baf2" font-weight="900">pay</text><text x="5" y="28" font-family="Arial" font-size="9" fill="white" font-weight="900">tm</text></svg>
+            </div>
+            <div class="co-wallet-name">Paytm</div>
+          </div>
+
+          <!-- Amazon Pay -->
+          <div class="co-wallet" onclick="toggleWallet(this,'amazon')">
+            <div class="co-wallet-logo">
+              <svg width="44" height="34" viewBox="0 0 44 34" fill="none"><rect width="44" height="34" rx="8" fill="#232f3e"/><text x="5" y="22" font-family="Arial Black" font-size="16" fill="#f90" font-weight="900">a</text><text x="20" y="22" font-family="Arial" font-size="10" fill="white" font-weight="700">Pay</text></svg>
+            </div>
+            <div class="co-wallet-name">Amazon Pay</div>
+          </div>
+
+          <!-- Mobikwik -->
+          <div class="co-wallet" onclick="toggleWallet(this,'mobikwik')">
+            <div class="co-wallet-logo">
+              <svg width="44" height="34" viewBox="0 0 44 34" fill="none"><rect width="44" height="34" rx="8" fill="#7b2d8b"/><text x="5" y="16" font-family="Arial Black" font-size="10" fill="white" font-weight="900">Mobi</text><text x="5" y="28" font-family="Arial Black" font-size="10" fill="#f9d" font-weight="900">kwik</text></svg>
+            </div>
+            <div class="co-wallet-name">Mobikwik</div>
+          </div>
+
+          <!-- Freecharge -->
+          <div class="co-wallet" onclick="toggleWallet(this,'freecharge')">
+            <div class="co-wallet-logo">
+              <svg width="44" height="34" viewBox="0 0 44 34" fill="none"><rect width="44" height="34" rx="8" fill="#2aab1e"/><text x="6" y="16" font-family="Arial Black" font-size="9" fill="white" font-weight="900">Free</text><text x="4" y="28" font-family="Arial Black" font-size="9" fill="#d4f7d0" font-weight="900">charge</text></svg>
+            </div>
+            <div class="co-wallet-name">Freecharge</div>
+          </div>
+
+        </div>
+        <div class="co-powered" style="margin-top:8px"><i class="fa-solid fa-shield-halved"></i> Powered by Razorpay</div>
+      </div>
+    </div>
+
+    <!-- ⑤ Cash on Delivery -->
+    <div class="co-method" id="method-cod">
+      <label class="co-method-label" onclick="selectMethod('cod')">
+        <div class="co-radio" id="radio-cod"></div>
+        <!-- COD icon -->
+        <svg width="38" height="24" viewBox="0 0 38 24" fill="none" style="flex-shrink:0">
+          <rect width="38" height="24" rx="5" fill="#e8f5e9"/>
+          <text x="5" y="16" font-family="Arial Black" font-size="11" fill="#2e7d32" font-weight="900">₹</text>
+          <rect x="18" y="6" width="16" height="12" rx="2" fill="#2e7d32" opacity=".15"/>
+          <rect x="20" y="8" width="12" height="8" rx="1" fill="#2e7d32" opacity=".3"/>
+        </svg>
+        <div class="co-method-info">
+          <div class="co-method-title">Cash on Delivery</div>
+          <div class="co-method-sub">Pay when your order arrives at your door</div>
+        </div>
+        <div class="co-method-logos">
+          <svg width="44" height="22" viewBox="0 0 44 22" fill="none"><rect width="44" height="22" rx="4" fill="#e8f5e9"/><text x="4" y="15" font-family="Arial" font-size="9" fill="#2e7d32" font-weight="900">FREE COD</text></svg>
+        </div>
+      </label>
+      <div class="co-method-detail">
+        <div class="co-cod-info">
+          <i class="fa-solid fa-circle-check"></i>
+          <div>
+            <div class="co-cod-info-title">No extra charges</div>
+            <div class="co-cod-info-text">Pay in cash when your order is delivered. Available on all orders. Keep exact change handy for a smooth delivery.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAY BUTTON -->
+    <div class="co-pay-wrap">
+      <button class="co-pay-btn" id="payBtn" onclick="handlePayment()" disabled>
+        <i class="fa-solid fa-lock"></i>
+        <span id="payBtnText">Select a payment method</span>
+      </button>
+      <div class="co-pay-note">
+        <i class="fa-solid fa-shield-halved" style="color:#2e7d32"></i>
+        Your payment information is encrypted and secure
+      </div>
+    </div>
+
+    <!-- TRUST BADGES -->
+    <div class="co-trust-bar">
+      <div class="co-trust-item green"><i class="fa-solid fa-lock"></i> 256-bit SSL</div>
+      <div class="co-trust-item green"><i class="fa-solid fa-shield-halved"></i> PCI DSS Compliant</div>
+      <div class="co-trust-item"><i class="fa-solid fa-rotate-left"></i> Easy Returns</div>
+      <div class="co-trust-item"><i class="fa-solid fa-headset"></i> 24/7 Support</div>
+    </div>
+  </div>
+
+  <!-- ── ORDER SUMMARY ── -->
+  <div class="co-summary-card">
+    <div class="co-summary-head">
+      Order Summary
+      <span class="co-summary-count">{{ order.items|length }} item{{ order.items|length|pluralize }}</span>
+    </div>
+    <div class="co-items-list">
+      {% for item in order.items %}
+      <div class="co-item">
+        <img src="{{ item.image }}" alt="{{ item.name }}" class="co-item-img"
+             onerror="this.src='/static/images/green.png'">
+        <div class="co-item-body">
+          <div class="co-item-name">{{ item.name }}</div>
+          <div class="co-item-qty">Qty: {{ item.qty }}</div>
+        </div>
+        <div class="co-item-price">₹{{ item.price|floatformat:0 }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="co-totals">
+      <div class="co-total-row">
+        <span>Subtotal</span>
+        <strong>₹{{ order.total|floatformat:0 }}</strong>
+      </div>
+      <div class="co-total-row">
+        <span>Delivery</span>
+        <strong><span class="co-free-badge">FREE</span></strong>
+      </div>
+      <div class="co-total-row grand">
+        <span>Total</span>
+        <strong>₹{{ order.total|floatformat:0 }}</strong>
+      </div>
+    </div>
+    <div class="co-delivery-box">
+      <div class="co-delivery-label"><i class="fa-solid fa-location-dot"></i> &nbsp;Delivering to</div>
+      <div class="co-delivery-name">{{ order.name }} · {{ order.phone }}</div>
+      <div class="co-delivery-addr">{{ order.address }}</div>
+    </div>
+  </div>
+
+</div><!-- /co-body -->
+
+<!-- Razorpay Checkout.js -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+const ORDER_ID   = {{ order.id }};
+const ORDER_TOTAL= {{ order.total }};
+const RZP_KEY    = '{{ razorpay_key }}';
+const CSRF       = document.querySelector('meta[name=csrf-token]').getAttribute('content');
+
+let selectedMethod = null;
+
+/* ── method selection ──────────────────────────────────────────────────────── */
+function selectMethod(method) {
+  selectedMethod = method;
+  ['upi','card','netbanking','wallet','cod'].forEach(m => {
+    document.getElementById('method-' + m).classList.toggle('selected', m === method);
+  });
+  const btn = document.getElementById('payBtn');
+  const txt = document.getElementById('payBtnText');
+  btn.disabled = false;
+  if (method === 'cod') {
+    txt.textContent = 'Confirm Order — Pay on Delivery';
+    btn.style.background = '#2e7d32';
+  } else {
+    txt.textContent = '₹' + ORDER_TOTAL.toFixed(0) + ' — Pay Securely';
+    btn.style.background = '#0d2b6b';
+  }
+}
+
+function selectUPI(app, el) {
+  document.querySelectorAll('.co-upi-app').forEach(a => a.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('upiInputWrap').classList.toggle('show', app === 'other');
+}
+
+function toggleBank(el, bank) {
+  document.querySelectorAll('.co-bank').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function toggleWallet(el, wallet) {
+  document.querySelectorAll('.co-wallet').forEach(w => w.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ── error helper ──────────────────────────────────────────────────────────── */
+function showError(msg) {
+  const el = document.getElementById('coError');
+  document.getElementById('coErrorMsg').textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+/* ── success overlay ───────────────────────────────────────────────────────── */
+function showSuccess(isCod) {
+  const overlay = document.getElementById('coSuccess');
+  if (isCod) {
+    document.getElementById('successTitle').textContent  = 'Order Confirmed! 🎉';
+    document.getElementById('successSub').textContent    = 'Your order will be delivered soon. Pay in cash at the door.';
+  } else {
+    document.getElementById('successTitle').textContent  = 'Payment Successful! ✅';
+    document.getElementById('successSub').textContent    = 'Your payment is confirmed. We\'ll ship your order shortly.';
+  }
+  overlay.classList.add('show');
+}
+
+/* ── main payment handler ─────────────────────────────────────────────────── */
+async function handlePayment() {
+  if (!selectedMethod) { showError('Please select a payment method.'); return; }
+
+  const btn = document.getElementById('payBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> &nbsp;Processing…';
+
+  /* ── CASH ON DELIVERY ─────────────────────────────────────────────────── */
+  if (selectedMethod === 'cod') {
+    try {
+      const resp = await fetch('/api/confirm-cod/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF },
+        body: JSON.stringify({ order_id: ORDER_ID }),
+      });
+      const data = await resp.json();
+      if (data.success) {
+        showSuccess(true);
+      } else {
+        throw new Error(data.error || 'Something went wrong');
+      }
+    } catch (err) {
+      showError(err.message);
+      btn.disabled = false;
+      selectMethod('cod');
+    }
+    return;
+  }
+
+  /* ── ONLINE PAYMENT (Razorpay) ────────────────────────────────────────── */
+  try {
+    const rpResp = await fetch('/api/razorpay-order/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF },
+      body: JSON.stringify({ order_id: ORDER_ID }),
+    });
+    const rpData = await rpResp.json();
+    if (rpData.error) throw new Error(rpData.error);
+
+    const options = {
+      key:          RZP_KEY,
+      amount:       rpData.amount,
+      currency:     rpData.currency,
+      name:         'Malola',
+      description:  'Order #' + ORDER_ID,
+      image:        '/static/images/Malola_Logo_600x300-01-1536x768.webp',
+      order_id:     rpData.razorpay_order_id,
+      /* Pre-select method based on user's choice */
+      method: {
+        upi:        selectedMethod === 'upi',
+        card:       selectedMethod === 'card',
+        netbanking: selectedMethod === 'netbanking',
+        wallet:     selectedMethod === 'wallet',
+        emi:        false,
+      },
+      theme:        { color: '#0d2b6b' },
+      prefill: {
+        name:  '{{ order.name|escapejs }}',
+        contact: '{{ order.phone|escapejs }}',
+      },
+      handler: async function(response) {
+        /* Verify payment on server */
+        try {
+          const vResp = await fetch('/api/verify-payment/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF },
+            body: JSON.stringify({
+              order_db_id:        ORDER_ID,
+              razorpay_order_id:  response.razorpay_order_id,
+              razorpay_payment_id:response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            }),
+          });
+          const vData = await vResp.json();
+          if (vData.success) {
+            showSuccess(false);
+          } else {
+            showError('Payment verification failed. Contact support with order #' + ORDER_ID);
+          }
+        } catch (e) {
+          showError('Could not verify payment. Please check your orders page.');
+        }
+      },
+      modal: {
+        ondismiss: function() {
+          btn.disabled = false;
+          selectMethod(selectedMethod);
+        }
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.on('payment.failed', function(response) {
+      showError('Payment failed: ' + (response.error.description || 'Try again'));
+      btn.disabled = false;
+      selectMethod(selectedMethod);
+    });
+    rzp.open();
+
+  } catch (err) {
+    showError(err.message.includes('REPLACE_WITH')
+      ? 'Razorpay keys not configured. Please use Cash on Delivery.'
+      : err.message);
+    btn.disabled = false;
+    selectMethod(selectedMethod);
+  }
+}
+</script>
+</body>
+</html>

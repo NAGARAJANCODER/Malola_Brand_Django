@@ -1,0 +1,479 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>{{ action }} Product — Malola Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height:100vh}
+
+/* ── HEADER ── */
+.ap-header{background:#0d2b6b;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(13,43,107,.35);position:sticky;top:0;z-index:100}
+.ap-brand{display:flex;align-items:center;gap:14px}
+.ap-logo-ring{width:40px;height:40px;border-radius:50%;background:#FECF0A;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.1rem;color:#0d2b6b;flex-shrink:0}
+.ap-brand-name{font-family:'Fredoka One',cursive;font-size:1.15rem;color:#fff;line-height:1}
+.ap-brand-sub{font-size:.68rem;color:rgba(255,255,255,.5);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.ap-hdr-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;text-decoration:none;border:none;transition:all .2s;letter-spacing:.04em}
+.ap-hdr-site{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.25)}
+.ap-hdr-site:hover{background:rgba(255,255,255,.22)}
+
+/* ── CONTAINER ── */
+.af-container{max-width:1100px;margin:0 auto;padding:32px}
+
+/* ── BACK + TITLE ── */
+.af-back{display:inline-flex;align-items:center;gap:8px;color:rgba(13,43,107,.55);font-size:.82rem;font-weight:800;text-decoration:none;margin-bottom:18px;transition:color .2s}
+.af-back:hover{color:#0d2b6b}
+.af-heading{font-family:'Fredoka One',cursive;font-size:2rem;color:#0d2b6b;margin-bottom:24px}
+
+/* ── ERROR ── */
+.af-error{background:#fce8e6;border:2px solid #e53935;border-radius:14px;padding:14px 20px;color:#b71c1c;font-weight:700;font-size:.88rem;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.af-error i{font-size:1.1rem;flex-shrink:0}
+
+/* ── FORM GRID ── */
+.af-form{}
+.af-grid{display:grid;grid-template-columns:300px 1fr;gap:28px;align-items:start}
+
+/* ── IMAGE COLUMN ── */
+.af-img-col{display:flex;flex-direction:column;gap:16px}
+.af-section-title{font-size:.72rem;font-weight:900;color:rgba(13,43,107,.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+
+.af-img-upload{
+  border:2.5px dashed rgba(13,43,107,.2);border-radius:20px;
+  background:#fff;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:240px;position:relative;cursor:pointer;
+  transition:border-color .2s,background .2s;overflow:hidden;
+}
+.af-img-upload:hover,.af-img-upload.drag-over{border-color:#FECF0A;background:#fffde7}
+.af-img-upload input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.af-img-placeholder{display:flex;flex-direction:column;align-items:center;gap:10px;color:rgba(13,43,107,.3);padding:30px;pointer-events:none;text-align:center}
+.af-img-placeholder i{font-size:2.8rem}
+.af-img-placeholder p{font-size:.82rem;font-weight:700}
+.af-img-placeholder span{font-size:.72rem}
+#imgPreview{width:100%;height:240px;object-fit:contain;padding:14px;display:block}
+#imgPreview.hidden{display:none}
+.af-hint{font-size:.7rem;color:rgba(13,43,107,.4);font-weight:600;text-align:center}
+
+/* ── LIVE PREVIEW CARD ── */
+.af-preview-wrap{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(13,43,107,.1);border:2px solid rgba(254,207,10,.3)}
+.af-preview-label{font-size:.62rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:rgba(13,43,107,.4);padding:10px 14px 4px;border-bottom:1px solid rgba(13,43,107,.06)}
+.af-preview-img-area{height:140px;display:flex;align-items:center;justify-content:center;position:relative;background:#f4f7ff;transition:background .3s}
+#previewImg{height:110px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(13,43,107,.15));display:none}
+.af-preview-badge{position:absolute;top:8px;left:8px;font-size:.62rem;font-weight:800;color:#fff;padding:3px 10px;border-radius:999px;display:none}
+.af-preview-body{padding:10px 14px 14px}
+.af-preview-name{font-family:'Fredoka One',cursive;font-size:1rem;color:#0d2b6b;margin-bottom:4px}
+.af-preview-price{font-family:'Fredoka One',cursive;font-size:1.2rem;color:#1565C0}
+
+/* ── FIELDS COLUMN ── */
+.af-fields-col{display:flex;flex-direction:column;gap:16px}
+.af-card{background:#fff;border-radius:20px;padding:24px;box-shadow:0 4px 20px rgba(13,43,107,.06)}
+.af-card-title{font-family:'Fredoka One',cursive;font-size:1rem;color:#0d2b6b;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.af-card-title i{color:#1565C0}
+
+.af-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.af-field:last-child{margin-bottom:0}
+.af-label{font-size:.72rem;font-weight:900;color:rgba(13,43,107,.55);text-transform:uppercase;letter-spacing:.09em;display:flex;align-items:center;gap:6px}
+.af-hint-inline{font-size:.64rem;font-weight:700;color:rgba(13,43,107,.35);text-transform:none;letter-spacing:0}
+.af-input,.af-select,.af-textarea{width:100%;height:48px;border:2px solid rgba(13,43,107,.12);border-radius:12px;padding:0 16px;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;color:#0d2b6b;background:#fff;outline:none;transition:border-color .2s,box-shadow .2s}
+.af-input:focus,.af-select:focus,.af-textarea:focus{border-color:#FECF0A;box-shadow:0 0 0 3px rgba(254,207,10,.18)}
+.af-textarea{height:auto;padding:12px 16px;resize:vertical}
+.af-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230d2b6b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+
+.af-field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* slug wrapper */
+.af-slug-wrap{display:flex;border:2px solid rgba(13,43,107,.12);border-radius:12px;overflow:hidden;transition:border-color .2s,box-shadow .2s;background:#fff}
+.af-slug-wrap:focus-within{border-color:#FECF0A;box-shadow:0 0 0 3px rgba(254,207,10,.18)}
+.af-slug-prefix{display:flex;align-items:center;padding:0 12px;background:#f0f4ff;color:rgba(13,43,107,.5);font-size:.78rem;font-weight:800;white-space:nowrap;border-right:1.5px solid rgba(13,43,107,.1)}
+.af-slug-input{border:none!important;border-radius:0!important;padding:0 14px!important;box-shadow:none!important;flex:1}
+.af-slug-input:focus{outline:none}
+
+/* color row */
+.af-color-wrap{display:flex;align-items:center;gap:10px;height:48px;border:2px solid rgba(13,43,107,.12);border-radius:12px;padding:0 14px;background:#fff;transition:border-color .2s}
+.af-color-wrap:focus-within{border-color:#FECF0A}
+.af-color-input{width:34px;height:34px;border:none;border-radius:8px;cursor:pointer;background:none;padding:0}
+.af-color-label{font-size:.82rem;font-weight:800;color:rgba(13,43,107,.5);font-family:monospace}
+
+/* toggle */
+.af-toggle-field{flex-direction:row;align-items:center;justify-content:space-between}
+.af-toggle{position:relative;display:inline-block;width:52px;height:28px;flex-shrink:0}
+.af-toggle input{opacity:0;width:0;height:0;position:absolute}
+.af-toggle-slider{position:absolute;inset:0;background:rgba(13,43,107,.15);border-radius:999px;cursor:pointer;transition:background .25s}
+.af-toggle-slider::before{content:'';position:absolute;height:22px;width:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .25s;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.af-toggle input:checked + .af-toggle-slider{background:#FECF0A}
+.af-toggle input:checked + .af-toggle-slider::before{transform:translateX(24px)}
+
+/* submit row */
+.af-submit-row{display:flex;gap:12px;align-items:center;margin-top:4px}
+.af-btn-cancel{padding:13px 26px;border-radius:50px;border:2px solid rgba(13,43,107,.15);background:transparent;color:rgba(13,43,107,.6);font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:800;cursor:pointer;text-decoration:none;transition:all .2s}
+.af-btn-cancel:hover{background:#f0f4ff;border-color:rgba(13,43,107,.25)}
+.af-btn-submit{flex:1;padding:14px 30px;border-radius:50px;border:none;background:#0d2b6b;color:#FECF0A;font-family:'Fredoka One',cursive;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 8px 24px rgba(13,43,107,.3);transition:transform .2s,box-shadow .2s}
+.af-btn-submit:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(13,43,107,.4)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .af-container{padding:24px 20px}
+  .af-grid{grid-template-columns:1fr;gap:20px}
+  .af-img-col{order:1}
+  .af-fields-col{order:2}
+  .ap-header{padding:0 20px}
+}
+@media(max-width:540px){
+  .af-container{padding:18px 14px}
+  .af-field-row{grid-template-columns:1fr}
+  .ap-header{height:56px;padding:0 14px}
+  .ap-brand-sub{display:none}
+  .af-heading{font-size:1.6rem}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="ap-header">
+  <div class="ap-brand">
+    <div class="ap-logo-ring">M</div>
+    <div>
+      <div class="ap-brand-name">Malola Admin</div>
+      <div class="ap-brand-sub">Product Manager</div>
+    </div>
+  </div>
+  <a href="/manage/" class="ap-hdr-btn ap-hdr-site"><i class="fa-solid fa-arrow-left"></i> All Products</a>
+</header>
+
+<div class="af-container">
+  <a href="/manage/" class="af-back"><i class="fa-solid fa-arrow-left"></i> Back to products</a>
+  <h1 class="af-heading">{{ action }} Product</h1>
+
+  {% if error %}
+  <div class="af-error"><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</div>
+  {% endif %}
+
+  <form method="post" enctype="multipart/form-data" class="af-form" novalidate>
+    {% csrf_token %}
+    <div class="af-grid">
+
+      <!-- ── IMAGE + PREVIEW column ── -->
+      <div class="af-img-col">
+
+        <div>
+          <div class="af-section-title">Product Image</div>
+          <div class="af-img-upload" id="imgDrop">
+            <img id="imgPreview" src="{% if product and product.image %}{{ product.image.url }}{% endif %}"
+                 class="{% if not product or not product.image %}hidden{% endif %}" alt="preview"/>
+            <div class="af-img-placeholder" id="imgPlaceholder"
+                 {% if product and product.image %}style="display:none"{% endif %}>
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <p>Click or drag &amp; drop</p>
+              <span>PNG · JPG · WEBP — max 5 MB</span>
+            </div>
+            <input type="file" name="image" id="imageInput" accept="image/*"
+                   {% if not product %}required{% endif %}>
+          </div>
+          <p class="af-hint" style="margin-top:8px">Recommended: 400 × 400 px, transparent background</p>
+        </div>
+
+        <!-- live card preview -->
+        <div class="af-preview-wrap">
+          <div class="af-preview-label"><i class="fa-solid fa-eye"></i> Live preview</div>
+          <div class="af-preview-img-area" id="previewImgArea"
+               style="background:{{ product.card_bg|default:'#f4f7ff' }}">
+            <img id="previewImg"
+                 src="{% if product and product.image %}{{ product.image.url }}{% endif %}"
+                 {% if product and product.image %}style="display:block"{% endif %}/>
+            <div class="af-preview-badge" id="previewBadge"
+                 style="background:{{ product.badge_color|default:'#1565C0' }};{% if product.badge %}display:block{% endif %}">
+              {{ product.badge|default:'' }}
+            </div>
+          </div>
+          <div class="af-preview-body">
+            <div class="af-preview-name" id="previewName">{{ product.title|default:'Product Title' }}</div>
+            <div class="af-preview-price" id="previewPrice">₹{{ product.price|default:'0' }}</div>
+          </div>
+        </div>
+
+      </div><!-- /img col -->
+
+      <!-- ── FIELDS column ── -->
+      <div class="af-fields-col">
+
+        <!-- Basic info card -->
+        <div class="af-card">
+          <div class="af-card-title"><i class="fa-solid fa-circle-info"></i> Basic Information</div>
+
+          <div class="af-field">
+            <label class="af-label" for="titleInput">Product Title *</label>
+            <input type="text" name="title" id="titleInput" class="af-input"
+                   placeholder="e.g. Choco Millet Bites"
+                   value="{{ product.title|default:'' }}" required maxlength="200">
+          </div>
+
+          <div class="af-field">
+            <label class="af-label" for="slugInput">
+              URL Slug *
+              <span class="af-hint-inline">auto-filled from title — must be unique</span>
+            </label>
+            <div class="af-slug-wrap">
+              <span class="af-slug-prefix">/product/?id=</span>
+              <input type="text" name="slug" id="slugInput" class="af-input af-slug-input"
+                     placeholder="choco-millet-bites"
+                     value="{{ product.slug|default:'' }}" required
+                     pattern="[a-z0-9][a-z0-9\-]*" title="Lowercase letters, numbers and hyphens only">
+            </div>
+          </div>
+
+          <div class="af-field">
+            <label class="af-label" for="descInput">Description *</label>
+            <textarea name="description" id="descInput" class="af-textarea" rows="3"
+                      placeholder="Short description shown on product cards..." required>{{ product.description|default:'' }}</textarea>
+          </div>
+
+          <div class="af-field-row">
+            <div class="af-field">
+              <label class="af-label" for="priceInput">Price (₹) *</label>
+              <input type="number" name="price" id="priceInput" class="af-input"
+                     placeholder="299" value="{{ product.price|default:'' }}"
+                     step="0.01" min="0" required>
+            </div>
+            <div class="af-field">
+              <label class="af-label" for="catSelect">Section *</label>
+              <select name="category" id="catSelect" class="af-select">
+                <option value="our_products" {% if not product or product.category == 'our_products' %}selected{% endif %}>🛍 Our Products</option>
+                <option value="new_arrival"  {% if product and product.category == 'new_arrival' %}selected{% endif %}>🆕 New Arrival</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Details card -->
+        <div class="af-card">
+          <div class="af-card-title"><i class="fa-solid fa-list-ul"></i> Product Details</div>
+
+          <div class="af-field-row">
+            <div class="af-field">
+              <label class="af-label" for="prodTypeInput">Product Type <span class="af-hint-inline">shown on product page</span></label>
+              <input type="text" name="product_type" id="prodTypeInput" class="af-input"
+                     placeholder="e.g. Bites &amp; Crunchies"
+                     value="{{ product.product_type|default:'' }}" maxlength="100">
+            </div>
+            <div class="af-field">
+              <label class="af-label" for="weightsInput">Weight Options <span class="af-hint-inline">comma-separated</span></label>
+              <input type="text" name="weights" id="weightsInput" class="af-input"
+                     placeholder="100g,200g,500g"
+                     value="{{ product.weights|default:'100g,200g,500g' }}">
+            </div>
+          </div>
+
+          <div class="af-field">
+            <label class="af-label" for="ingredientsInput">Ingredients <span class="af-hint-inline">comma-separated</span></label>
+            <input type="text" name="ingredients" id="ingredientsInput" class="af-input"
+                   placeholder="Whole Millet, Natural Vanilla, Jaggery, Rice Flour, No Artificial Colours"
+                   value="{{ product.ingredients|default:'' }}">
+          </div>
+        </div>
+
+        <!-- Nutrition card -->
+        <div class="af-card">
+          <div class="af-card-title"><i class="fa-solid fa-chart-pie"></i> Nutrition (per 100g) <span style="font-size:.72rem;font-weight:700;color:rgba(13,43,107,.35);font-family:'Nunito',sans-serif">— optional</span></div>
+
+          <div class="af-field-row">
+            <div class="af-field">
+              <label class="af-label">Calories</label>
+              <input type="text" name="nut_calories" class="af-input" placeholder="e.g. 400 kcal"
+                     value="{{ product.nut_calories|default:'' }}">
+            </div>
+            <div class="af-field">
+              <label class="af-label">Protein</label>
+              <input type="text" name="nut_protein" class="af-input" placeholder="e.g. 7g"
+                     value="{{ product.nut_protein|default:'' }}">
+            </div>
+          </div>
+          <div class="af-field-row">
+            <div class="af-field">
+              <label class="af-label">Fat</label>
+              <input type="text" name="nut_fat" class="af-input" placeholder="e.g. 12g"
+                     value="{{ product.nut_fat|default:'' }}">
+            </div>
+            <div class="af-field">
+              <label class="af-label">Carbs</label>
+              <input type="text" name="nut_carbs" class="af-input" placeholder="e.g. 64g"
+                     value="{{ product.nut_carbs|default:'' }}">
+            </div>
+          </div>
+          <div class="af-field" style="max-width:50%">
+            <label class="af-label">Fibre</label>
+            <input type="text" name="nut_fibre" class="af-input" placeholder="e.g. 6g"
+                   value="{{ product.nut_fibre|default:'' }}">
+          </div>
+        </div>
+
+        <!-- Reviews card -->
+        <div class="af-card">
+          <div class="af-card-title"><i class="fa-solid fa-star"></i> Ratings &amp; Reviews <span style="font-size:.72rem;font-weight:700;color:rgba(13,43,107,.35);font-family:'Nunito',sans-serif">— optional</span></div>
+
+          <div class="af-field-row">
+            <div class="af-field">
+              <label class="af-label">Rating <span class="af-hint-inline">0 – 5</span></label>
+              <input type="number" name="rating" class="af-input" placeholder="4.5"
+                     min="0" max="5" step="0.1"
+                     value="{{ product.rating|default:'4.5' }}">
+            </div>
+            <div class="af-field">
+              <label class="af-label">Reviews Count</label>
+              <input type="number" name="reviews_count" class="af-input" placeholder="0"
+                     min="0"
+                     value="{{ product.reviews_count|default:'0' }}">
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual card -->
+        <div class="af-card">
+          <div class="af-card-title"><i class="fa-solid fa-palette"></i> Appearance</div>
+
+          <div class="af-field-row">
+            <div class="af-field">
+              <label class="af-label" for="badgeInput">Badge Text <span class="af-hint-inline">optional</span></label>
+              <input type="text" name="badge" id="badgeInput" class="af-input"
+                     placeholder="e.g. NEW ✨ or HOT 🔥"
+                     value="{{ product.badge|default:'' }}" maxlength="30">
+            </div>
+            <div class="af-field">
+              <label class="af-label">Badge Colour</label>
+              <div class="af-color-wrap">
+                <input type="color" name="badge_color" id="badgeColorInput" class="af-color-input"
+                       value="{{ product.badge_color|default:'#1565C0' }}">
+                <span class="af-color-label" id="badgeColorLabel">{{ product.badge_color|default:'#1565C0' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="af-field">
+            <label class="af-label">Card Background Colour <span class="af-hint-inline">image area</span></label>
+            <div class="af-color-wrap">
+              <input type="color" name="card_bg" id="cardBgInput" class="af-color-input"
+                     value="{{ product.card_bg|default:'#f4f7ff' }}">
+              <span class="af-color-label" id="cardBgLabel">{{ product.card_bg|default:'#f4f7ff' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Publish card -->
+        <div class="af-card">
+          <div class="af-card-title"><i class="fa-solid fa-toggle-on"></i> Visibility</div>
+          <div class="af-field af-toggle-field">
+            <div>
+              <label class="af-label" style="margin-bottom:3px">Active — visible on site</label>
+              <div style="font-size:.78rem;color:rgba(13,43,107,.45);font-weight:600">Turn off to hide this product without deleting it</div>
+            </div>
+            <label class="af-toggle">
+              <input type="checkbox" name="is_active" id="activeToggle"
+                     {% if not product or product.is_active %}checked{% endif %}>
+              <span class="af-toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="af-submit-row" style="margin-top:20px">
+            <a href="/manage/" class="af-btn-cancel">Cancel</a>
+            <button type="submit" class="af-btn-submit">
+              <i class="fa-solid fa-check"></i> {{ action }} Product
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /fields col -->
+    </div><!-- /grid -->
+  </form>
+</div>
+
+<script>
+// ── helpers ──────────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+
+function setPreviewImg(src){
+  const el = $('previewImg');
+  el.src = src; el.style.display = 'block';
+}
+
+// ── image upload + preview ────────────────────────────────────────────────────
+$('imageInput').addEventListener('change', function(){
+  const file = this.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    $('imgPreview').src = ev.target.result;
+    $('imgPreview').classList.remove('hidden');
+    $('imgPlaceholder').style.display = 'none';
+    setPreviewImg(ev.target.result);
+  };
+  reader.readAsDataURL(file);
+});
+
+// drag-and-drop
+const drop = $('imgDrop');
+['dragenter','dragover'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.add('drag-over'); }));
+['dragleave','drop'].forEach(e => drop.addEventListener(e, () => drop.classList.remove('drag-over')));
+drop.addEventListener('drop', function(e){
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if(!file || !file.type.startsWith('image/')) return;
+  // assign to input (DataTransfer trick)
+  const dt = new DataTransfer();
+  dt.items.add(file);
+  $('imageInput').files = dt.files;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    $('imgPreview').src = ev.target.result;
+    $('imgPreview').classList.remove('hidden');
+    $('imgPlaceholder').style.display = 'none';
+    setPreviewImg(ev.target.result);
+  };
+  reader.readAsDataURL(file);
+});
+
+// ── title → slug auto-fill ────────────────────────────────────────────────────
+{% if not product %}  // only auto-fill for new products
+$('titleInput').addEventListener('input', function(){
+  const slug = this.value.toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+  $('slugInput').value = slug;
+  $('previewName').textContent = this.value || 'Product Title';
+});
+{% else %}
+$('titleInput').addEventListener('input', function(){
+  $('previewName').textContent = this.value || 'Product Title';
+});
+{% endif %}
+
+// ── price live preview ────────────────────────────────────────────────────────
+$('priceInput').addEventListener('input', function(){
+  $('previewPrice').textContent = '₹' + (this.value || '0');
+});
+
+// ── badge live preview ────────────────────────────────────────────────────────
+$('badgeInput').addEventListener('input', function(){
+  const b = $('previewBadge');
+  b.textContent = this.value;
+  b.style.display = this.value ? 'block' : 'none';
+});
+
+// ── badge colour ──────────────────────────────────────────────────────────────
+$('badgeColorInput').addEventListener('input', function(){
+  $('badgeColorLabel').textContent = this.value;
+  $('previewBadge').style.background = this.value;
+});
+
+// ── card bg colour ────────────────────────────────────────────────────────────
+$('cardBgInput').addEventListener('input', function(){
+  $('cardBgLabel').textContent = this.value;
+  $('previewImgArea').style.background = this.value;
+});
+</script>
+</body>
+</html>

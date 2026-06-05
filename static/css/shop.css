@@ -1,0 +1,129 @@
+/* ══ SHOP PAGE ══ */
+:root{--yellow:#FECF0A;--kids-dark:#0d2b6b;--aqua:#1565C0;--aqua2:#1976D2;--kids-bg:#fffef5}
+
+/* HERO BANNER */
+.shop-hero{background:linear-gradient(135deg,#0d2b6b 0%,#1565C0 60%,#0d2b6b 100%);padding:100px 24px 60px;text-align:center;position:relative;overflow:hidden}
+.shop-hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.shop-hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(254,207,10,.18);color:var(--yellow);border:1.5px solid rgba(254,207,10,.35);border-radius:999px;padding:7px 20px;font-size:.82rem;font-family:'Fredoka One',cursive;letter-spacing:.06em;margin-bottom:20px}
+.shop-hero h1{font-family:'Fredoka One',cursive;font-size:clamp(2.2rem,5vw,4rem);color:#fff;line-height:1.1;margin-bottom:14px}
+.shop-hero h1 span{color:var(--yellow)}
+.shop-hero p{color:rgba(255,255,255,.75);font-size:1.05rem;max-width:520px;margin:0 auto 36px;line-height:1.7}
+.shop-hero-stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap}
+.shop-stat{text-align:center}
+.shop-stat-num{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--yellow);display:block}
+.shop-stat-lbl{font-size:.78rem;color:rgba(255,255,255,.65);font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+
+/* FILTER BAR */
+.shop-filter-bar{position:sticky;top:68px;z-index:100;background:#fff;border-bottom:2px solid rgba(13,43,107,.08);box-shadow:0 2px 16px rgba(13,43,107,.06)}
+.shop-filter-inner{max-width:1300px;margin:0 auto;padding:14px 24px;display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.shop-filter-inner::-webkit-scrollbar{display:none}
+.shop-filter-btn{flex-shrink:0;padding:9px 22px;border-radius:999px;border:2px solid rgba(13,43,107,.14);background:#fff;color:var(--kids-dark);font-family:'Fredoka One',cursive;font-size:.9rem;cursor:pointer;transition:all .22s ease;white-space:nowrap}
+.shop-filter-btn:hover{border-color:var(--aqua);color:var(--aqua)}
+.shop-filter-btn.active{background:var(--yellow);border-color:var(--yellow);color:var(--kids-dark);box-shadow:0 4px 14px rgba(254,207,10,.45)}
+
+/* MAIN CONTAINER */
+.shop-main{background:var(--kids-bg);min-height:60vh;padding:50px 24px 80px}
+.shop-container{max-width:1300px;margin:0 auto}
+
+/* CATEGORY SECTION */
+.shop-section{margin-bottom:60px}
+.shop-section-head{display:flex;align-items:center;gap:14px;margin-bottom:28px;padding-bottom:16px;border-bottom:2.5px solid rgba(13,43,107,.08)}
+.shop-section-emoji{font-size:2rem;line-height:1}
+.shop-section-head h2{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--kids-dark);margin:0}
+.shop-section-count{margin-left:auto;background:rgba(13,43,107,.08);color:var(--kids-dark);border-radius:999px;padding:4px 14px;font-size:.78rem;font-weight:700}
+
+/* PRODUCT GRID */
+.shop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+
+/* PRODUCT CARD */
+.shop-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(13,43,107,.07);transition:transform .28s ease,box-shadow .28s ease;cursor:pointer;display:flex;flex-direction:column}
+.shop-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(13,43,107,.14)}
+
+.shop-card-img-wrap{position:relative;height:200px;overflow:hidden;background:#f8f8f8}
+.shop-card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:16px;transition:opacity .42s ease}
+.shop-card-img-back{opacity:0}
+.shop-card:hover .shop-card-img-front{opacity:0}
+.shop-card:hover .shop-card-img-back{opacity:1}
+.shop-card-badge{position:absolute;top:12px;right:12px;padding:4px 12px;border-radius:999px;color:#fff;font-size:.68rem;font-family:'Fredoka One',cursive;letter-spacing:.04em;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+
+.shop-card-body{padding:16px;flex:1;display:flex;flex-direction:column;gap:6px}
+.shop-card-cat{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--aqua2)}
+.shop-card-name{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--kids-dark);line-height:1.2;flex:1}
+.shop-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:8px}
+.shop-card-price{font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--kids-dark)}
+.shop-card-actions{display:flex;gap:6px;align-items:center}
+.shop-card-cart{width:36px;height:36px;border-radius:50%;background:var(--yellow);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--kids-dark);font-size:.9rem;transition:transform .18s,box-shadow .18s;box-shadow:0 3px 10px rgba(254,207,10,.4);flex-shrink:0}
+.shop-card-cart:hover{transform:scale(1.12);box-shadow:0 5px 16px rgba(254,207,10,.55)}
+.shop-card-view{padding:7px 16px;border-radius:999px;border:2px solid rgba(13,43,107,.18);background:transparent;color:var(--kids-dark);font-size:.75rem;font-family:'Fredoka One',cursive;cursor:pointer;transition:all .2s;white-space:nowrap}
+.shop-card-view:hover{background:var(--kids-dark);color:#fff;border-color:var(--kids-dark)}
+
+/* SHOP FOOTER */
+.shop-footer{background:var(--kids-dark);color:#fff;padding:60px 24px 30px}
+.shop-footer-grid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:50px;margin-bottom:40px}
+.sf-brand-name{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--yellow);margin-bottom:10px}
+.sf-brand-sub{color:rgba(255,255,255,.6);font-size:.88rem;line-height:1.7;max-width:280px}
+.shop-footer h4{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--yellow);margin-bottom:16px}
+.shop-footer ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.shop-footer ul a{color:rgba(255,255,255,.65);text-decoration:none;font-size:.88rem;transition:color .2s}
+.shop-footer ul a:hover{color:#fff}
+.sf-newsletter input{width:100%;padding:11px 16px;border-radius:10px;border:none;background:rgba(255,255,255,.1);color:#fff;font-family:'Nunito',sans-serif;font-size:.88rem;margin-bottom:10px;outline:none}
+.sf-newsletter input::placeholder{color:rgba(255,255,255,.4)}
+.sf-newsletter button{width:100%;padding:11px;border-radius:10px;background:var(--yellow);border:none;color:var(--kids-dark);font-family:'Fredoka One',cursive;font-size:.95rem;cursor:pointer;transition:opacity .2s}
+.sf-newsletter button:hover{opacity:.88}
+.sf-bottom{max-width:1300px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:.8rem;color:rgba(255,255,255,.45)}
+
+/* EMPTY STATE */
+.shop-empty{text-align:center;padding:80px 20px;color:rgba(13,43,107,.4)}
+.shop-empty i{font-size:3rem;margin-bottom:16px;display:block}
+.shop-empty p{font-family:'Fredoka One',cursive;font-size:1.3rem}
+
+/* RESPONSIVE */
+@media(max-width:1100px){.shop-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:768px){
+  .shop-grid{grid-template-columns:repeat(2,1fr);gap:16px}
+  .shop-hero{padding:90px 16px 50px}
+  .shop-hero-stats{gap:24px}
+  .shop-filter-bar{top:60px}
+  .shop-filter-inner{padding:12px 16px}
+  .shop-main{padding:36px 16px 60px}
+  .shop-footer-grid{grid-template-columns:1fr;gap:30px}
+  .shop-section-head h2{font-size:1.4rem}
+}
+@media(max-width:480px){
+  .shop-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .shop-card-img-wrap{height:160px}
+  .shop-card-body{padding:12px}
+  .shop-card-name{font-size:.95rem}
+  .shop-card-price{font-size:1.1rem}
+  .shop-card-view{padding:6px 10px;font-size:.7rem}
+}
+
+/* ── 400px — very small phones ── */
+@media(max-width:400px){
+  /* Single column on tiny phones — 2 col at 160px each is too cramped */
+  .shop-grid{grid-template-columns:1fr;gap:14px}
+  .shop-card-img-wrap{height:200px}
+  .shop-card-body{padding:14px}
+  .shop-card-name{font-size:1rem}
+  .shop-card-price{font-size:1.2rem}
+  .shop-card-view{padding:7px 14px;font-size:.75rem}
+
+  .shop-hero{padding:80px 14px 40px}
+  .shop-hero h1{font-size:clamp(1.7rem,7vw,2.2rem)}
+  .shop-hero p{font-size:.9rem;margin-bottom:24px}
+  .shop-hero-stats{gap:14px}
+  .shop-stat-num{font-size:1.5rem}
+  .shop-stat-lbl{font-size:.7rem}
+
+  .shop-filter-inner{padding:10px 12px}
+  .shop-filter-btn{padding:7px 14px;font-size:.82rem}
+
+  .shop-main{padding:24px 12px 50px}
+  .shop-section-head h2{font-size:1.2rem}
+  .shop-section-head{gap:10px}
+  .shop-section-emoji{font-size:1.6rem}
+
+  /* Footer bottom — center on tiny screens */
+  .sf-bottom{flex-direction:column;align-items:center;text-align:center;gap:8px}
+  .shop-footer{padding:40px 14px 24px}
+}

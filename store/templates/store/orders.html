@@ -1,0 +1,203 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="csrf-token" content="{{ csrf_token }}">
+<title>My Orders — Malola</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+<style>
+.orders-body{background:#f4f7ff;min-height:100vh}
+.orders-main{max-width:860px;margin:0 auto;padding:106px 24px 80px}
+
+/* Header */
+.orders-hero{text-align:center;margin-bottom:48px}
+.orders-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:var(--kids-dark);border-radius:999px;padding:8px 22px;font-family:'Fredoka One',cursive;font-size:.9rem;margin-bottom:14px}
+.orders-title{font-family:'Fredoka One',cursive;font-size:clamp(2rem,5vw,3rem);color:var(--kids-dark);margin-bottom:8px}
+.orders-sub{font-size:.9rem;color:rgba(13,43,107,.5);font-weight:600}
+
+/* Empty state */
+.orders-empty{text-align:center;padding:80px 24px;background:#fff;border-radius:28px;box-shadow:0 4px 24px rgba(13,43,107,.07)}
+.orders-empty i{font-size:4rem;color:rgba(13,43,107,.12);margin-bottom:20px;display:block}
+.orders-empty h3{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--kids-dark);margin-bottom:8px}
+.orders-empty p{color:rgba(13,43,107,.45);font-size:.9rem;font-weight:600;margin-bottom:28px}
+.orders-shop-btn{display:inline-flex;align-items:center;gap:10px;background:var(--yellow);color:var(--kids-dark);border:none;border-radius:999px;padding:14px 32px;font-family:'Fredoka One',cursive;font-size:1rem;cursor:pointer;text-decoration:none;box-shadow:0 8px 24px rgba(254,207,10,.4);transition:transform .2s,box-shadow .2s}
+.orders-shop-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(254,207,10,.5)}
+
+/* Order card */
+.order-card{background:#fff;border-radius:24px;box-shadow:0 4px 24px rgba(13,43,107,.08);margin-bottom:24px;overflow:hidden;border:2px solid transparent;transition:border-color .2s,box-shadow .2s}
+.order-card:hover{border-color:rgba(254,207,10,.5);box-shadow:0 8px 32px rgba(13,43,107,.12)}
+.order-card-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:2px dashed rgba(21,101,192,.1);flex-wrap:wrap;gap:12px}
+.order-num{font-family:'Fredoka One',cursive;font-size:1.15rem;color:var(--kids-dark)}
+.order-num span{color:var(--aqua2)}
+.order-date{font-size:.78rem;font-weight:700;color:rgba(13,43,107,.4);margin-top:3px}
+.order-date i{margin-right:4px}
+.order-status{display:inline-flex;align-items:center;gap:6px;padding:7px 18px;border-radius:999px;font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
+.status-pending   {background:rgba(254,207,10,.18);color:#a07000}
+.status-confirmed {background:rgba(21,101,192,.12);color:#1565c0}
+.status-processing{background:rgba(79,157,223,.15);color:#0d47a1}
+.status-shipped   {background:rgba(255,152,0,.15);color:#e65100}
+.status-delivered {background:rgba(46,125,50,.12);color:#2e7d32}
+.status-cancelled {background:rgba(211,47,47,.1);color:#c62828}
+
+.order-card-body{padding:20px 24px}
+.order-item-row{display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid rgba(21,101,192,.08)}
+.order-item-row:last-child{border-bottom:0}
+.order-item-img{width:54px;height:54px;border-radius:12px;object-fit:contain;background:#f0f4ff;padding:4px;flex-shrink:0;border:1.5px solid rgba(21,101,192,.1)}
+.order-item-info{flex:1;min-width:0}
+.order-item-name{font-weight:800;font-size:.88rem;color:var(--kids-dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.order-item-qty{font-size:.75rem;font-weight:700;color:rgba(13,43,107,.4);margin-top:2px}
+.order-item-price{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--aqua2);flex-shrink:0}
+
+.order-card-footer{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:rgba(254,207,10,.07);border-top:2px solid rgba(254,207,10,.3);flex-wrap:wrap;gap:12px}
+.order-total-block{display:flex;flex-direction:column}
+.order-total-label{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(13,43,107,.4)}
+.order-total-val{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--kids-dark)}
+.order-addr{font-size:.8rem;font-weight:600;color:rgba(13,43,107,.45);max-width:340px;display:flex;align-items:flex-start;gap:6px}
+.order-addr i{margin-top:2px;flex-shrink:0;color:var(--aqua2)}
+
+#mainNav{background:#fff;box-shadow:0 2px 20px rgba(13,43,107,.08)}
+@media(max-width:600px){
+  .orders-main{padding:84px 16px 60px}
+  .order-card-header,.order-card-body,.order-card-footer{padding:14px 16px}
+  .order-total-val{font-size:1.3rem}
+  .order-addr{max-width:100%}
+}
+</style>
+</head>
+<body class="orders-body">
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- NAV -->
+<nav id="mainNav" class="nav-scrolled">
+  <div class="logo">
+    <a href="/" style="display:flex;align-items:center">
+      <img src="{% static 'images/Malola_Logo_600x300-01-1536x768.webp' %}" alt="Malola" class="nav-logo-img">
+    </a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/shop/">Shop</a></li>
+    <li><a href="/orders/" style="color:var(--aqua2);font-weight:800"><i class="fa-solid fa-bag-shopping"></i> My Orders</a></li>
+    <li><a href="/#kids-contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <span class="nav-user-pill" style="color:var(--kids-dark)"><i class="fa-solid fa-circle-user" style="color:var(--aqua2)"></i> {{ user.first_name|default:user.username }}</span>
+    <button class="btn-login" id="navLogoutBtn" style="color:var(--kids-dark);border-color:rgba(13,43,107,.25)">Logout</button>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu-overlay" id="mobMenuOverlay"></div>
+<div class="mob-menu" id="mobMenu">
+  <div class="mob-menu-head">
+    <img src="{% static 'images/Malola_Logo_600x300-01-1536x768.webp' %}" alt="Malola" class="mob-logo">
+    <button class="mob-menu-close" id="mobMenuClose"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <ul class="mob-nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/shop/">Shop</a></li>
+    <li><a href="/orders/">My Orders</a></li>
+    <li><a href="/#kids-contact">Contact</a></li>
+  </ul>
+  <div class="mob-menu-actions">
+    <button class="mob-login-btn" id="mobLogoutBtn">Logout</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="orders-main">
+  <div class="orders-hero">
+    <div class="orders-eyebrow"><i class="fa-solid fa-bag-shopping"></i> Order History</div>
+    <h1 class="orders-title">My Orders</h1>
+    <p class="orders-sub">Hello, {{ user.first_name|default:user.username }} — here are all your Malola orders</p>
+  </div>
+
+  {% if orders %}
+    {% for order in orders %}
+    {% with status_icons='' %}
+    <div class="order-card">
+      <div class="order-card-header">
+        <div>
+          <div class="order-num">Order <span>#{{ order.id }}</span></div>
+          <div class="order-date"><i class="fa-regular fa-calendar"></i> {{ order.created_at|date:"d M Y, h:i A" }}</div>
+        </div>
+        <span class="order-status status-{{ order.status }}">
+          {% if order.status == 'pending' %}<i class="fa-solid fa-clock"></i> Pending
+          {% elif order.status == 'confirmed' %}<i class="fa-solid fa-circle-check"></i> Confirmed
+          {% elif order.status == 'processing' %}<i class="fa-solid fa-gear"></i> Processing
+          {% elif order.status == 'shipped' %}<i class="fa-solid fa-truck"></i> Shipped
+          {% elif order.status == 'delivered' %}<i class="fa-solid fa-box-open"></i> Delivered
+          {% elif order.status == 'cancelled' %}<i class="fa-solid fa-ban"></i> Cancelled
+          {% endif %}
+        </span>
+      </div>
+      <div class="order-card-body">
+        {% for item in order.items %}
+        <div class="order-item-row">
+          {% if item.image %}
+          <img class="order-item-img" src="{{ item.image }}" alt="{{ item.name }}" onerror="this.style.display='none'">
+          {% endif %}
+          <div class="order-item-info">
+            <div class="order-item-name">{{ item.name }}</div>
+            <div class="order-item-qty">Qty: {{ item.qty }}</div>
+          </div>
+          <div class="order-item-price">&#8377;{{ item.price|floatformat:0 }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="order-card-footer">
+        <div class="order-total-block">
+          <div class="order-total-label">Order Total</div>
+          <div class="order-total-val">&#8377;{{ order.total|floatformat:0 }}</div>
+        </div>
+        <div class="order-addr"><i class="fa-solid fa-location-dot"></i><span>{{ order.address }}</span></div>
+      </div>
+    </div>
+    {% endwith %}
+    {% endfor %}
+  {% else %}
+    <div class="orders-empty">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <h3>No orders yet</h3>
+      <p>You haven't placed any orders. Start shopping for healthy goodness!</p>
+      <a href="/shop/" class="orders-shop-btn"><i class="fa-solid fa-store"></i> Browse Products</a>
+    </div>
+  {% endif %}
+</main>
+
+<script>
+function showToast(html,duration=3000){
+  const c=document.getElementById('toastContainer');const t=document.createElement('div');t.className='toast';t.innerHTML=html;
+  c.appendChild(t);requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),420);},duration);
+}
+function getCSRF(){return document.querySelector('meta[name="csrf-token"]')?.content||'';}
+
+async function doLogout(){
+  await fetch('/api/logout/',{method:'POST',headers:{'X-CSRFToken':getCSRF()}});
+  window.location.href='/';
+}
+const logoutBtn=document.getElementById('navLogoutBtn');
+if(logoutBtn)logoutBtn.addEventListener('click',doLogout);
+const mobLogoutBtn=document.getElementById('mobLogoutBtn');
+if(mobLogoutBtn)mobLogoutBtn.addEventListener('click',doLogout);
+
+/* Mobile hamburger */
+(function(){
+  const ham=document.getElementById('navHamburger');const mob=document.getElementById('mobMenu');
+  const overlay=document.getElementById('mobMenuOverlay');const close=document.getElementById('mobMenuClose');
+  if(!ham)return;
+  function openMob(){mob.classList.add('open');overlay.classList.add('open');ham.classList.add('open');document.body.style.overflow='hidden';}
+  function closeMob(){mob.classList.remove('open');overlay.classList.remove('open');ham.classList.remove('open');document.body.style.overflow='';}
+  ham.addEventListener('click',openMob);close.addEventListener('click',closeMob);overlay.addEventListener('click',closeMob);
+  document.querySelectorAll('.mob-nav-links a').forEach(a=>a.addEventListener('click',closeMob));
+})();
+</script>
+</body>
+</html>

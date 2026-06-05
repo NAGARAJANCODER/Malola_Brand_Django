@@ -1,0 +1,308 @@
+/* ══ PRODUCT PAGE ══ */
+.product-body{background:#f4f7ff;min-height:100vh}
+
+/* body top padding so content clears the fixed nav */
+.pdp-main{
+  max-width:1220px;margin:0 auto;
+  padding:106px 40px 80px;
+}
+
+/* ── Breadcrumb ── */
+.pdp-breadcrumb{
+  display:flex;align-items:center;gap:8px;
+  font-size:.78rem;font-weight:700;color:rgba(13,43,107,.5);
+  margin-bottom:36px;
+}
+.pdp-breadcrumb a{color:var(--aqua2);text-decoration:none;transition:color .2s}
+.pdp-breadcrumb a:hover{color:var(--kids-dark)}
+.pdp-breadcrumb .sep{font-size:.6rem;color:rgba(13,43,107,.3)}
+.pdp-breadcrumb span{color:var(--kids-dark)}
+
+/* ── Two-column grid ── */
+.pdp-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:60px;align-items:start;
+  margin-bottom:80px;
+}
+
+/* ── Image column ── */
+.pdp-img-col{position:sticky;top:96px}
+.pdp-img-card{
+  background:#e8f0fe;
+  border-radius:28px;padding:50px 40px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;min-height:420px;
+  box-shadow:0 12px 48px rgba(13,43,107,.1);
+  border:2px solid rgba(254,207,10,.25);
+}
+.pdp-hero-img{
+  width:300px;height:300px;object-fit:contain;
+  filter:drop-shadow(0 28px 50px rgba(13,43,107,.22));
+  animation:kFloat 5s ease-in-out infinite;
+}
+.pdp-img-badge{
+  position:absolute;top:20px;left:20px;
+  font-size:.72rem;font-weight:800;font-family:'Nunito',sans-serif;
+  color:#fff;padding:7px 18px;border-radius:999px;
+  letter-spacing:.07em;text-transform:uppercase;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);
+}
+.pdp-thumbs-row{
+  display:flex;gap:12px;margin-top:16px;justify-content:center;
+}
+.pdp-thumb-item{
+  width:68px;height:68px;border-radius:14px;
+  background:#e8f0fe;
+  border:2.5px solid rgba(21,101,192,.15);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:border-color .2s,transform .2s;
+  overflow:hidden;
+}
+.pdp-thumb-item:hover,.pdp-thumb-item.active{
+  border-color:var(--yellow);transform:scale(1.08);
+}
+.pdp-thumb-item img{width:52px;height:52px;object-fit:contain}
+
+/* ── Info column ── */
+.pdp-info-col{padding:8px 0}
+.pdp-info-cat{
+  font-size:.68rem;font-weight:800;color:var(--aqua2);
+  text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px;
+}
+.pdp-info-name{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(2rem,4vw,2.9rem);
+  color:var(--kids-dark);line-height:1.1;margin-bottom:12px;
+}
+.pdp-info-stars{
+  display:flex;align-items:center;gap:10px;margin-bottom:22px;
+  flex-wrap:wrap;
+}
+.pdp-info-stars .stars{font-size:1.1rem;color:#f59e0b;letter-spacing:2px}
+.pdp-info-stars .rev-count{font-size:.82rem;font-weight:700;color:rgba(13,43,107,.5)}
+.pdp-info-stars .rev-verified{
+  display:flex;align-items:center;gap:5px;
+  font-size:.75rem;font-weight:700;color:var(--aqua2);
+}
+.pdp-info-stars .rev-verified i{font-size:.8rem}
+
+/* Price block */
+.pdp-price-block{
+  display:flex;align-items:baseline;gap:12px;
+  margin-bottom:22px;
+  background:rgba(254,207,10,.12);
+  border:2px solid rgba(254,207,10,.4);
+  border-radius:16px;padding:14px 22px;display:inline-flex;
+}
+.pdp-price{
+  font-family:'Fredoka One',cursive;
+  font-size:2.8rem;color:var(--aqua);line-height:1;
+}
+.pdp-price-note{
+  font-size:.72rem;font-weight:700;color:rgba(13,43,107,.4);
+  align-self:flex-end;padding-bottom:4px;
+}
+
+/* Weight selector */
+.pdp-weight-section{margin-bottom:22px}
+.pdp-weight-label{
+  font-size:.72rem;font-weight:800;color:rgba(13,43,107,.55);
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;
+}
+.pdp-weights{display:flex;gap:10px;flex-wrap:wrap}
+.pdp-w-btn{
+  padding:8px 22px;border-radius:999px;
+  border:2.5px solid rgba(21,101,192,.2);background:#fff;
+  font-family:'Nunito',sans-serif;font-size:.82rem;font-weight:800;color:var(--kids-dark);
+  cursor:pointer;transition:border-color .2s,background .2s,transform .15s;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.pdp-w-btn:hover{border-color:var(--aqua2);background:#e8f0fe}
+.pdp-w-btn.active{
+  border-color:var(--yellow);background:rgba(254,207,10,.18);
+  box-shadow:0 0 0 3px rgba(254,207,10,.3);
+}
+
+/* Description */
+.pdp-desc{
+  font-size:.95rem;line-height:1.85;color:rgba(13,43,107,.68);
+  font-weight:600;margin-bottom:24px;
+}
+
+/* Section labels */
+.pdp-info-sec{margin-bottom:22px}
+.pdp-sec-label{
+  display:flex;align-items:center;gap:8px;
+  font-size:.72rem;font-weight:800;color:var(--kids-dark);
+  text-transform:uppercase;letter-spacing:.1em;
+  margin-bottom:12px;
+}
+.pdp-sec-label i{color:var(--aqua2);font-size:.85rem}
+
+/* Ingredients */
+.pdp-ing-list{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0}
+.pdp-ing-list li{
+  background:rgba(254,207,10,.18);
+  border:1.5px solid rgba(254,207,10,.55);
+  color:var(--kids-dark);font-size:.77rem;font-weight:700;
+  padding:5px 15px;border-radius:999px;
+  transition:background .2s,border-color .2s;
+}
+.pdp-ing-list li:hover{background:rgba(254,207,10,.35)}
+
+/* Nutrition */
+.pdp-nut-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.pdp-nut-cell{
+  background:#fff;border:2px solid rgba(21,101,192,.12);
+  border-radius:14px;padding:12px 6px;text-align:center;
+  box-shadow:0 2px 8px rgba(13,43,107,.06);
+  transition:border-color .2s,transform .2s;
+}
+.pdp-nut-cell:hover{border-color:var(--yellow);transform:translateY(-2px)}
+.pdp-nut-val{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--aqua);line-height:1}
+.pdp-nut-lbl{font-size:.58rem;color:rgba(13,43,107,.5);text-transform:uppercase;letter-spacing:.05em;margin-top:4px;font-weight:700}
+
+/* CTA row */
+.pdp-cta{display:flex;align-items:center;gap:14px;margin-bottom:22px;margin-top:8px}
+.pdp-qty-box{
+  display:flex;align-items:center;
+  background:#fff;border:2.5px solid rgba(21,101,192,.2);border-radius:999px;
+  box-shadow:0 2px 12px rgba(0,0,0,.07);overflow:hidden;
+}
+.pdp-qty-btn{
+  width:46px;height:52px;border:0;background:transparent;
+  font-size:1.25rem;font-weight:700;color:var(--kids-dark);
+  cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;
+}
+.pdp-qty-btn:hover{background:var(--yellow)}
+.pdp-qty-val{
+  min-width:38px;text-align:center;
+  font-family:'Fredoka One',cursive;font-size:1.15rem;color:var(--kids-dark);
+}
+.pdp-add-cart{
+  flex:1;height:54px;border:0;border-radius:999px;
+  background:var(--yellow);
+  color:var(--kids-dark);font-family:'Fredoka One',cursive;
+  font-size:1.05rem;letter-spacing:.04em;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 8px 24px rgba(254,207,10,.4);
+  transition:transform .22s,box-shadow .22s;
+}
+.pdp-add-cart:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 16px 40px rgba(254,207,10,.5)}
+.pdp-add-cart:active{transform:scale(.98)}
+
+/* Trust chips */
+.pdp-trust-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.pdp-trust-chip{
+  display:flex;align-items:center;gap:7px;
+  font-size:.74rem;font-weight:700;color:rgba(13,43,107,.6);
+  background:#fff;border:1.5px solid rgba(21,101,192,.15);
+  padding:7px 14px;border-radius:999px;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.pdp-trust-chip i{color:var(--aqua2);font-size:.8rem}
+
+/* ── Related Products ── */
+.pdp-related{padding:0 0 40px}
+.pdp-related-head{margin-bottom:36px}
+.pdp-related-head h2{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(1.8rem,3.5vw,2.6rem);
+  color:var(--kids-dark);margin-bottom:0;
+}
+.pdp-related-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+}
+.pdp-rel-card{
+  background:#fff;border-radius:24px;overflow:hidden;
+  border:3px solid transparent;
+  box-shadow:6px 6px 0 rgba(21,101,192,.15);
+  cursor:pointer;transition:transform .35s cubic-bezier(.77,0,.175,1),box-shadow .35s,border-color .3s;
+}
+.pdp-rel-card:hover{
+  transform:translateY(-10px) rotate(-1deg);
+  box-shadow:10px 10px 0 var(--yellow);
+  border-color:var(--yellow);
+}
+.pdp-rel-img-wrap{
+  height:180px;display:flex;align-items:center;justify-content:center;
+  background:#e8f0fe;
+}
+.pdp-rel-img{height:140px;object-fit:contain;filter:drop-shadow(0 8px 16px rgba(13,43,107,.15))}
+.pdp-rel-body{padding:18px 20px}
+.pdp-rel-cat{font-size:.65rem;font-weight:800;color:var(--aqua2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.pdp-rel-name{font-family:'Fredoka One',cursive;font-size:1.15rem;color:var(--kids-dark);margin-bottom:8px}
+.pdp-rel-footer{display:flex;align-items:center;justify-content:space-between}
+.pdp-rel-price{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--aqua)}
+.pdp-rel-btn{
+  padding:7px 18px;border:0;border-radius:999px;
+  background:var(--yellow);color:var(--kids-dark);
+  font-family:'Nunito',sans-serif;font-size:.75rem;font-weight:800;
+  cursor:pointer;transition:transform .2s;
+}
+.pdp-rel-btn:hover{transform:scale(1.06)}
+
+/* ── Responsive ── */
+@media(max-width:900px){
+  .pdp-grid{grid-template-columns:1fr;gap:36px}
+  .pdp-img-col{position:static}
+  .pdp-img-card{min-height:320px}
+  .pdp-hero-img{width:220px;height:220px}
+  .pdp-related-grid{grid-template-columns:repeat(2,1fr)}
+  .pdp-main{padding:90px 24px 60px}
+  .pdp-nut-row{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:600px){
+  .pdp-related-grid{grid-template-columns:1fr}
+  .pdp-main{padding:84px 16px 50px}
+  .pdp-info-name{font-size:1.8rem}
+  .pdp-nut-row{grid-template-columns:repeat(3,1fr)}
+  .pdp-cta{flex-direction:column;align-items:stretch}
+  .pdp-qty-box{justify-content:center}
+}
+
+/* ── 400px — very small phones ── */
+@media(max-width:400px){
+  .pdp-main{padding:78px 12px 44px}
+  .pdp-breadcrumb{font-size:.7rem;gap:5px;flex-wrap:wrap}
+
+  .pdp-img-card{padding:32px 20px;min-height:260px}
+  .pdp-hero-img{width:180px;height:180px}
+  .pdp-thumbs-row{gap:8px}
+  .pdp-thumb-item{width:56px;height:56px}
+  .pdp-thumb-item img{width:42px;height:42px}
+
+  .pdp-info-name{font-size:1.6rem}
+  .pdp-price{font-size:2.2rem}
+
+  /* 5 nutrition cells can't fit at 400px — use 2 columns */
+  .pdp-nut-row{grid-template-columns:repeat(2,1fr)}
+  .pdp-nut-cell{padding:10px 4px}
+  .pdp-nut-val{font-size:.95rem}
+  .pdp-nut-lbl{font-size:.55rem}
+
+  .pdp-w-btn{padding:7px 16px;font-size:.78rem}
+
+  .pdp-cta{gap:10px}
+  .pdp-qty-btn{width:40px;height:46px}
+  .pdp-add-cart{height:50px;font-size:.96rem}
+
+  .pdp-trust-row{gap:7px}
+  .pdp-trust-chip{font-size:.68rem;padding:6px 10px}
+
+  /* Related products grid stays 1 col */
+  .pdp-related-head h2{font-size:1.5rem}
+  .pdp-rel-body{padding:14px 16px}
+  .pdp-rel-name{font-size:1rem}
+  .pdp-rel-price{font-size:1.2rem}
+
+  /* Modal fixes */
+  .pdp-modal{padding:12px}
+  .pdp-inner{border-radius:20px}
+  .pdp-img{width:150px;height:150px}
+  .pdp-img-side{padding:26px 20px}
+  .pdp-info-side{padding:20px 18px}
+  .pdp-name{font-size:1.5rem}
+  .pdp-price{font-size:1.9rem}
+  .pdp-nut-grid{grid-template-columns:repeat(3,1fr)}
+}

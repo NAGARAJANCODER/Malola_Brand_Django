@@ -1,0 +1,413 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="csrf-token" content="{{ csrf_token }}">
+<script>window.MALOLA_AUTH={% if user.is_authenticated %}{"authenticated":true,"name":"{{ user.first_name|default:user.username|escapejs }}"}{% else %}{"authenticated":false}{% endif %};</script>
+<title>Product — NaturNest</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Cormorant+Garamond:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/product.css' %}"/>
+</head>
+<body class="product-body">
+
+<!-- ══ CART SIDEBAR ══ -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-sidebar" id="cartSidebar" aria-label="Shopping cart">
+  <div class="cart-header">
+    <div class="cart-title"><i class="fa-solid fa-basket-shopping"></i> Your Cart</div>
+    <button class="cart-close" id="cartClose" aria-label="Close cart">&#10005;</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">
+      <i class="fa-solid fa-seedling"></i>
+      <p>Your cart is empty</p>
+      <span>Add some natural goodness!</span>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-subtotal">
+      <span>Subtotal</span>
+      <strong id="cartTotal">$0.00</strong>
+    </div>
+    <button class="checkout-btn">Checkout &nbsp;<i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</aside>
+
+<!-- ══ AUTH MODAL ══ -->
+<div class="auth-overlay" id="authOverlay"></div>
+<div class="auth-modal" id="authModal" role="dialog" aria-modal="true">
+  <button class="auth-close" id="authClose" aria-label="Close">&#10005;</button>
+  <div class="auth-brand">
+    <div class="auth-logo-ring">NN</div>
+    <div class="auth-logo-text">NaturNest<small>Pure &amp; Natural</small></div>
+  </div>
+  <div class="auth-tabs">
+    <button class="auth-tab active" data-tab="login">Login</button>
+    <button class="auth-tab" data-tab="register">Register</button>
+  </div>
+  <form class="auth-form" id="loginForm" novalidate>
+    <div class="form-group"><label>Email Address</label><div class="input-icon-wrap"><i class="fa-solid fa-envelope"></i><input type="email" placeholder="you@email.com" required></div></div>
+    <div class="form-group"><label>Password</label><div class="input-icon-wrap"><i class="fa-solid fa-lock"></i><input type="password" placeholder="••••••••" required></div></div>
+    <button type="submit" class="auth-submit">Login &nbsp;<i class="fa-solid fa-arrow-right"></i></button>
+    <p class="auth-switch">Don't have an account? <a href="#" class="switch-link" data-switch="register">Register</a></p>
+  </form>
+  <form class="auth-form" id="registerForm" style="display:none" novalidate>
+    <div class="form-group"><label>Full Name</label><div class="input-icon-wrap"><i class="fa-solid fa-user"></i><input type="text" placeholder="Your full name" required></div></div>
+    <div class="form-group"><label>Email Address</label><div class="input-icon-wrap"><i class="fa-solid fa-envelope"></i><input type="email" placeholder="you@email.com" required></div></div>
+    <div class="form-group"><label>Password</label><div class="input-icon-wrap"><i class="fa-solid fa-lock"></i><input type="password" placeholder="Min. 8 characters" required></div></div>
+    <button type="submit" class="auth-submit">Create Account &nbsp;<i class="fa-solid fa-arrow-right"></i></button>
+    <p class="auth-switch">Already have an account? <a href="#" class="switch-link" data-switch="login">Login</a></p>
+  </form>
+</div>
+
+<!-- ══ TOAST ══ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ══ NAV ══ -->
+<nav id="mainNav" class="nav-scrolled">
+  <div class="logo">
+    <a href="/" style="display:flex;align-items:center">
+      <img src="{% static 'images/Malola_Logo_600x300-01-1536x768.webp' %}" alt="NaturNest" class="nav-logo-img">
+    </a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/#kids-about">About</a></li>
+    <li class="has-mega">
+      <a href="/#kids-shop" class="mega-trigger">Shop <i class="fa-solid fa-chevron-down nav-caret"></i></a>
+      <div class="nav-mega">
+        <div class="mega-inner">
+          <div class="mega-header">
+            <span>Our Products</span>
+            <a href="/#kids-shop" class="mega-view-all">View All <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+          <div class="mega-grid">
+            <div class="mega-item" data-pdp="almonds">
+              <div class="mega-item-text">
+                <div class="mega-item-cat">Dry Fruit</div>
+                <div class="mega-item-name">Premium Almonds</div>
+                <div class="mega-item-price">$299</div>
+              </div>
+              <img src="{% static 'images/red.png' %}" alt="Almonds" class="mega-item-img">
+            </div>
+            <div class="mega-item" data-pdp="cashews">
+              <div class="mega-item-text">
+                <div class="mega-item-cat">Dry Nut</div>
+                <div class="mega-item-name">Premium Cashews</div>
+                <div class="mega-item-price">$299</div>
+              </div>
+              <img src="{% static 'images/a6bf2fb7-be25-4e5c-94f4-ba9215f70999_removalai_preview.png' %}" alt="Cashews" class="mega-item-img">
+            </div>
+            <div class="mega-item" data-pdp="dates">
+              <div class="mega-item-text">
+                <div class="mega-item-cat">Dry Fruit</div>
+                <div class="mega-item-name">Medjool Dates</div>
+                <div class="mega-item-price">$299</div>
+              </div>
+              <img src="{% static 'images/b3e47e53-7399-423b-a88a-c4cadb4de3b3_removalai_preview.png' %}" alt="Dates" class="mega-item-img">
+            </div>
+            <div class="mega-item" data-pdp="mixed">
+              <div class="mega-item-text">
+                <div class="mega-item-cat">Trail Mix</div>
+                <div class="mega-item-name">Mixed Dry Fruits</div>
+                <div class="mega-item-price">$299</div>
+              </div>
+              <img src="{% static 'images/32603c34-e7eb-411c-869c-a99345af8d3d_removalai_preview.png' %}" alt="Mix" class="mega-item-img">
+            </div>
+            <div class="mega-item mega-soon">
+              <div class="mega-item-text"><div class="mega-item-cat">Dry Nut</div><div class="mega-item-name">Organic Walnuts</div><div class="mega-soon-tag">Coming Soon</div></div>
+              <div class="mega-item-emoji">🌰</div>
+            </div>
+            <div class="mega-item mega-soon">
+              <div class="mega-item-text"><div class="mega-item-cat">Dry Nut</div><div class="mega-item-name">Roasted Pistachios</div><div class="mega-soon-tag">Coming Soon</div></div>
+              <div class="mega-item-emoji">🫘</div>
+            </div>
+            <div class="mega-item mega-soon">
+              <div class="mega-item-text"><div class="mega-item-cat">Dried Fruit</div><div class="mega-item-name">Turkish Figs</div><div class="mega-soon-tag">Coming Soon</div></div>
+              <div class="mega-item-emoji">🫐</div>
+            </div>
+            <div class="mega-item mega-soon">
+              <div class="mega-item-text"><div class="mega-item-cat">Dried Fruit</div><div class="mega-item-name">Golden Raisins</div><div class="mega-soon-tag">Coming Soon</div></div>
+              <div class="mega-item-emoji">🍇</div>
+            </div>
+            <div class="mega-item mega-soon">
+              <div class="mega-item-text"><div class="mega-item-cat">Premium Nut</div><div class="mega-item-name">Pecan Nuts</div><div class="mega-soon-tag">Coming Soon</div></div>
+              <div class="mega-item-emoji">🥜</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li class="has-drop">
+      <a href="#" class="drop-trigger">New Arrivals <i class="fa-solid fa-chevron-down nav-caret"></i></a>
+      <div class="nav-drop">
+        {% if db_new_arrivals %}
+        <div class="drop-head">🆕 New Arrivals</div>
+        <div class="drop-items">
+          {% for p in db_new_arrivals|slice:":4" %}
+          <div class="drop-item" onclick="window.location.href='/product/?id={{ p.slug }}'" style="cursor:pointer">
+            <img src="{{ p.image.url }}" alt="{{ p.title }}"
+                 style="width:40px;height:40px;object-fit:contain;border-radius:10px;background:{{ p.card_bg }};padding:4px;flex-shrink:0">
+            <div class="drop-item-body">
+              <div class="drop-item-name">{{ p.title }}</div>
+              <div class="drop-item-sub">₹{{ p.price }}</div>
+            </div>
+            {% if p.badge %}
+            <div class="drop-badge" style="background:{{ p.badge_color }};color:#fff">{{ p.badge }}</div>
+            {% else %}
+            <div class="drop-badge drop-badge-hot">New</div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        <a href="/#new-arrivals" class="drop-notify-btn" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px">
+          🆕 View All New Arrivals
+        </a>
+        {% else %}
+        <div class="drop-head">🆕 Coming This Season</div>
+        <div class="drop-items">
+          <div class="drop-item">
+            <div class="drop-item-emoji">🌰</div>
+            <div class="drop-item-body"><div class="drop-item-name">Organic Walnuts</div><div class="drop-item-sub">Californian · Cold-Pressed</div></div>
+            <div class="drop-badge">Soon</div>
+          </div>
+          <div class="drop-item">
+            <div class="drop-item-emoji">🫘</div>
+            <div class="drop-item-body"><div class="drop-item-name">Roasted Pistachios</div><div class="drop-item-sub">Iranian · Lightly Salted</div></div>
+            <div class="drop-badge">Soon</div>
+          </div>
+          <div class="drop-item">
+            <div class="drop-item-emoji">🎁</div>
+            <div class="drop-item-body"><div class="drop-item-name">Saffron Gift Box</div><div class="drop-item-sub">Premium · Limited Edition</div></div>
+            <div class="drop-badge drop-badge-hot">Limited</div>
+          </div>
+        </div>
+        <button class="drop-notify-btn" onclick="showToast('<i class=\'fa-solid fa-bell\'></i> You\'ll be first to know!')">🔔 Notify Me</button>
+        {% endif %}
+      </div>
+    </li>
+    <li><a href="/#kids-video">Videos</a></li>
+    <li><a href="/#kids-contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-cart-btn" id="navCartBtn" aria-label="Open cart">
+      <i class="fa-solid fa-basket-shopping"></i>
+      <span class="cart-badge" id="cartBadge" style="display:none">0</span>
+    </button>
+    {% if user.is_authenticated %}
+    <div class="nav-profile-wrap" id="navProfileWrap">
+      <button class="nav-profile-btn" id="navProfileBtn">
+        <span class="nav-profile-avatar">{{ user.first_name|default:user.username|slice:":1"|upper }}</span>
+        <span class="nav-profile-name">{{ user.first_name|default:user.username }}</span>
+        <i class="fa-solid fa-chevron-down nav-profile-caret"></i>
+      </button>
+      <div class="nav-profile-drop">
+        <div class="npd-header">
+          <div class="npd-avatar-lg">{{ user.first_name|default:user.username|slice:":1"|upper }}</div>
+          <div class="npd-info">
+            <div class="npd-name">{{ user.get_full_name|default:user.username }}</div>
+            <div class="npd-email">{{ user.email }}</div>
+          </div>
+        </div>
+        <div class="npd-divider"></div>
+        <a href="/orders/" class="npd-item"><i class="fa-solid fa-bag-shopping"></i> My Orders</a>
+        <div class="npd-divider"></div>
+        <button class="npd-item npd-logout" id="navLogoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </div>
+    {% else %}
+    <button class="btn-login" id="navLoginBtn">Login</button>
+    <button class="btn-signup" id="navSignupBtn">Sign Up</button>
+    {% endif %}
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ══ MOBILE MENU ══ -->
+<div class="mob-menu-overlay" id="mobMenuOverlay"></div>
+<div class="mob-menu" id="mobMenu">
+  <div class="mob-menu-head">
+    <img src="{% static 'images/Malola_Logo_600x300-01-1536x768.webp' %}" alt="Malola" class="mob-logo">
+    <button class="mob-menu-close" id="mobMenuClose"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <ul class="mob-nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/#kids-about">About</a></li>
+    <li><a href="/shop/">Shop</a></li>
+    <li><a href="/#kids-video">Videos</a></li>
+    <li><a href="/#kids-contact">Contact</a></li>
+  </ul>
+  <div class="mob-products">
+    <div class="mob-prod-title">Our Products</div>
+    <div class="mob-prod-item" onclick="window.location.href='/product/?id=milletvanilla'"><img src="{% static 'images/green.png' %}" alt=""><span>Millet Vanilla</span><small>₹199</small></div>
+    <div class="mob-prod-item" onclick="window.location.href='/product/?id=milletchoco'"><img src="{% static 'images/a6bf2fb7-be25-4e5c-94f4-ba9215f70999_removalai_preview.png' %}" alt=""><span>Millet Choco</span><small>₹199</small></div>
+    <div class="mob-prod-item" onclick="window.location.href='/product/?id=chocopancake'"><img src="{% static 'images/Choco Pancake Front.png' %}" alt=""><span>Choco Pancake</span><small>₹249</small></div>
+    <div class="mob-prod-item" onclick="window.location.href='/product/?id=bananagranola'"><img src="{% static 'images/Banana Granola.png' %}" alt=""><span>Banana Granola</span><small>₹349</small></div>
+  </div>
+  <div class="mob-menu-actions">
+    {% if user.is_authenticated %}
+    <a href="/orders/" style="text-decoration:none;width:100%"><button class="mob-signup-btn" style="width:100%"><i class="fa-solid fa-bag-shopping"></i> My Orders</button></a>
+    <button class="mob-login-btn" id="mobLogoutBtn" style="width:100%">Logout</button>
+    {% else %}
+    <button class="mob-login-btn" id="mobLoginBtn">Login</button>
+    <button class="mob-signup-btn" id="mobSignupBtn">Sign Up</button>
+    {% endif %}
+  </div>
+</div>
+
+<!-- ══ PRODUCT PAGE ══ -->
+<main class="pdp-main">
+
+  <!-- Breadcrumb -->
+  <div class="pdp-breadcrumb">
+    <a href="/"><i class="fa-solid fa-house"></i> Home</a>
+    <i class="fa-solid fa-chevron-right sep"></i>
+    <a href="/#kids-shop">Shop</a>
+    <i class="fa-solid fa-chevron-right sep"></i>
+    <span id="pdpBcName">Product</span>
+  </div>
+
+  <!-- Detail Grid -->
+  <div class="pdp-grid">
+
+    <!-- Image Column -->
+    <div class="pdp-img-col">
+      <div class="pdp-img-card">
+        <img id="pdpImg" src="" alt="" class="pdp-hero-img">
+        <div class="pdp-img-badge" id="pdpImgBadge"></div>
+      </div>
+      <!-- Thumbnail row (same image repeated for visual depth) -->
+      <div class="pdp-thumbs-row" id="pdpThumbsRow"></div>
+    </div>
+
+    <!-- Info Column -->
+    <div class="pdp-info-col">
+      <div class="pdp-info-cat" id="pdpCat"></div>
+      <h1 class="pdp-info-name" id="pdpName"></h1>
+      <div class="pdp-info-stars">
+        <span class="stars">★★★★★</span>
+        <span class="rev-count">(128 reviews)</span>
+        <span class="rev-verified"><i class="fa-solid fa-circle-check"></i> Verified</span>
+      </div>
+
+      <div class="pdp-price-block">
+        <div class="pdp-price" id="pdpPrice"></div>
+      </div>
+
+      <div class="pdp-weight-section">
+        <div class="pdp-weight-label">Select Weight:</div>
+        <div class="pdp-weights" id="pdpWeights"></div>
+      </div>
+
+      <p class="pdp-desc" id="pdpDesc"></p>
+
+      <div class="pdp-info-sec">
+        <div class="pdp-sec-label"><i class="fa-solid fa-leaf"></i> Ingredients</div>
+        <ul class="pdp-ing-list" id="pdpIng"></ul>
+      </div>
+
+      <div class="pdp-info-sec">
+        <div class="pdp-sec-label"><i class="fa-solid fa-chart-bar"></i> Nutrition per 100g</div>
+        <div class="pdp-nut-row" id="pdpNut"></div>
+      </div>
+
+      <!-- CTA -->
+      <div class="pdp-cta">
+        <div class="pdp-qty-box">
+          <button class="pdp-qty-btn" id="pdpMinus">−</button>
+          <span class="pdp-qty-val" id="pdpQtyVal">1</span>
+          <button class="pdp-qty-btn" id="pdpPlus">+</button>
+        </div>
+        <button class="pdp-add-cart" id="pdpAddCart">
+          <i class="fa-solid fa-basket-shopping"></i>&nbsp; Add to Cart
+        </button>
+      </div>
+
+      <!-- Trust row -->
+      <div class="pdp-trust-row">
+        <div class="pdp-trust-chip"><i class="fa-solid fa-leaf"></i> 100% Natural</div>
+        <div class="pdp-trust-chip"><i class="fa-solid fa-shield-halved"></i> No Preservatives</div>
+        <div class="pdp-trust-chip"><i class="fa-solid fa-truck-fast"></i> Free Delivery</div>
+        <div class="pdp-trust-chip"><i class="fa-solid fa-rotate-left"></i> Easy Returns</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Products -->
+  <div class="pdp-related">
+    <div class="pdp-related-head">
+      <div class="k-eyebrow" style="background:var(--aqua);color:#fff;display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:8px 22px;font-family:'Fredoka One',cursive;font-size:.9rem;margin-bottom:14px">⭐ Related Products</div>
+      <h2>You May Also Like</h2>
+    </div>
+    <div class="pdp-related-grid" id="pdpRelated"></div>
+  </div>
+
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer class="kids-footer" id="kids-contact">
+  <div class="k-footer-grid">
+    <div>
+      <div class="k-footer-logo">
+        <img src="{% static 'images/Malola_Logo_600x300-01-1536x768.webp' %}" alt="NaturNest" style="height:56px;width:auto;object-fit:contain;filter:brightness(0) invert(1) drop-shadow(0 2px 8px rgba(254,207,10,.4))">
+      </div>
+      <p>Premium natural &amp; dry fruits sourced from the world's finest orchards, delivered pure to your door.</p>
+      <div class="k-social-links">
+        <a class="k-social-link" href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a class="k-social-link" href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+        <a class="k-social-link" href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a class="k-social-link" href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a class="k-social-link" href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+    <div>
+      <div class="k-eyebrow" style="background:var(--yellow);color:var(--kids-dark);display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:8px 22px;font-family:'Fredoka One',cursive;font-size:.9rem;margin-bottom:10px">📧 Stay Connected</div>
+      <div class="k-footer-heading">Join the harvest list!</div>
+      <form class="k-footer-form" id="footerForm">
+        <input type="text" placeholder="Your Name" aria-label="Name">
+        <input type="email" placeholder="Email Address" aria-label="Email">
+        <button type="submit">Subscribe &nbsp;<i class="fa-solid fa-arrow-right"></i></button>
+      </form>
+    </div>
+  </div>
+  <div class="k-footer-bottom">
+    <span>© 2025 NaturNest. All rights reserved.</span>
+    <div class="k-footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="/#kids-shop">Products</a>
+    </div>
+  </div>
+</footer>
+
+{% if db_product %}
+<script>
+window.DB_PRODUCT_DATA = {
+  id:           '{{ db_product.slug|escapejs }}',
+  name:         '{{ db_product.title|escapejs }}',
+  category:     '{{ db_product.product_type|default:db_product.get_category_display|escapejs }}',
+  categoryId:   '{{ db_product.category|escapejs }}',
+  price:        {{ db_product.price }},
+  badge:        '{{ db_product.badge|escapejs }}',
+  badgeColor:   '{{ db_product.badge_color|escapejs }}',
+  bg:           '{{ db_product.card_bg|escapejs }}',
+  image:        '{{ db_product.image.url|escapejs }}',
+  imageBack:    '{{ db_product.image.url|escapejs }}',
+  description:  '{{ db_product.description|escapejs }}',
+  ingredients:  {{ db_ingredients_json|safe }},
+  nutrition:    {{ db_nutrition_json|safe }},
+  weights:      {{ db_weights_json|safe }},
+  rating:       {{ db_product.rating }},
+  reviewCount:  {{ db_product.reviews_count }},
+};
+</script>
+{% endif %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="{% static 'js/product.js' %}"></script>
+</body>
+</html>
+
