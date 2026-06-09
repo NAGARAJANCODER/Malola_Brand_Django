@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,6 +73,13 @@ body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height
 .ap-empty h3{font-family:'Fredoka One',cursive;font-size:1.5rem;color:rgba(13,43,107,.5);margin-bottom:10px}
 .ap-empty p{font-size:.9rem;margin-bottom:28px;color:rgba(13,43,107,.35)}
 
+/* ── NAV TABS ── */
+.ap-tabs{display:flex;background:#0a1f52;padding:0 32px;border-bottom:1px solid rgba(255,255,255,.08);overflow-x:auto}
+.ap-tab{display:flex;align-items:center;gap:7px;white-space:nowrap;padding:13px 20px;color:rgba(255,255,255,.45);font-size:.75rem;font-weight:800;text-decoration:none;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;letter-spacing:.06em;text-transform:uppercase}
+.ap-tab:hover{color:rgba(255,255,255,.8)}
+.ap-tab.active{color:#FECF0A;border-bottom-color:#FECF0A}
+.ap-tab-badge{display:inline-flex;align-items:center;justify-content:center;background:#e53935;color:#fff;font-size:.6rem;font-weight:900;width:18px;height:18px;border-radius:50%}
+
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
   .ap-stats-row{grid-template-columns:repeat(2,1fr);padding:20px 20px 0}
@@ -88,11 +95,48 @@ body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height
   .ap-header{padding:0 14px;height:56px}
   .ap-hdr-btn{padding:7px 12px;font-size:.72rem}
   .ap-table th,.ap-table td{padding:10px 12px}
-  /* hide slug column on small screens */
   .ap-col-slug{display:none}
   .ap-prod-thumb{width:48px;height:48px}
+  .ap-tabs{padding:0 14px}
+  .ap-tab{padding:10px 14px;font-size:.68rem}
 }
-</style>
+
+/* ── LARGE SCREEN RESPONSIVE ── */
+@media(min-width:1440px){
+  .ap-header{padding:0 clamp(32px,4vw,80px)}
+  .ap-tabs{padding:0 clamp(32px,4vw,80px)}
+  .ap-stats-row{padding-left:clamp(32px,4vw,80px);padding-right:clamp(32px,4vw,80px);gap:24px}
+  .ap-action-bar,.ord-filter,.of-container-outer{padding-left:clamp(32px,4vw,80px);padding-right:clamp(32px,4vw,80px)}
+  .ap-table-wrap{margin-left:clamp(32px,4vw,80px);margin-right:clamp(32px,4vw,80px)}
+  .rv-grid{padding-left:clamp(32px,4vw,80px);padding-right:clamp(32px,4vw,80px)}
+  .ap-tab{font-size:.82rem;padding:14px 24px}
+  .ap-stat-num{font-size:2.4rem}
+  .ap-page-title{font-size:1.8rem}
+}
+@media(min-width:2000px){
+  .ap-header{padding:0 100px;height:76px}
+  .ap-tabs{padding:0 100px}
+  .ap-brand-name{font-size:1.4rem}
+  .ap-brand-sub{font-size:.78rem}
+  .ap-logo-ring{width:48px;height:48px;font-size:1.25rem}
+  .ap-hdr-btn{padding:10px 24px;font-size:.88rem}
+  .ap-tab{font-size:.9rem;padding:16px 30px}
+  .ap-stats-row{padding:40px 100px 0;gap:28px;max-width:2400px;margin-left:auto;margin-right:auto}
+  .ap-stat-card{padding:28px 26px;border-radius:24px}
+  .ap-stat-icon{width:60px;height:60px;font-size:1.4rem;border-radius:18px}
+  .ap-stat-num{font-size:3rem}
+  .ap-stat-label{font-size:.82rem}
+  .ap-action-bar,.ord-filter{padding-left:100px;padding-right:100px;max-width:2400px;margin-left:auto;margin-right:auto}
+  .ap-page-title{font-size:2.2rem}
+  .ap-table-wrap{margin:0 auto 60px;max-width:calc(100% - 200px)}
+  .rv-grid{padding-left:100px;padding-right:100px}
+  .ap-table th{padding:18px 22px;font-size:.8rem}
+  .ap-table td{padding:16px 22px;font-size:.92rem}
+  .ap-btn-primary{padding:14px 32px;font-size:.92rem}
+  .ord-cust-name{font-size:.95rem}
+  .ord-update-btn{height:40px;width:40px}
+  .ord-status-sel{height:40px;font-size:.82rem}
+}</style>
 </head>
 <body>
 
@@ -113,6 +157,19 @@ body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height
     </form>
   </div>
 </header>
+
+<!-- NAV TABS -->
+<nav class="ap-tabs">
+  <a href="/manage/" class="ap-tab active"><i class="fa-solid fa-box"></i> Products</a>
+  <a href="/manage/orders/" class="ap-tab">
+    <i class="fa-solid fa-bag-shopping"></i> Orders
+    {% if pending_orders %}<span class="ap-tab-badge">{{ pending_orders }}</span>{% endif %}
+  </a>
+  <a href="/manage/offers/" class="ap-tab"><i class="fa-solid fa-tag"></i> Offers / Deals</a>
+  <a href="/manage/categories/" class="ap-tab"><i class="fa-solid fa-layer-group"></i> Categories</a>
+  <a href="/manage/videos/" class="ap-tab"><i class="fa-solid fa-film"></i> Videos</a>
+
+</nav>
 
 <!-- STATS -->
 <div class="ap-stats-row">

@@ -1,114 +1,6 @@
-﻿/* ── HERO PRODUCTS ── */
-const products=[
-  {tag:"Best Seller",title:"Millet\nVanilla",desc:"Creamy vanilla meets wholesome millet in every delightful bite. A smooth, guilt-free treat packed with fibre and natural goodness — loved by kids and parents alike.",image:"/static/images/green.png",badge:"New",name:"Millet Vanilla",type:"Millet Snack",price:"299",word:"VANILLA",bg:"#7fa83a",ring:"#4e7a1e"},
-  {tag:"Fan Favourite",title:"Millet\nChoco",desc:"Rich dark chocolate meets wholesome millet in every crunchy bite. A guilt-free indulgence packed with fibre, iron and natural energy — perfect for everyday snacking.",image:"/static/images/a6bf2fb7-be25-4e5c-94f4-ba9215f70999_removalai_preview.png",badge:"Hot",name:"Millet Choco",type:"Millet Snack",price:"299",word:"CHOCO",bg:"#8a6230",ring:"#5c3e18"},
-  {tag:"Limited Edition",title:"Blueberry\nPancake",desc:"Light, fluffy pancake bites bursting with real blueberry goodness. Made with wholesome grains and no artificial colours — a breakfast treat anytime of the day.",image:"/static/images/b3e47e53-7399-423b-a88a-c4cadb4de3b3_removalai_preview.png",badge:"Limited",name:"Blueberry Pancake",type:"Pancake Snack",price:"299",word:"BERRY",bg:"#6a3a8c",ring:"#4a2070"},
-  {tag:"Seasonal Pick",title:"Quinoa\nPuffs",desc:"Airy, crunchy quinoa puffs seasoned to perfection. Loaded with complete protein and essential amino acids — a smarter snack kids can't put down.",image:"/static/images/red.png",badge:"Season",name:"Quinoa Puffs",type:"Puff Snack",price:"299",word:"PUFFS",bg:"#a05520",ring:"#7a3810"},
-];
-
-let current=0,animating=false;
-const hero=document.getElementById("hero");
-const bgWord=document.getElementById("bgWord");
-const productRing=document.getElementById("productRing");
-const productImage=document.getElementById("productImage");
-const productBadge=document.getElementById("productBadge");
-const productLabel=document.getElementById("productLabel");
-const slideTag=document.getElementById("slideTag");
-const slideTitle=document.getElementById("slideTitle");
-const slideDesc=document.getElementById("slideDesc");
-const slidePrice=document.getElementById("slidePrice");
-const rightThumbs=document.getElementById("rightThumbs");
-const dotsContainer=document.getElementById("dotsContainer");
-const leftCup=document.getElementById("leftCup");
-const rightCup=document.getElementById("rightCup");
-
-/* Immediately sync hero to products[0] — prevents flash of stale placeholder HTML */
-(function initHero(){
-  const p=products[0];
-  hero.style.background=p.bg;
-  bgWord.textContent=p.word;
-  productRing.style.background=p.ring;
-  productBadge.textContent=p.badge;
-  productLabel.textContent=p.name;
-  slideTag.textContent=p.tag;
-  slideTitle.innerHTML=p.title.replace("\n","<br/>");
-  slideDesc.textContent=p.desc;
-  slidePrice.innerHTML=`<sup>&#8377;</sup>${p.price}`;
-  productImage.src=p.image;
-  productImage.alt=p.name;
-  const heroBtn=document.getElementById("heroAddCart");
-  if(heroBtn){heroBtn.dataset.name=p.name;heroBtn.dataset.price=p.price;heroBtn.dataset.image=p.image;}
-})();
-
-products.forEach((p,i)=>{
-  const d=document.createElement("div");
-  d.className="thumb"+(i===0?" active":"");
-  d.dataset.target=i;
-  d.innerHTML=`<img class="thumb-image" src="${p.image}" alt="${p.name}"><div><div class="thumb-name">${p.name}</div><div class="thumb-type">${p.type}</div></div>`;
-  d.addEventListener("click",()=>goTo(i));
-  rightThumbs.appendChild(d);
-  const dot=document.createElement("div");
-  dot.className="dot"+(i===0?" active":"");
-  dot.addEventListener("click",()=>goTo(i));
-  dotsContainer.appendChild(dot);
-});
-
-const canvas=document.getElementById("beansCanvas");
-const ctx=canvas.getContext("2d");
-let beans=[];
-const glyphs=["coffee","bean","leaf","spark","dot"];
-function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
-resizeCanvas();
-window.addEventListener("resize",resizeCanvas);
-function initBeans(){beans=[];for(let i=0;i<18;i++){beans.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,z:0.3+Math.random()*0.7,vx:(Math.random()-.5)*0.35,vy:-(0.15+Math.random()*0.35),vz:(Math.random()-.5)*0.003,rot:Math.random()*360,vr:(Math.random()-.5)*0.6,glyph:glyphs[Math.floor(Math.random()*glyphs.length)],size:14+Math.random()*22,opacity:0.25+Math.random()*0.45})}}
-initBeans();
-function drawBeans(){ctx.clearRect(0,0,canvas.width,canvas.height);beans.forEach(b=>{b.x+=b.vx;b.y+=b.vy;b.z+=b.vz;b.rot+=b.vr;if(b.z<0.2||b.z>1)b.vz*=-1;if(b.x<-40)b.x=canvas.width+20;if(b.x>canvas.width+40)b.x=-20;if(b.y<-40)b.y=canvas.height+20;if(b.y>canvas.height+40)b.y=-20;const sz=b.size*b.z;ctx.save();ctx.globalAlpha=b.opacity*b.z;ctx.translate(b.x,b.y);ctx.rotate(b.rot*Math.PI/180);ctx.shadowColor="rgba(0,0,0,.15)";ctx.shadowBlur=sz*0.4;ctx.fillStyle="rgba(247,242,227,0.75)";if(b.glyph==="bean"){ctx.scale(0.65,1);ctx.beginPath();ctx.ellipse(0,0,sz*0.42,sz*0.75,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle="rgba(26,36,8,0.35)";ctx.lineWidth=Math.max(1,sz*0.07);ctx.beginPath();ctx.moveTo(0,-sz*0.45);ctx.bezierCurveTo(sz*0.16,-sz*0.18,-sz*0.16,sz*0.18,0,sz*0.45);ctx.stroke();}else{ctx.beginPath();ctx.arc(0,0,sz*0.35,0,Math.PI*2);ctx.fill();}ctx.restore();});requestAnimationFrame(drawBeans);}
-drawBeans();
-
-let floatT=0;
-function floatProduct(){floatT+=0.018;const y=Math.sin(floatT)*10;const r=Math.sin(floatT*0.7)*1.5;document.getElementById("productStage").style.transform=`translate(-50%,calc(-50% + ${y}px)) rotate(${r}deg)`;requestAnimationFrame(floatProduct);}
-floatProduct();
-
-let floatT2=0.8;
-function floatSides(){floatT2+=0.015;const y1=Math.sin(floatT2)*8;const y2=Math.sin(floatT2+1.2)*7;leftCup.style.transform=`translateY(${y1}px)`;rightCup.style.transform=`translateY(${y2}px)`;requestAnimationFrame(floatSides);}
-floatSides();
-
+﻿/* ── NAV SCROLL ── */
 const mainNav=document.getElementById("mainNav");
 window.addEventListener("scroll",()=>{if(window.scrollY>60){mainNav.classList.add("nav-scrolled");}else{mainNav.classList.remove("nav-scrolled");}},{passive:true});
-
-function goTo(next){
-  if(animating||next===current)return;
-  animating=true;
-  const p=products[next];
-  const dir=next>current?1:-1;
-  const textEls=[slideTag,slideTitle,slideDesc,slidePrice];
-  textEls.forEach((el,i)=>{el.style.transition=`opacity .32s ease ${i*0.03}s, transform .38s cubic-bezier(.77,0,.175,1) ${i*0.03}s`;el.style.opacity="0";el.style.transform=`translateX(${dir*-60}px)`;});
-  productImage.style.transition=`transform .42s cubic-bezier(.77,0,.175,1), opacity .3s ease`;
-  productImage.style.transform=`translateX(${dir*120}px) scale(0.75)`;
-  productImage.style.opacity="0";
-  [productBadge,productLabel].forEach(el=>{el.style.transition="opacity .25s";el.style.opacity="0";});
-  bgWord.style.transition="opacity .3s";bgWord.style.opacity="0";
-  setTimeout(()=>{
-    hero.style.background=p.bg;bgWord.textContent=p.word;productRing.style.background=p.ring;productBadge.textContent=p.badge;productLabel.textContent=p.name;slideTag.textContent=p.tag;slideTitle.innerHTML=p.title.replace("\n","<br/>");slideDesc.textContent=p.desc;slidePrice.innerHTML=`<sup>₹</sup>${p.price}`;
-    productImage.src=p.image;productImage.alt=p.name;productImage.style.transition="none";productImage.style.transform=`translateX(${dir*-130}px) scale(0.75)`;productImage.style.opacity="0";
-    const heroBtn=document.getElementById("heroAddCart");if(heroBtn){heroBtn.dataset.name=p.name;heroBtn.dataset.price=p.price;heroBtn.dataset.image=p.image;}
-    requestAnimationFrame(()=>{requestAnimationFrame(()=>{
-      productImage.style.transition="transform .62s cubic-bezier(.175,.885,.32,1.15), opacity .45s ease";productImage.style.transform="translateX(0) scale(1)";productImage.style.opacity="1";
-      textEls.forEach((el,i)=>{el.style.transition=`none`;el.style.transform=`translateX(${dir*60}px)`;el.style.opacity="0";requestAnimationFrame(()=>{el.style.transition=`opacity .42s ease ${i*0.06+0.05}s, transform .46s cubic-bezier(.175,.885,.32,1.1) ${i*0.06+0.05}s`;el.style.transform="translateX(0)";el.style.opacity="1";});});
-      bgWord.style.transition="opacity .45s ease .1s";bgWord.style.opacity="1";
-      [productBadge,productLabel].forEach((el,i)=>{el.style.transition=`opacity .4s ease ${0.15+i*0.07}s`;el.style.opacity="1";});
-      document.querySelectorAll(".dot").forEach((d,i)=>d.classList.toggle("active",i===next));
-      document.querySelectorAll(".thumb").forEach(t=>t.classList.toggle("active",+t.dataset.target===next));
-      current=next;setTimeout(()=>animating=false,650);
-    });});
-  },360);
-}
-document.getElementById("prevBtn").addEventListener("click",()=>goTo((current-1+products.length)%products.length));
-document.getElementById("nextBtn").addEventListener("click",()=>goTo((current+1)%products.length));
-let timer=setInterval(()=>goTo((current+1)%products.length),5000);
-hero.addEventListener("mouseenter",()=>clearInterval(timer));
-hero.addEventListener("mouseleave",()=>{timer=setInterval(()=>goTo((current+1)%products.length),5000)});
-document.addEventListener("keydown",e=>{if(e.key==="ArrowRight")goTo((current+1)%products.length);if(e.key==="ArrowLeft")goTo((current-1+products.length)%products.length);});
 
 /* ── REVEAL + COUNTER ── */
 const kRevealEls=document.querySelectorAll(".k-reveal");
@@ -173,7 +65,6 @@ document.addEventListener("click",e=>{
 
 const heroAddCartBtn=document.getElementById("heroAddCart");
 if(heroAddCartBtn){
-  heroAddCartBtn.dataset.name=products[0].name;heroAddCartBtn.dataset.price=products[0].price;heroAddCartBtn.dataset.image=products[0].image;
   heroAddCartBtn.addEventListener("click",()=>{addToCart(heroAddCartBtn.dataset.name,heroAddCartBtn.dataset.price,heroAddCartBtn.dataset.image);openCart();});
 }
 
@@ -313,15 +204,12 @@ function buildCheckoutModal(){
       const resp=await fetch('/api/place-order/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       const data=await resp.json();
       if(data.success){
-        const saved=JSON.parse(localStorage.getItem('malola_orders')||'[]');
-        saved.unshift(data.order_id);
-        localStorage.setItem('malola_orders',JSON.stringify(saved));
-        closeCheckoutModal();cart=[];renderCart();closeCart();
-        showToast('<i class="fa-solid fa-circle-check"></i> Order #'+data.order_id+' placed! <a href="/orders/" style="color:var(--yellow);font-weight:800">View Orders →</a>',6000);
-      } else { throw new Error(); }
+        cart=[];renderCart();closeCart();closeCheckoutModal();
+        window.location.href=data.redirect;
+      } else { throw new Error(data.error||'Order failed'); }
     }catch(err){
       btn.disabled=false;btn.innerHTML='Place Order &nbsp;<i class="fa-solid fa-check-circle"></i>';
-      showToast('<i class="fa-solid fa-circle-exclamation"></i> Something went wrong. Try again.',3000);
+      showToast('<i class="fa-solid fa-circle-exclamation"></i> '+(err.message||'Something went wrong. Try again.'),3000);
     }
   });
 }
@@ -649,5 +537,6 @@ $(function(){
     navText:["&#8592;","&#8594;"],
     responsive:{0:{items:1},768:{items:2},1200:{items:3}}
   });
+
 });
 

@@ -1,0 +1,283 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Videos — Malola Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height:100vh}
+.ap-header{background:#0d2b6b;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(13,43,107,.35);position:sticky;top:0;z-index:100}
+.ap-brand{display:flex;align-items:center;gap:14px}
+.ap-logo-ring{width:40px;height:40px;border-radius:50%;background:#FECF0A;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.1rem;color:#0d2b6b;flex-shrink:0}
+.ap-brand-name{font-family:'Fredoka One',cursive;font-size:1.15rem;color:#fff;line-height:1}
+.ap-brand-sub{font-size:.68rem;color:rgba(255,255,255,.5);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.ap-header-actions{display:flex;align-items:center;gap:10px}
+.ap-hdr-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;text-decoration:none;border:none;transition:all .2s;letter-spacing:.04em}
+.ap-hdr-site{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.25)}
+.ap-hdr-site:hover{background:rgba(255,255,255,.22)}
+.ap-hdr-logout{background:#FECF0A;color:#0d2b6b}
+.ap-hdr-logout:hover{background:#ffd93d}
+.ap-tabs{display:flex;background:#0a1f52;padding:0 32px;border-bottom:1px solid rgba(255,255,255,.08);overflow-x:auto}
+.ap-tab{display:flex;align-items:center;gap:7px;white-space:nowrap;padding:13px 20px;color:rgba(255,255,255,.45);font-size:.75rem;font-weight:800;text-decoration:none;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;letter-spacing:.06em;text-transform:uppercase}
+.ap-tab:hover{color:rgba(255,255,255,.8)}
+.ap-tab.active{color:#FECF0A;border-bottom-color:#FECF0A}
+.ap-tab-badge{display:inline-flex;align-items:center;justify-content:center;background:#e53935;color:#fff;font-size:.6rem;font-weight:900;width:18px;height:18px;border-radius:50%}
+
+/* LAYOUT */
+.vp-wrap{max-width:1200px;margin:0 auto;padding:32px 32px 80px}
+.vp-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:32px}
+.vp-title{font-family:'Fredoka One',cursive;font-size:1.6rem;color:#0d2b6b}
+.vp-sub{font-size:.78rem;color:rgba(13,43,107,.45);font-weight:600;margin-top:4px}
+
+/* UPLOAD CARD */
+.vp-upload-card{background:#fff;border-radius:20px;box-shadow:0 4px 24px rgba(13,43,107,.08);padding:28px;margin-bottom:36px;border:2px dashed rgba(13,43,107,.12)}
+.vp-upload-title{font-family:'Fredoka One',cursive;font-size:1.15rem;color:#0d2b6b;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.vp-form-row{display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:end;flex-wrap:wrap}
+.vp-field label{display:block;font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:rgba(13,43,107,.5);margin-bottom:7px}
+.vp-input{width:100%;height:46px;border:2px solid rgba(13,43,107,.12);border-radius:12px;padding:0 14px;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;color:#0d2b6b;background:#fff;outline:none;transition:border-color .2s}
+.vp-input:focus{border-color:#FECF0A}
+.vp-file-wrap{position:relative}
+.vp-file-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.vp-file-btn{display:flex;align-items:center;gap:8px;height:46px;border:2px dashed rgba(13,43,107,.18);border-radius:12px;padding:0 16px;font-size:.85rem;font-weight:700;color:rgba(13,43,107,.55);background:#f7f9ff;cursor:pointer;transition:border-color .2s,background .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vp-file-btn.has-file{border-color:#FECF0A;background:#fffde7;color:#0d2b6b}
+.vp-upload-btn{height:46px;padding:0 24px;background:#0d2b6b;color:#FECF0A;border:none;border-radius:12px;font-family:'Fredoka One',cursive;font-size:.95rem;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;transition:opacity .2s;flex-shrink:0}
+.vp-upload-btn:hover{opacity:.85}
+.vp-hint{font-size:.72rem;color:rgba(13,43,107,.4);font-weight:600;margin-top:8px}
+
+/* VIDEO GRID */
+.vp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px}
+
+/* VIDEO CARD */
+.vp-card{background:#fff;border-radius:18px;box-shadow:0 4px 20px rgba(13,43,107,.08);overflow:hidden;border:2px solid transparent;transition:border-color .2s,box-shadow .2s}
+.vp-card:hover{border-color:rgba(254,207,10,.5);box-shadow:0 8px 32px rgba(13,43,107,.12)}
+.vp-card-video-wrap{position:relative;width:100%;aspect-ratio:9/16;background:#000;overflow:hidden;cursor:pointer}
+.vp-card-video-wrap video{width:100%;height:100%;object-fit:cover;display:block}
+.vp-play-btn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);opacity:1;transition:opacity .2s}
+.vp-card-video-wrap:hover .vp-play-btn{opacity:0}
+.vp-play-btn i{font-size:2.5rem;color:#fff;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
+.vp-card-body{padding:14px 16px}
+.vp-card-title{font-weight:800;font-size:.88rem;color:#0d2b6b;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vp-card-title.untitled{color:rgba(13,43,107,.35);font-style:italic}
+.vp-card-meta{font-size:.68rem;font-weight:700;color:rgba(13,43,107,.4);margin-bottom:12px}
+.vp-card-actions{display:flex;gap:8px;align-items:center}
+.vp-badge-active{display:inline-flex;align-items:center;gap:4px;font-size:.65rem;font-weight:900;padding:3px 10px;border-radius:999px;background:rgba(27,94,32,.12);color:#1b5e20}
+.vp-badge-hidden{background:rgba(183,28,28,.1);color:#b71c1c}
+.ap-btn-del{width:36px;height:36px;border-radius:10px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:transform .15s;background:#fce8e6;color:#c62828}
+.ap-btn-del:hover{background:#c62828;color:#fff;transform:scale(1.1)}
+.vp-toggle-btn{flex:1;height:36px;border-radius:10px;border:none;cursor:pointer;font-size:.72rem;font-weight:800;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.vp-toggle-show{background:#e8f0fe;color:#1565C0}
+.vp-toggle-show:hover{background:#1565C0;color:#fff}
+.vp-toggle-hide{background:rgba(254,207,10,.2);color:#7a5c00}
+.vp-toggle-hide:hover{background:#FECF0A;color:#0d2b6b}
+
+/* EMPTY */
+.vp-empty{text-align:center;padding:80px 20px;color:rgba(13,43,107,.35);background:#fff;border-radius:20px;box-shadow:0 4px 24px rgba(13,43,107,.07)}
+.vp-empty i{font-size:3.5rem;margin-bottom:18px;display:block;color:rgba(13,43,107,.15)}
+.vp-empty h3{font-family:'Fredoka One',cursive;font-size:1.5rem;color:rgba(13,43,107,.5);margin-bottom:8px}
+.vp-empty p{font-size:.88rem;font-weight:600}
+
+/* SITE PREVIEW NOTE */
+.vp-note{background:rgba(21,101,192,.07);border:1.5px solid rgba(21,101,192,.15);border-radius:14px;padding:14px 18px;margin-bottom:28px;display:flex;align-items:flex-start;gap:12px;font-size:.82rem;font-weight:700;color:rgba(13,43,107,.65);line-height:1.6}
+.vp-note i{color:#1565C0;font-size:1rem;margin-top:1px;flex-shrink:0}
+
+@media(max-width:900px){
+  .vp-wrap{padding:20px 20px 60px}
+  .vp-form-row{grid-template-columns:1fr}
+  .ap-tabs{padding:0 20px}
+  .ap-header{padding:0 20px}
+  .ap-brand-sub{display:none}
+}
+@media(max-width:600px){
+  .vp-wrap{padding:14px 14px 50px}
+  .ap-header{padding:0 14px;height:56px}
+  .ap-tabs{padding:0 14px}
+  .ap-tab{padding:10px 14px;font-size:.68rem}
+  .vp-grid{grid-template-columns:repeat(2,1fr);gap:14px}
+}
+
+/* ── LARGE SCREEN RESPONSIVE ── */
+@media(min-width:1440px){
+  .ap-header{padding:0 clamp(32px,4vw,80px)}
+  .ap-tabs{padding:0 clamp(32px,4vw,80px)}
+  .vp-wrap{max-width:min(1600px,92vw)}
+  .ap-tab{font-size:.82rem;padding:14px 24px}
+}
+@media(min-width:2000px){
+  .ap-header{padding:0 100px;height:76px}
+  .ap-tabs{padding:0 100px}
+  .ap-brand-name{font-size:1.4rem}
+  .ap-logo-ring{width:48px;height:48px;font-size:1.25rem}
+  .ap-hdr-btn{padding:10px 24px;font-size:.88rem}
+  .ap-tab{font-size:.9rem;padding:16px 30px}
+  .vp-wrap{max-width:min(2200px,94vw)}
+  .vp-title{font-size:2rem}
+  .vp-grid{gap:32px}
+}
+</style>
+</head>
+<body>
+
+<header class="ap-header">
+  <div class="ap-brand">
+    <div class="ap-logo-ring">M</div>
+    <div>
+      <div class="ap-brand-name">Malola Admin</div>
+      <div class="ap-brand-sub">Video Manager</div>
+    </div>
+  </div>
+  <div class="ap-header-actions">
+    <a href="/" class="ap-hdr-btn ap-hdr-site" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Site</a>
+    <form method="post" action="/api/logout/" style="display:inline">
+      {% csrf_token %}
+      <button type="submit" class="ap-hdr-btn ap-hdr-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </form>
+  </div>
+</header>
+
+<nav class="ap-tabs">
+  <a href="/manage/" class="ap-tab"><i class="fa-solid fa-box"></i> Products</a>
+  <a href="/manage/orders/" class="ap-tab">
+    <i class="fa-solid fa-bag-shopping"></i> Orders
+    {% if pending_orders %}<span class="ap-tab-badge">{{ pending_orders }}</span>{% endif %}
+  </a>
+  <a href="/manage/offers/" class="ap-tab"><i class="fa-solid fa-tag"></i> Offers / Deals</a>
+  <a href="/manage/categories/" class="ap-tab"><i class="fa-solid fa-layer-group"></i> Categories</a>
+  <a href="/manage/videos/" class="ap-tab active"><i class="fa-solid fa-film"></i> Videos</a>
+</nav>
+
+<div class="vp-wrap">
+
+  <div class="vp-top">
+    <div>
+      <h1 class="vp-title"><i class="fa-solid fa-film" style="color:#1565C0;margin-right:10px"></i>Homepage Videos</h1>
+      <p class="vp-sub">Videos you upload here appear in the "Watch & Learn" reel section on the homepage.</p>
+    </div>
+    <span style="background:rgba(13,43,107,.08);color:#0d2b6b;font-size:.8rem;font-weight:800;padding:8px 16px;border-radius:999px">{{ videos|length }} video{{ videos|length|pluralize }}</span>
+  </div>
+
+  <div class="vp-note">
+    <i class="fa-solid fa-circle-info"></i>
+    <span>Upload short vertical reel-style videos (MP4 recommended, max ~50 MB). Active videos replace the default homepage videos. Use the toggle to show or hide each video without deleting it.</span>
+  </div>
+
+  <!-- UPLOAD FORM -->
+  <div class="vp-upload-card">
+    <div class="vp-upload-title"><i class="fa-solid fa-cloud-arrow-up" style="color:#1565C0"></i> Upload New Video</div>
+    <form method="post" action="/manage/videos/upload/" enctype="multipart/form-data" id="uploadForm">
+      {% csrf_token %}
+      <div class="vp-form-row">
+        <div class="vp-field">
+          <label>Video File *</label>
+          <div class="vp-file-wrap">
+            <input type="file" name="video" accept="video/*" class="vp-file-input" id="videoFileInput" required>
+            <div class="vp-file-btn" id="fileBtnLabel"><i class="fa-solid fa-video"></i> <span id="fileNameSpan">Choose video file…</span></div>
+          </div>
+        </div>
+        <div class="vp-field">
+          <label>Title / Caption (optional)</label>
+          <input type="text" name="title" class="vp-input" placeholder="e.g. Millet Noodles Reel">
+        </div>
+        <button type="submit" class="vp-upload-btn" id="uploadBtn">
+          <i class="fa-solid fa-plus"></i> Upload
+        </button>
+      </div>
+      <p class="vp-hint"><i class="fa-solid fa-circle-info" style="color:#1565C0"></i> Supported: MP4, MOV, WebM. Vertical/portrait videos (9:16) look best in the reel slider.</p>
+    </form>
+  </div>
+
+  <!-- VIDEO GRID -->
+  {% if videos %}
+  <div class="vp-grid">
+    {% for v in videos %}
+    <div class="vp-card">
+      <div class="vp-card-video-wrap" onclick="togglePlay(this)">
+        <video preload="metadata" loop muted playsinline>
+          <source src="{{ v.video.url }}" type="video/mp4">
+        </video>
+        <div class="vp-play-btn"><i class="fa-solid fa-play"></i></div>
+      </div>
+      <div class="vp-card-body">
+        {% if v.title %}
+        <div class="vp-card-title">{{ v.title }}</div>
+        {% else %}
+        <div class="vp-card-title untitled">No title</div>
+        {% endif %}
+        <div class="vp-card-meta">
+          Video #{{ v.pk }} &nbsp;·&nbsp; {{ v.created_at|date:"d M Y" }}
+        </div>
+        <div class="vp-card-actions">
+          {% if v.is_active %}
+            <span class="vp-badge-active"><i class="fa-solid fa-circle" style="font-size:.35rem"></i> Visible</span>
+            <form method="post" action="/manage/videos/toggle/{{ v.pk }}/" style="flex:1">
+              {% csrf_token %}
+              <button type="submit" class="vp-toggle-btn vp-toggle-hide" style="width:100%"><i class="fa-solid fa-eye-slash"></i> Hide</button>
+            </form>
+          {% else %}
+            <span class="vp-badge-hidden"><i class="fa-solid fa-circle" style="font-size:.35rem"></i> Hidden</span>
+            <form method="post" action="/manage/videos/toggle/{{ v.pk }}/" style="flex:1">
+              {% csrf_token %}
+              <button type="submit" class="vp-toggle-btn vp-toggle-show" style="width:100%"><i class="fa-solid fa-eye"></i> Show</button>
+            </form>
+          {% endif %}
+          <form method="post" action="/manage/videos/delete/{{ v.pk }}/"
+                onsubmit="return confirm('Delete this video?')">
+            {% csrf_token %}
+            <button type="submit" class="ap-btn-del" title="Delete"><i class="fa-solid fa-trash"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="vp-empty">
+    <i class="fa-solid fa-film"></i>
+    <h3>No videos yet</h3>
+    <p>Upload your first video above — it will appear in the homepage reel section.</p>
+  </div>
+  {% endif %}
+
+</div>
+
+<script>
+/* File picker label */
+document.getElementById('videoFileInput').addEventListener('change', function(){
+  const label = document.getElementById('fileBtnLabel');
+  const span  = document.getElementById('fileNameSpan');
+  if (this.files.length) {
+    span.textContent = this.files[0].name;
+    label.classList.add('has-file');
+  } else {
+    span.textContent = 'Choose video file…';
+    label.classList.remove('has-file');
+  }
+});
+
+/* Upload progress feedback */
+document.getElementById('uploadForm').addEventListener('submit', function(){
+  const btn = document.getElementById('uploadBtn');
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading…';
+  btn.disabled = true;
+});
+
+/* Play / pause preview on click */
+function togglePlay(wrap) {
+  const vid = wrap.querySelector('video');
+  const icon = wrap.querySelector('.vp-play-btn i');
+  if (vid.paused) {
+    document.querySelectorAll('.vp-card-video-wrap video').forEach(v => { v.pause(); });
+    document.querySelectorAll('.vp-play-btn i').forEach(i => { i.className = 'fa-solid fa-play'; });
+    vid.play();
+    icon.className = 'fa-solid fa-pause';
+  } else {
+    vid.pause();
+    icon.className = 'fa-solid fa-play';
+  }
+}
+</script>
+</body>
+</html>

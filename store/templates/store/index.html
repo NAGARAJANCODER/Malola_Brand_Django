@@ -145,7 +145,7 @@
 <div id="hero">
   <nav id="mainNav">
     <div class="logo">
-      <img src="{% static 'images/Malola_Logo_600x300-01-1536x768.webp' %}" alt="NaturNest" class="nav-logo-img">
+      <img src="{% static 'images/Malola_Logo_600x300-01-1536x768.webp' %}" alt="Malola" class="nav-logo-img">
     </div>
     <ul class="nav-links">
       <li><a href="#hero">Home</a></li>
@@ -301,7 +301,6 @@
       <li><a href="#kids-contact">Contact</a></li>
     </ul>
     <div class="nav-actions">
-      <!-- Search -->
       <div class="nav-search-wrap" id="navSearchWrap">
         <button class="nav-search-btn" id="navSearchBtn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
         <div class="nav-search-box" id="navSearchBox">
@@ -339,7 +338,6 @@
       <button class="btn-login" id="navLoginBtn">Login</button>
       <button class="btn-signup" id="navSignupBtn">Sign Up</button>
       {% endif %}
-      <!-- Hamburger -->
       <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </nav>
@@ -347,106 +345,110 @@
   <!-- Mobile Menu -->
   <div class="mob-menu-overlay" id="mobMenuOverlay"></div>
   <div class="mob-menu" id="mobMenu">
-    <div class="mob-menu-head">
-      <img src="{% static 'images/Malola_Logo_600x300-01-1536x768.webp' %}" alt="Malola" class="mob-logo">
-      <button class="mob-menu-close" id="mobMenuClose"><i class="fa-solid fa-xmark"></i></button>
+  <div class="mob-menu-head">
+    <img src="{% static 'images/Malola_Logo_600x300-01-1536x768.webp' %}" alt="Malola" class="mob-logo">
+    <button class="mob-menu-close" id="mobMenuClose"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="mob-search-wrap">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" id="mobSearchInput" placeholder="Search products..."/>
+  </div>
+  <ul class="mob-nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#kids-about">About</a></li>
+    <li><a href="#kids-shop">Shop</a></li>
+    <li><a href="#kids-video">Videos</a></li>
+    <li><a href="#kids-contact">Contact</a></li>
+  </ul>
+  <div class="mob-products">
+    <div class="mob-prod-title">Our Products</div>
+    <div class="mob-prod-item" data-pdp="milletvanilla"><img src="{% static 'images/green.png' %}" alt=""><span>Millet Vanilla</span><small>₹299</small></div>
+    <div class="mob-prod-item" data-pdp="milletchoco"><img src="{% static 'images/a6bf2fb7-be25-4e5c-94f4-ba9215f70999_removalai_preview.png' %}" alt=""><span>Millet Choco</span><small>₹299</small></div>
+    <div class="mob-prod-item" data-pdp="blueberrypancake"><img src="{% static 'images/b3e47e53-7399-423b-a88a-c4cadb4de3b3_removalai_preview.png' %}" alt=""><span>Blueberry Pancake</span><small>₹299</small></div>
+    <div class="mob-prod-item" data-pdp="quinoapuffs"><img src="{% static 'images/red.png' %}" alt=""><span>Quinoa Puffs</span><small>₹299</small></div>
+    {% for p in db_our_products %}
+    <div class="mob-prod-item" onclick="window.location.href='/product/?id={{ p.slug }}'">
+      <img src="{{ p.image.url }}" alt="{{ p.title }}"><span>{{ p.title }}</span><small>₹{{ p.price }}</small>
     </div>
-    <div class="mob-search-wrap">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" id="mobSearchInput" placeholder="Search products..."/>
+    {% endfor %}
+  </div>
+  {% if db_new_arrivals %}
+  <div class="mob-products">
+    <div class="mob-prod-title" style="color:#1565C0">🆕 New Arrivals</div>
+    {% for p in db_new_arrivals %}
+    <div class="mob-prod-item" onclick="window.location.href='/product/?id={{ p.slug }}'">
+      <img src="{{ p.image.url }}" alt="{{ p.title }}"><span>{{ p.title }}</span><small>₹{{ p.price }}</small>
     </div>
-    <ul class="mob-nav-links">
-      <li><a href="#hero">Home</a></li>
-      <li><a href="#kids-about">About</a></li>
-      <li><a href="#kids-shop">Shop</a></li>
-      <li><a href="#kids-video">Videos</a></li>
-      <li><a href="#kids-contact">Contact</a></li>
-    </ul>
-    <div class="mob-products">
-      <div class="mob-prod-title">Our Products</div>
-      <div class="mob-prod-item" data-pdp="milletvanilla"><img src="{% static 'images/green.png' %}" alt=""><span>Millet Vanilla</span><small>₹299</small></div>
-      <div class="mob-prod-item" data-pdp="milletchoco"><img src="{% static 'images/a6bf2fb7-be25-4e5c-94f4-ba9215f70999_removalai_preview.png' %}" alt=""><span>Millet Choco</span><small>₹299</small></div>
-      <div class="mob-prod-item" data-pdp="blueberrypancake"><img src="{% static 'images/b3e47e53-7399-423b-a88a-c4cadb4de3b3_removalai_preview.png' %}" alt=""><span>Blueberry Pancake</span><small>₹299</small></div>
-      <div class="mob-prod-item" data-pdp="quinoapuffs"><img src="{% static 'images/red.png' %}" alt=""><span>Quinoa Puffs</span><small>₹299</small></div>
-      {% for p in db_our_products %}
-      <div class="mob-prod-item" onclick="window.location.href='/product/?id={{ p.slug }}'">
-        <img src="{{ p.image.url }}" alt="{{ p.title }}"><span>{{ p.title }}</span><small>₹{{ p.price }}</small>
-      </div>
-      {% endfor %}
-    </div>
-    {% if db_new_arrivals %}
-    <div class="mob-products">
-      <div class="mob-prod-title" style="color:#1565C0">🆕 New Arrivals</div>
-      {% for p in db_new_arrivals %}
-      <div class="mob-prod-item" onclick="window.location.href='/product/?id={{ p.slug }}'">
-        <img src="{{ p.image.url }}" alt="{{ p.title }}"><span>{{ p.title }}</span><small>₹{{ p.price }}</small>
-      </div>
-      {% endfor %}
-    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="mob-menu-actions">
+    {% if user.is_authenticated %}
+    <a href="/orders/" style="text-decoration:none;width:100%"><button class="mob-signup-btn" style="width:100%"><i class="fa-solid fa-bag-shopping"></i> My Orders</button></a>
+    <button class="mob-login-btn" id="mobLogoutBtn" style="width:100%">Logout</button>
+    {% else %}
+    <button class="mob-login-btn" id="mobLoginBtn">Login</button>
+    <button class="mob-signup-btn" id="mobSignupBtn">Sign Up</button>
     {% endif %}
-    <div class="mob-menu-actions">
-      {% if user.is_authenticated %}
-      <a href="/orders/" style="text-decoration:none;width:100%"><button class="mob-signup-btn" style="width:100%"><i class="fa-solid fa-bag-shopping"></i> My Orders</button></a>
-      <button class="mob-login-btn" id="mobLogoutBtn" style="width:100%">Logout</button>
-      {% else %}
-      <button class="mob-login-btn" id="mobLoginBtn">Login</button>
-      <button class="mob-signup-btn" id="mobSignupBtn">Sign Up</button>
-      {% endif %}
-    </div>
   </div>
-  <div id="bgWord">VANILLA</div>
-  <canvas id="beansCanvas"></canvas>
-  <div class="side-cup left" id="leftCup">
-    <svg viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#c8956a"/><stop offset="100%" stop-color="#8b5c2e"/></linearGradient></defs>
-      <ellipse cx="40" cy="18" rx="28" ry="8" fill="#e8d5b8" opacity=".9"/>
-      <rect x="12" y="18" width="56" height="70" rx="6" fill="url(#lg1)"/>
-      <ellipse cx="40" cy="88" rx="22" ry="6" fill="#7a4f22"/>
-      <rect x="14" y="20" width="52" height="8" rx="3" fill="rgba(255,255,255,.15)"/>
-      <circle cx="40" cy="14" r="10" fill="#f0e4cc"/>
-      <path d="M32 14 Q40 6 48 14" stroke="#d4c4a0" stroke-width="2" fill="none"/>
-    </svg>
-  </div>
-  <div class="side-cup right" id="rightCup">
-    <svg viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e8a04a"/><stop offset="100%" stop-color="#b8621a"/></linearGradient></defs>
-      <ellipse cx="40" cy="18" rx="28" ry="8" fill="#f5d8a8" opacity=".9"/>
-      <rect x="12" y="18" width="56" height="70" rx="6" fill="url(#lg2)"/>
-      <ellipse cx="40" cy="88" rx="22" ry="6" fill="#a0521a"/>
-      <rect x="14" y="20" width="52" height="8" rx="3" fill="rgba(255,255,255,.15)"/>
-      <circle cx="40" cy="12" r="12" fill="#fce8cc"/>
-      <line x1="40" y1="0" x2="40" y2="14" stroke="#4e8a2e" stroke-width="3" stroke-linecap="round"/>
-    </svg>
-  </div>
-  <div id="productStage">
-    <div class="product-ring" id="productRing">
-      <img class="product-image" id="productImage" src="{% static 'images/green.png' %}" alt="Millet Vanilla"/>
-      <div class="product-badge" id="productBadge">New</div>
+</div><!-- end mob-menu -->
+
+  <!-- ══ HERO IMAGE SLIDER ══ -->
+  <div class="hs-slider" id="hsSlider">
+    <div class="hs-track" id="hsTrack">
+      <div class="hs-slide"><img src="{% static 'images/home/WEBSITE PAGE ! (1).webp' %}" alt="Malola Slide 1" decoding="async"></div>
+      <div class="hs-slide"><img src="{% static 'images/home/WEBP (2).webp' %}" alt="Malola Slide 2" decoding="async"></div>
+      <div class="hs-slide"><img src="{% static 'images/home/WEBP (3).webp' %}" alt="Malola Slide 3" decoding="async"></div>
+      <div class="hs-slide"><img src="{% static 'images/home/WEBP (4).webp' %}" alt="Malola Slide 4" decoding="async"></div>
     </div>
-    <div class="product-label" id="productLabel">Millet Vanilla</div>
+    <button class="hs-arrow hs-prev" id="hsPrev" aria-label="Previous slide">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <button class="hs-arrow hs-next" id="hsNext" aria-label="Next slide">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+    <div class="hs-dots" id="hsDots"></div>
+    <!-- Shop Now overlay button -->
+    <a href="/shop/" class="hs-shop-btn">Shop Now <i class="fa-solid fa-arrow-right"></i></a>
   </div>
-  <div id="leftContent">
-    <div class="slide-tag" id="slideTag">Best Seller</div>
-    <h1 class="slide-title" id="slideTitle">Millet<br/>Vanilla</h1>
-    <p class="slide-desc" id="slideDesc">Creamy vanilla meets wholesome millet in every delightful bite. A smooth, guilt-free treat packed with fibre and natural goodness — loved by kids and parents alike.</p>
-    <div class="cta-row">
-      <button class="btn-cta" id="heroAddCart" data-name="Millet Vanilla" data-price="299" data-image="/static/images/green.png">Add to Cart</button>
-      <div class="price" id="slidePrice"><sup>₹</sup>299</div>
-    </div>
-  </div>
-  <div id="rightThumbs"></div>
-  <div id="bottomBar">
-    <p class="bottom-desc">Explore a realm of rich aromas with our exclusive coffee selection. At Fresh Brews, we harness the essence of nature's best beans.</p>
-    <div class="nav-controls">
-      <button class="nav-btn" id="prevBtn">&#8592;</button>
-      <div class="dots" id="dotsContainer"></div>
-      <button class="nav-btn" id="nextBtn">&#8594;</button>
-    </div>
-    <div class="stats">
-      <div class="stat"><div class="stat-num">4+</div><div class="stat-label">Snack Varieties</div></div>
-      <div class="stat"><div class="stat-num">20K+</div><div class="stat-label">Happy Customers</div></div>
-      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Natural Ingredients</div></div>
-    </div>
+</div><!-- end #hero -->
+
+<!-- ══ STATS TICKER ══ -->
+<div class="stats-ticker">
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="ticker-num">20+</span><span class="ticker-label">Products &amp; Growing</span></div>
+    <div class="ticker-sep">✦</div>
+    <div class="ticker-item"><span class="ticker-num">20K+</span><span class="ticker-label">Happy Customers</span></div>
+    <div class="ticker-sep">✦</div>
+    <div class="ticker-item"><span class="ticker-num">100%</span><span class="ticker-label">Pure &amp; Natural</span></div>
+    <div class="ticker-sep">✦</div>
+    <div class="ticker-item"><span class="ticker-num">6+</span><span class="ticker-label">Product Categories</span></div>
+    <div class="ticker-sep">✦</div>
+    <div class="ticker-item"><span class="ticker-num">⭐ 4.8</span><span class="ticker-label">Average Rating</span></div>
+    <div class="ticker-sep">✦</div>
+    <div class="ticker-item"><span class="ticker-num">🚚</span><span class="ticker-label">Pan-India Delivery</span></div>
+    <div class="ticker-sep">✦</div>
+    <div class="ticker-item"><span class="ticker-num">🌾</span><span class="ticker-label">Millet-Powered Snacks</span></div>
+    <div class="ticker-sep">✦</div>
+    <div class="ticker-item"><span class="ticker-num">🏆</span><span class="ticker-label">Award-Winning Taste</span></div>
+    <div class="ticker-sep">✦</div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item"><span class="ticker-num">20+</span><span class="ticker-label">Products &amp; Growing</span></div>
+    <div class="ticker-sep">✦</div>
+    <div class="ticker-item"><span class="ticker-num">20K+</span><span class="ticker-label">Happy Customers</span></div>
+    <div class="ticker-sep">✦</div>
+    <div class="ticker-item"><span class="ticker-num">100%</span><span class="ticker-label">Pure &amp; Natural</span></div>
+    <div class="ticker-sep">✦</div>
+    <div class="ticker-item"><span class="ticker-num">6+</span><span class="ticker-label">Product Categories</span></div>
+    <div class="ticker-sep">✦</div>
+    <div class="ticker-item"><span class="ticker-num">⭐ 4.8</span><span class="ticker-label">Average Rating</span></div>
+    <div class="ticker-sep">✦</div>
+    <div class="ticker-item"><span class="ticker-num">🚚</span><span class="ticker-label">Pan-India Delivery</span></div>
+    <div class="ticker-sep">✦</div>
+    <div class="ticker-item"><span class="ticker-num">🌾</span><span class="ticker-label">Millet-Powered Snacks</span></div>
+    <div class="ticker-sep">✦</div>
+    <div class="ticker-item"><span class="ticker-num">🏆</span><span class="ticker-label">Award-Winning Taste</span></div>
+    <div class="ticker-sep">✦</div>
   </div>
 </div>
 
@@ -693,6 +695,15 @@
       <div class="reels-viewport" id="reelsViewport">
         <div class="reels-track" id="reelsTrack">
 
+          {% if db_videos %}
+            {% for v in db_videos %}
+          <div class="reel-card" data-index="{{ forloop.counter0 }}">
+            <video class="reel-video" src="{{ v.video.url }}" muted playsinline preload="metadata"></video>
+            <div class="reel-top"><button class="reel-mute-btn"><i class="fa-solid fa-volume-xmark"></i></button></div>
+            <div class="reel-pause-icon"><i class="fa-solid fa-pause"></i></div>
+          </div>
+            {% endfor %}
+          {% else %}
           <div class="reel-card" data-index="0">
             <video class="reel-video" src="{% static 'images/video/reel-food-alternatives.mp4' %}" muted playsinline preload="metadata"></video>
             <div class="reel-top"><button class="reel-mute-btn"><i class="fa-solid fa-volume-xmark"></i></button></div>
@@ -716,6 +727,7 @@
             <div class="reel-top"><button class="reel-mute-btn"><i class="fa-solid fa-volume-xmark"></i></button></div>
             <div class="reel-pause-icon"><i class="fa-solid fa-pause"></i></div>
           </div>
+          {% endif %}
 
         </div>
       </div>
@@ -773,96 +785,88 @@
     </div>
   </section>
 
-  <!-- STATS -->
-  <section class="kids-stats k-reveal">
-    <div class="k-section-head">
-      <div class="k-eyebrow">📊 Why Malola</div>
-      <h2>Healthy snacking, by the numbers.</h2>
-      <p>Every number tells the story of our commitment to taste, health and trust.</p>
+  <!-- CUSTOMER REVIEWS CAROUSEL -->
+  <section class="kids-reviews k-reveal k-visible" id="kids-reviews">
+    <div class="k-section-head" style="padding-bottom:10px">
+      <div class="k-eyebrow" style="background:#0d2b6b;color:#FECF0A">💬 Customer Stories</div>
+      <h2 style="color:#0d2b6b">Loved by families across India!</h2>
+      <p style="color:rgba(13,43,107,.65)">Real families. Real moments. Real Malola love.</p>
     </div>
-    <div class="k-stat-grid">
-      <div class="k-stat-card">
-        <strong data-count="20">0</strong>
-        <div class="k-stat-label">Products &amp; Growing</div>
-        <p>Unique wholesome products across snacks, cereals, soups and health mixes.</p>
-      </div>
-      <div class="k-stat-card">
-        <strong data-count="20">0</strong>
-        <div class="k-stat-label">Happy Customers (K)</div>
-        <p>Families choosing Malola's millet-powered snacks every single day.</p>
-      </div>
-      <div class="k-stat-card">
-        <strong data-count="100">0</strong>
-        <div class="k-stat-label">% Pure &amp; Natural</div>
-        <p>Zero preservatives, no artificial colours or additives — always guaranteed.</p>
-      </div>
-      <div class="k-stat-card">
-        <strong data-count="6">0</strong>
-        <div class="k-stat-label">Product Categories</div>
-        <p>From bites &amp; granola to soups &amp; health mixes — wholesome for every moment.</p>
-      </div>
-    </div>
-  </section>
 
-  <!-- TESTIMONIALS -->
-  <section class="kids-reviews k-reveal">
-    <div class="k-section-head">
-      <div class="k-eyebrow" style="background:var(--yellow);color:var(--kids-dark)">💬 Customer Stories</div>
-      <h2>Loved by families across India!</h2>
-      <p>Real words from real health lovers who taste the Malola difference.</p>
+    <div class="rv-wrap">
+      <button class="rv-arrow rv-prev" id="rvPrev" aria-label="Previous reviews">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <div class="rv-viewport">
+        <div class="rv-track" id="rvTrack">
+
+          {% if db_reviews %}
+            {% for r in db_reviews %}
+            <div class="rv-card">
+              <div class="rv-card-quote">&ldquo;</div>
+              <p class="rv-card-text">{{ r.review_text }}</p>
+              <div class="rv-card-footer">
+                <div class="rv-card-avatar" style="background:{% if forloop.counter == 1 %}#1565C0{% elif forloop.counter == 2 %}#c62828{% elif forloop.counter == 3 %}#0d2b6b{% elif forloop.counter == 4 %}#e65100{% elif forloop.counter == 5 %}#2e7d32{% else %}#6a1b9a{% endif %}">{{ r.name|slice:":1"|upper }}</div>
+                <div>
+                  <div class="rv-card-name">{{ r.name }}</div>
+                  <div class="rv-card-stars">★★★★★</div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div class="rv-card">
+              <div class="rv-card-quote">&ldquo;</div>
+              <p class="rv-card-text">The Choco Bytes are my kids' favourite! They grab a pack straight after school. Love the clean, natural ingredients.</p>
+              <div class="rv-card-footer">
+                <div class="rv-card-avatar" style="background:#1565C0">P</div>
+                <div><div class="rv-card-name">Priya M.</div><div class="rv-card-stars">★★★★★</div></div>
+              </div>
+            </div>
+            <div class="rv-card">
+              <div class="rv-card-quote">&ldquo;</div>
+              <p class="rv-card-text">Malola Banana Granola has replaced my morning cereal. Naturally sweet, filling, and no refined sugar at all!</p>
+              <div class="rv-card-footer">
+                <div class="rv-card-avatar" style="background:#c62828">R</div>
+                <div><div class="rv-card-name">Rohit S.</div><div class="rv-card-stars">★★★★★</div></div>
+              </div>
+            </div>
+            <div class="rv-card">
+              <div class="rv-card-quote">&ldquo;</div>
+              <p class="rv-card-text">The Moringa Soup is a daily ritual now. Warm, comforting and packed with goodness. My whole family loves it.</p>
+              <div class="rv-card-footer">
+                <div class="rv-card-avatar" style="background:#0d2b6b">A</div>
+                <div><div class="rv-card-name">Aakanksha</div><div class="rv-card-stars">★★★★★</div></div>
+              </div>
+            </div>
+            <div class="rv-card">
+              <div class="rv-card-quote">&ldquo;</div>
+              <p class="rv-card-text">Malola has become part of our daily breakfast routine. My little one loves it the most. Best healthy snacks ever!</p>
+              <div class="rv-card-footer">
+                <div class="rv-card-avatar" style="background:#e65100">K</div>
+                <div><div class="rv-card-name">Karuna Arora</div><div class="rv-card-stars">★★★★★</div></div>
+              </div>
+            </div>
+            <div class="rv-card">
+              <div class="rv-card-quote">&ldquo;</div>
+              <p class="rv-card-text">Malola is everywhere in our kitchen! From noodles to pancakes to soups — every product is quality and delicious.</p>
+              <div class="rv-card-footer">
+                <div class="rv-card-avatar" style="background:#2e7d32">N</div>
+                <div><div class="rv-card-name">Nadia</div><div class="rv-card-stars">★★★★★</div></div>
+              </div>
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
+
+      <button class="rv-arrow rv-next" id="rvNext" aria-label="Next reviews">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
     </div>
-    <div class="owl-carousel kids-testimonial-carousel" style="max-width:1220px;margin:0 auto;position:relative;z-index:2">
-      <div>
-        <div class="k-review-card">
-          <div class="k-quote">"</div>
-          <p class="k-review-text">The Choco Bytes are my kids' favourite! They come home from school and grab a pack straight away. So happy I found a snack that's healthy and they actually love.</p>
-          <div class="k-review-footer">
-            <div class="k-avatar" style="background:#1565C0">P</div>
-            <div><div class="k-review-name">Priya M.</div><div class="k-stars">★★★★★</div></div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="k-review-card">
-          <div class="k-quote">"</div>
-          <p class="k-review-text">Malola Banana Granola has replaced my morning cereal completely. It's naturally sweet, filling, and I love that there's no refined sugar. Fantastic product!</p>
-          <div class="k-review-footer">
-            <div class="k-avatar" style="background:#1976D2">R</div>
-            <div><div class="k-review-name">Rohit S.</div><div class="k-stars">★★★★★</div></div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="k-review-card">
-          <div class="k-quote">"</div>
-          <p class="k-review-text">The Moringa Soup is a daily ritual now. My nutritionist recommended it and the taste is amazing — warm, comforting and packed with goodness. Highly recommend!</p>
-          <div class="k-review-footer">
-            <div class="k-avatar" style="background:#1565C0">A</div>
-            <div><div class="k-review-name">Ananya K.</div><div class="k-stars">★★★★★</div></div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="k-review-card">
-          <div class="k-quote">"</div>
-          <p class="k-review-text">Blueberry Pancake Mix is a weekend staple at home. Ready in minutes, the kids love it, and I love that it's millet-based. Guilt-free Sunday mornings!</p>
-          <div class="k-review-footer">
-            <div class="k-avatar" style="background:#FECF0A">S</div>
-            <div><div class="k-review-name">Sunita L.</div><div class="k-stars">★★★★★</div></div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="k-review-card">
-          <div class="k-quote">"</div>
-          <p class="k-review-text">Malola has completely changed how our family snacks. The Butter Makhana is addictive in the best way — light, flavourful and so much better than chips!</p>
-          <div class="k-review-footer">
-            <div class="k-avatar" style="background:#1976D2">V</div>
-            <div><div class="k-review-name">Vikram T.</div><div class="k-stars">★★★★★</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
+
+    <div class="rv-dots" id="rvDots"></div>
   </section>
 
   <!-- GALLERY -->
@@ -929,6 +933,158 @@
   </div>
 </footer>
 
+<script>
+(function(){
+  var track=document.getElementById('rvTrack');
+  var prevBtn=document.getElementById('rvPrev');
+  var nextBtn=document.getElementById('rvNext');
+  var dotsEl=document.getElementById('rvDots');
+  var section=document.getElementById('kids-reviews');
+  if(!track||!prevBtn)return;
+
+  var cards=Array.from(track.querySelectorAll('.rv-card'));
+  var total=cards.length;
+  var current=0;
+  var autoTimer=null;
+  var GAP=20;
+
+  function cpv(){
+    if(window.innerWidth<=640)return 1;
+    if(window.innerWidth<=900)return 2;
+    return 3;
+  }
+  function maxIdx(){return Math.max(0,total-cpv());}
+  function cardW(){
+    var vp=track.parentElement;
+    var n=cpv();
+    return(vp.offsetWidth-GAP*(n-1))/n;
+  }
+  function updateDots(){
+    dotsEl.querySelectorAll('.rv-dot').forEach(function(d,i){d.classList.toggle('active',i===current);});
+  }
+  function goTo(idx,instant){
+    /* loop around */
+    if(idx>maxIdx())idx=0;
+    if(idx<0)idx=maxIdx();
+    current=idx;
+    if(instant){
+      track.style.transition='none';
+      track.style.transform='translateX(-'+(current*(cardW()+GAP))+'px)';
+      track.offsetHeight; /* force reflow */
+      track.style.transition='transform .45s cubic-bezier(.4,0,.2,1)';
+    }else{
+      track.style.transform='translateX(-'+(current*(cardW()+GAP))+'px)';
+    }
+    updateDots();
+  }
+  function buildDots(){
+    dotsEl.innerHTML='';
+    var pages=maxIdx()+1;
+    for(var i=0;i<pages;i++){
+      (function(idx){
+        var d=document.createElement('button');
+        d.className='rv-dot'+(idx===0?' active':'');
+        d.setAttribute('aria-label','Review '+(idx+1));
+        d.addEventListener('click',function(){goTo(idx,true);resetAuto();});
+        dotsEl.appendChild(d);
+      })(i);
+    }
+  }
+  function resetAuto(){
+    clearInterval(autoTimer);
+    autoTimer=setInterval(function(){
+      goTo(current+1,true);
+    },3000);
+  }
+
+  prevBtn.addEventListener('click',function(){goTo(current-1,true);resetAuto();});
+  nextBtn.addEventListener('click',function(){goTo(current+1,true);resetAuto();});
+
+  /* Pause on hover */
+  if(section){
+    section.addEventListener('mouseenter',function(){clearInterval(autoTimer);});
+    section.addEventListener('mouseleave',resetAuto);
+  }
+
+  window.addEventListener('resize',function(){
+    buildDots();
+    goTo(Math.min(current,maxIdx()),true);
+  });
+
+  buildDots();
+  goTo(0,true);
+  resetAuto();
+})();
+</script>
+<script>
+/* ── Hero Image Slider ── */
+(function(){
+  var track=document.getElementById('hsTrack');
+  var prevBtn=document.getElementById('hsPrev');
+  var nextBtn=document.getElementById('hsNext');
+  var dotsEl=document.getElementById('hsDots');
+  if(!track)return;
+  var slides=track.querySelectorAll('.hs-slide');
+  var total=slides.length;
+  var current=0;
+  var timer=null;
+
+  /* build dots */
+  for(var i=0;i<total;i++){
+    (function(idx){
+      var d=document.createElement('button');
+      d.className='hs-dot'+(idx===0?' active':'');
+      d.setAttribute('aria-label','Slide '+(idx+1));
+      d.addEventListener('click',function(){goTo(idx);resetAuto();});
+      dotsEl.appendChild(d);
+    })(i);
+  }
+
+  var shopBtn=document.querySelector('.hs-shop-btn');
+  function updateDots(){
+    dotsEl.querySelectorAll('.hs-dot').forEach(function(d,i){d.classList.toggle('active',i===current);});
+  }
+  function updateShopBtn(){
+    if(shopBtn){shopBtn.style.display=current===2?'inline-flex':'none';}
+  }
+  function goTo(idx){
+    if(idx>=total)idx=0;
+    if(idx<0)idx=total-1;
+    current=idx;
+    track.style.transform='translateX(-'+(current*100)+'%)';
+    updateDots();
+    updateShopBtn();
+  }
+  updateShopBtn();
+  function resetAuto(){
+    clearInterval(timer);
+    timer=setInterval(function(){goTo(current+1);},4500);
+  }
+
+  prevBtn.addEventListener('click',function(){goTo(current-1);resetAuto();});
+  nextBtn.addEventListener('click',function(){goTo(current+1);resetAuto();});
+
+  /* pause on hover */
+  var slider=document.getElementById('hsSlider');
+  if(slider){
+    slider.addEventListener('mouseenter',function(){clearInterval(timer);});
+    slider.addEventListener('mouseleave',resetAuto);
+  }
+
+  /* touch/swipe support */
+  var touchX=null;
+  track.addEventListener('touchstart',function(e){touchX=e.touches[0].clientX;},{passive:true});
+  track.addEventListener('touchend',function(e){
+    if(touchX===null)return;
+    var diff=touchX-e.changedTouches[0].clientX;
+    if(Math.abs(diff)>40){goTo(diff>0?current+1:current-1);resetAuto();}
+    touchX=null;
+  },{passive:true});
+
+  goTo(0);
+  resetAuto();
+})();
+</script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <script src="{% static 'js/script.js' %}"></script>

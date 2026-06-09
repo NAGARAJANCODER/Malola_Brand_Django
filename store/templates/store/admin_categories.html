@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Categories — Malola Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height:100vh}
+.ap-header{background:#0d2b6b;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(13,43,107,.35);position:sticky;top:0;z-index:100}
+.ap-brand{display:flex;align-items:center;gap:14px}
+.ap-logo-ring{width:40px;height:40px;border-radius:50%;background:#FECF0A;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.1rem;color:#0d2b6b;flex-shrink:0}
+.ap-brand-name{font-family:'Fredoka One',cursive;font-size:1.15rem;color:#fff;line-height:1}
+.ap-brand-sub{font-size:.68rem;color:rgba(255,255,255,.5);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.ap-header-actions{display:flex;align-items:center;gap:10px}
+.ap-hdr-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;text-decoration:none;border:none;transition:all .2s;letter-spacing:.04em}
+.ap-hdr-site{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.25)}
+.ap-hdr-site:hover{background:rgba(255,255,255,.22)}
+.ap-hdr-logout{background:#FECF0A;color:#0d2b6b}
+.ap-hdr-logout:hover{background:#ffd93d}
+.ap-tabs{display:flex;background:#0a1f52;padding:0 32px;border-bottom:1px solid rgba(255,255,255,.08);overflow-x:auto}
+.ap-tab{display:flex;align-items:center;gap:7px;white-space:nowrap;padding:13px 20px;color:rgba(255,255,255,.45);font-size:.75rem;font-weight:800;text-decoration:none;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;letter-spacing:.06em;text-transform:uppercase}
+.ap-tab:hover{color:rgba(255,255,255,.8)}
+.ap-tab.active{color:#FECF0A;border-bottom-color:#FECF0A}
+.ap-tab-badge{display:inline-flex;align-items:center;justify-content:center;background:#e53935;color:#fff;font-size:.6rem;font-weight:900;width:18px;height:18px;border-radius:50%}
+.ap-action-bar{display:flex;align-items:center;justify-content:space-between;padding:28px 32px 16px;flex-wrap:wrap;gap:14px}
+.ap-page-title{font-family:'Fredoka One',cursive;font-size:1.6rem;color:#0d2b6b}
+.ap-btn-primary{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;background:#FECF0A;color:#0d2b6b;border-radius:50px;font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:900;text-decoration:none;box-shadow:0 6px 20px rgba(254,207,10,.4);transition:transform .2s,box-shadow .2s;border:none;cursor:pointer;letter-spacing:.04em}
+.ap-btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(254,207,10,.5)}
+/* TABLE */
+.cat-table-wrap{padding:0 32px 40px}
+.cat-table{width:100%;border-collapse:collapse;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(13,43,107,.08)}
+.cat-table th{background:#f0f4ff;padding:14px 18px;font-size:.72rem;font-weight:900;color:rgba(13,43,107,.55);text-transform:uppercase;letter-spacing:.08em;text-align:left}
+.cat-table td{padding:14px 18px;border-top:1.5px solid rgba(13,43,107,.06);vertical-align:middle;font-size:.88rem;font-weight:700;color:#0d2b6b}
+.cat-table tr:hover td{background:#f8faff}
+.cat-name{font-family:'Fredoka One',cursive;font-size:1rem}
+.cat-desc{font-size:.78rem;color:rgba(13,43,107,.45);font-weight:600;margin-top:2px}
+.cat-status{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font-size:.68rem;font-weight:800}
+.cat-active{background:rgba(27,94,32,.12);color:#1b5e20}
+.cat-inactive{background:rgba(183,28,28,.1);color:#b71c1c}
+.cat-prod-count{font-family:'Fredoka One',cursive;font-size:1.1rem;color:#1565C0}
+.cat-actions{display:flex;gap:8px}
+.ap-btn-edit,.ap-btn-del{width:36px;height:36px;border-radius:10px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:transform .15s,opacity .15s;text-decoration:none}
+.ap-btn-edit{background:#e8f0fe;color:#1565C0}
+.ap-btn-edit:hover{background:#1565C0;color:#fff;transform:scale(1.1)}
+.ap-btn-del{background:#fce8e6;color:#c62828}
+.ap-btn-del:hover{background:#c62828;color:#fff;transform:scale(1.1)}
+.ap-empty{text-align:center;padding:80px 20px;color:rgba(13,43,107,.35)}
+.ap-empty i{font-size:3.5rem;margin-bottom:18px;display:block;color:rgba(13,43,107,.2)}
+.ap-empty h3{font-family:'Fredoka One',cursive;font-size:1.5rem;color:rgba(13,43,107,.5);margin-bottom:10px}
+.ap-empty p{font-size:.9rem;margin-bottom:28px}
+@media(max-width:768px){
+  .ap-action-bar{padding:20px 20px 12px}
+  .cat-table-wrap{padding:0 20px 32px}
+  .ap-header{padding:0 20px}
+  .ap-tabs{padding:0 20px}
+  .ap-brand-sub{display:none}
+  .cat-table th:nth-child(3),.cat-table td:nth-child(3){display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="ap-header">
+  <div class="ap-brand">
+    <div class="ap-logo-ring">M</div>
+    <div>
+      <div class="ap-brand-name">Malola Admin</div>
+      <div class="ap-brand-sub">Categories</div>
+    </div>
+  </div>
+  <div class="ap-header-actions">
+    <a href="/" class="ap-hdr-btn ap-hdr-site" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Site</a>
+    <form method="post" action="/api/logout/" style="display:inline">
+      {% csrf_token %}
+      <button type="submit" class="ap-hdr-btn ap-hdr-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </form>
+  </div>
+</header>
+
+<nav class="ap-tabs">
+  <a href="/manage/" class="ap-tab"><i class="fa-solid fa-box"></i> Products</a>
+  <a href="/manage/orders/" class="ap-tab">
+    <i class="fa-solid fa-bag-shopping"></i> Orders
+    {% if pending_orders %}<span class="ap-tab-badge">{{ pending_orders }}</span>{% endif %}
+  </a>
+  <a href="/manage/offers/" class="ap-tab"><i class="fa-solid fa-tag"></i> Offers / Deals</a>
+  <a href="/manage/categories/" class="ap-tab active"><i class="fa-solid fa-layer-group"></i> Categories</a>
+  <a href="/manage/videos/" class="ap-tab"><i class="fa-solid fa-film"></i> Videos</a>
+</nav>
+
+<div class="ap-action-bar">
+  <h1 class="ap-page-title"><i class="fa-solid fa-layer-group" style="font-size:1.2rem;color:#1565C0"></i> Product Categories</h1>
+  <a href="/manage/categories/add/" class="ap-btn-primary"><i class="fa-solid fa-plus"></i> Add Category</a>
+</div>
+
+<div class="cat-table-wrap">
+  {% if categories %}
+  <table class="cat-table">
+    <thead>
+      <tr>
+        <th>Category Name</th>
+        <th>Products</th>
+        <th>Sort Order</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cat in categories %}
+      <tr>
+        <td>
+          <div class="cat-name">{{ cat.name }}</div>
+          {% if cat.description %}<div class="cat-desc">{{ cat.description }}</div>{% endif %}
+        </td>
+        <td><span class="cat-prod-count">{{ cat.products.count }}</span></td>
+        <td>{{ cat.sort_order }}</td>
+        <td>
+          {% if cat.is_active %}
+          <span class="cat-status cat-active"><i class="fa-solid fa-circle-check"></i> Active</span>
+          {% else %}
+          <span class="cat-status cat-inactive"><i class="fa-solid fa-circle-xmark"></i> Inactive</span>
+          {% endif %}
+        </td>
+        <td>
+          <div class="cat-actions">
+            <a href="/manage/categories/edit/{{ cat.pk }}/" class="ap-btn-edit" title="Edit"><i class="fa-solid fa-pen"></i></a>
+            <form method="post" action="/manage/categories/delete/{{ cat.pk }}/"
+                  onsubmit="return confirm('Delete category \'{{ cat.name }}\'? Products in this category will become uncategorised.')">
+              {% csrf_token %}
+              <button type="submit" class="ap-btn-del" title="Delete"><i class="fa-solid fa-trash"></i></button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="ap-empty" style="background:#fff;border-radius:20px">
+    <i class="fa-solid fa-layer-group"></i>
+    <h3>No categories yet</h3>
+    <p>Create your first category like "Bites &amp; Crunchies" to start grouping your products.</p>
+    <a href="/manage/categories/add/" class="ap-btn-primary"><i class="fa-solid fa-plus"></i> Add First Category</a>
+  </div>
+  {% endif %}
+</div>
+
+</body>
+</html>

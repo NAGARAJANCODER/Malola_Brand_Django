@@ -15,7 +15,7 @@
 
 /* FILTER BAR */
 .shop-filter-bar{position:sticky;top:68px;z-index:100;background:#fff;border-bottom:2px solid rgba(13,43,107,.08);box-shadow:0 2px 16px rgba(13,43,107,.06)}
-.shop-filter-inner{max-width:1300px;margin:0 auto;padding:14px 24px;display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.shop-filter-inner{max-width:1600px;margin:0 auto;padding:14px 24px;display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
 .shop-filter-inner::-webkit-scrollbar{display:none}
 .shop-filter-btn{flex-shrink:0;padding:9px 22px;border-radius:999px;border:2px solid rgba(13,43,107,.14);background:#fff;color:var(--kids-dark);font-family:'Fredoka One',cursive;font-size:.9rem;cursor:pointer;transition:all .22s ease;white-space:nowrap}
 .shop-filter-btn:hover{border-color:var(--aqua);color:var(--aqua)}
@@ -23,7 +23,7 @@
 
 /* MAIN CONTAINER */
 .shop-main{background:var(--kids-bg);min-height:60vh;padding:50px 24px 80px}
-.shop-container{max-width:1300px;margin:0 auto}
+.shop-container{max-width:1600px;margin:0 auto}
 
 /* CATEGORY SECTION */
 .shop-section{margin-bottom:60px}
@@ -59,7 +59,7 @@
 
 /* SHOP FOOTER */
 .shop-footer{background:var(--kids-dark);color:#fff;padding:60px 24px 30px}
-.shop-footer-grid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:50px;margin-bottom:40px}
+.shop-footer-grid{max-width:1600px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:50px;margin-bottom:40px}
 .sf-brand-name{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--yellow);margin-bottom:10px}
 .sf-brand-sub{color:rgba(255,255,255,.6);font-size:.88rem;line-height:1.7;max-width:280px}
 .shop-footer h4{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--yellow);margin-bottom:16px}
@@ -70,7 +70,7 @@
 .sf-newsletter input::placeholder{color:rgba(255,255,255,.4)}
 .sf-newsletter button{width:100%;padding:11px;border-radius:10px;background:var(--yellow);border:none;color:var(--kids-dark);font-family:'Fredoka One',cursive;font-size:.95rem;cursor:pointer;transition:opacity .2s}
 .sf-newsletter button:hover{opacity:.88}
-.sf-bottom{max-width:1300px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:.8rem;color:rgba(255,255,255,.45)}
+.sf-bottom{max-width:1600px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:.8rem;color:rgba(255,255,255,.45)}
 
 /* EMPTY STATE */
 .shop-empty{text-align:center;padding:80px 20px;color:rgba(13,43,107,.4)}
@@ -126,4 +126,35 @@
   /* Footer bottom — center on tiny screens */
   .sf-bottom{flex-direction:column;align-items:center;text-align:center;gap:8px}
   .shop-footer{padding:40px 14px 24px}
+}
+
+/* ── LARGE SCREEN (1440px+) ── */
+@media(min-width:1440px){
+  .shop-container,.shop-filter-inner,.shop-footer-grid,.sf-bottom{max-width:min(1900px,92vw)}
+  .shop-grid{grid-template-columns:repeat(5,1fr)}
+  .shop-main{padding:60px 32px 100px}
+  .shop-filter-inner{padding:16px 32px}
+  .shop-section-head h2{font-size:2rem}
+}
+
+/* ── 4K / ULTRA-WIDE (2000px+) ── */
+@media(min-width:2000px){
+  .shop-container,.shop-filter-inner,.shop-footer-grid,.sf-bottom{max-width:min(2400px,94vw)}
+  .shop-grid{grid-template-columns:repeat(6,1fr);gap:28px}
+  .shop-hero{padding:130px 40px 80px}
+  .shop-hero h1{font-size:clamp(3.5rem,4vw,5rem)}
+  .shop-hero p{font-size:1.15rem;max-width:660px}
+  .shop-card-img-wrap{height:240px}
+  .shop-card-body{padding:20px}
+  .shop-card-name{font-size:1.1rem}
+  .shop-card-price{font-size:1.45rem}
+  .shop-section-head h2{font-size:2.2rem}
+  .shop-section-emoji{font-size:2.4rem}
+  .shop-filter-btn{font-size:1rem;padding:11px 26px}
+  .shop-main{padding:70px 40px 120px}
+  .shop-filter-inner{padding:18px 40px}
+  .sf-brand-name{font-size:2.1rem}
+  .sf-brand-sub{font-size:.95rem;max-width:340px}
+  .shop-footer h4{font-size:1.2rem}
+  .shop-footer ul a{font-size:.95rem}
 }

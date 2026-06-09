@@ -9,10 +9,33 @@ urlpatterns = [
     path('orders/', views.orders_page, name='orders'),
 
     # product admin panel
-    path('manage/',                      views.manage_products,     name='manage_products'),
-    path('manage/add/',                  views.manage_add_product,  name='manage_add'),
-    path('manage/edit/<int:pk>/',        views.manage_edit_product, name='manage_edit'),
-    path('manage/delete/<int:pk>/',      views.manage_delete_product, name='manage_delete'),
+    path('manage/',                         views.manage_products,      name='manage_products'),
+    path('manage/add/',                     views.manage_add_product,   name='manage_add'),
+    path('manage/edit/<int:pk>/',           views.manage_edit_product,  name='manage_edit'),
+    path('manage/delete/<int:pk>/',         views.manage_delete_product, name='manage_delete'),
+    path('manage/products/<int:pk>/gallery/<int:img_pk>/delete/', views.manage_delete_gallery_image, name='manage_delete_gallery_image'),
+    # orders admin
+    path('manage/orders/',                  views.manage_orders,        name='manage_orders'),
+    path('manage/orders/<int:pk>/status/',  views.manage_order_status,  name='manage_order_status'),
+    # offers admin
+    path('manage/offers/',                  views.manage_offers,        name='manage_offers'),
+    path('manage/offers/add/',              views.manage_add_offer,     name='manage_add_offer'),
+    path('manage/offers/edit/<int:pk>/',    views.manage_edit_offer,    name='manage_edit_offer'),
+    path('manage/offers/delete/<int:pk>/',  views.manage_delete_offer,  name='manage_delete_offer'),
+    # categories admin
+    path('manage/categories/',                     views.manage_categories,      name='manage_categories'),
+    path('manage/categories/add/',                 views.manage_add_category,    name='manage_add_category'),
+    path('manage/categories/edit/<int:pk>/',       views.manage_edit_category,   name='manage_edit_category'),
+    path('manage/categories/delete/<int:pk>/',     views.manage_delete_category, name='manage_delete_category'),
+    # reviews — admin view + customer submission
+    path('manage/reviews/',                 views.manage_reviews,       name='manage_reviews'),
+    path('manage/reviews/delete/<int:pk>/', views.manage_delete_review, name='manage_delete_review'),
+    path('review/<int:order_pk>/',          views.submit_review,        name='submit_review'),
+    # videos admin
+    path('manage/videos/',                  views.manage_videos,        name='manage_videos'),
+    path('manage/videos/upload/',           views.manage_upload_video,  name='manage_upload_video'),
+    path('manage/videos/delete/<int:pk>/',  views.manage_delete_video,  name='manage_delete_video'),
+    path('manage/videos/toggle/<int:pk>/',  views.manage_toggle_video,  name='manage_toggle_video'),
 
     # checkout & payment
     path('checkout/<int:order_id>/',     views.checkout_page,           name='checkout'),

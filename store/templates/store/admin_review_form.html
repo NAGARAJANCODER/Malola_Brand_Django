@@ -1,0 +1,264 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>{{ action }} Review — Malola Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height:100vh}
+.ap-header{background:#0d2b6b;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(13,43,107,.35);position:sticky;top:0;z-index:100}
+.ap-brand{display:flex;align-items:center;gap:14px}
+.ap-logo-ring{width:40px;height:40px;border-radius:50%;background:#FECF0A;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.1rem;color:#0d2b6b;flex-shrink:0}
+.ap-brand-name{font-family:'Fredoka One',cursive;font-size:1.15rem;color:#fff;line-height:1}
+.ap-brand-sub{font-size:.68rem;color:rgba(255,255,255,.5);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.ap-hdr-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;text-decoration:none;border:none;transition:all .2s}
+.ap-hdr-site{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.25)}
+.ap-hdr-site:hover{background:rgba(255,255,255,.22)}
+.ap-tabs{display:flex;background:#0a1f52;padding:0 32px;border-bottom:1px solid rgba(255,255,255,.08);overflow-x:auto}
+.ap-tab{display:flex;align-items:center;gap:7px;white-space:nowrap;padding:13px 20px;color:rgba(255,255,255,.45);font-size:.75rem;font-weight:800;text-decoration:none;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;letter-spacing:.06em;text-transform:uppercase}
+.ap-tab:hover{color:rgba(255,255,255,.8)}
+.ap-tab.active{color:#FECF0A;border-bottom-color:#FECF0A}
+.ap-tab-badge{display:inline-flex;align-items:center;justify-content:center;background:#e53935;color:#fff;font-size:.6rem;font-weight:900;width:18px;height:18px;border-radius:50%}
+
+/* FORM */
+.rv-container{max-width:780px;margin:0 auto;padding:32px;display:grid;grid-template-columns:220px 1fr;gap:32px;align-items:start}
+.rv-back{display:inline-flex;align-items:center;gap:8px;color:rgba(13,43,107,.55);font-size:.82rem;font-weight:800;text-decoration:none;margin-bottom:18px;transition:color .2s;grid-column:1/-1}
+.rv-back:hover{color:#0d2b6b}
+.rv-heading{font-family:'Fredoka One',cursive;font-size:2rem;color:#0d2b6b;margin-bottom:24px;grid-column:1/-1}
+.rv-error{background:#fce8e6;border:2px solid #e53935;border-radius:14px;padding:14px 20px;color:#b71c1c;font-weight:700;font-size:.88rem;margin-bottom:20px;display:flex;align-items:center;gap:10px;grid-column:1/-1}
+
+/* POLAROID PREVIEW */
+.rv-preview-col{}
+.rv-preview-label{font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:rgba(13,43,107,.4);margin-bottom:12px}
+.rv-polaroid-preview{
+  background:#fff;padding:10px 10px 0;
+  box-shadow:0 10px 40px rgba(0,0,0,.2);border-radius:2px;
+  position:relative;transform:rotate(-3deg);transition:transform .3s;
+}
+.rv-polaroid-preview:hover{transform:rotate(0)}
+.rv-pp-pin{width:16px;height:16px;border-radius:50%;background:#1565C0;position:absolute;top:-8px;left:50%;transform:translateX(-50%);box-shadow:0 3px 8px rgba(0,0,0,.3)}
+.rv-pp-photo{width:100%;height:180px;overflow:hidden;background:#e0e7ff;display:flex;align-items:center;justify-content:center;border-radius:1px}
+.rv-pp-photo img{width:100%;height:100%;object-fit:cover;object-position:top}
+.rv-pp-placeholder{font-family:'Fredoka One',cursive;font-size:3.5rem;color:rgba(13,43,107,.25)}
+.rv-pp-body{padding:10px 4px 14px}
+.rv-pp-text{font-size:.68rem;color:#333;line-height:1.5;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.rv-pp-name{font-family:'Fredoka One',cursive;font-size:.9rem;color:#c62828;text-transform:uppercase}
+.rv-pp-foot{height:28px;background:#FECF0A;margin:0 -10px;clip-path:polygon(0 100%,100% 100%,100% 20%,0 80%)}
+
+/* FIELDS */
+.rv-fields-col{display:flex;flex-direction:column;gap:16px}
+.rv-card{background:#fff;border-radius:20px;padding:24px;box-shadow:0 4px 20px rgba(13,43,107,.06)}
+.rv-card-title{font-family:'Fredoka One',cursive;font-size:1rem;color:#0d2b6b;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.rv-card-title i{color:#1565C0}
+.rv-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.rv-field:last-child{margin-bottom:0}
+.rv-label{font-size:.72rem;font-weight:900;color:rgba(13,43,107,.55);text-transform:uppercase;letter-spacing:.09em}
+.rv-input,.rv-textarea{width:100%;border:2px solid rgba(13,43,107,.12);border-radius:12px;padding:12px 16px;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;color:#0d2b6b;background:#fff;outline:none;transition:border-color .2s,box-shadow .2s}
+.rv-input:focus,.rv-textarea:focus{border-color:#FECF0A;box-shadow:0 0 0 3px rgba(254,207,10,.18)}
+.rv-textarea{resize:vertical;min-height:110px}
+/* photo upload */
+.rv-photo-drop{border:2.5px dashed rgba(13,43,107,.2);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:120px;position:relative;cursor:pointer;transition:border-color .2s,background .2s;overflow:hidden;background:#fff}
+.rv-photo-drop:hover{border-color:#FECF0A;background:#fffde7}
+.rv-photo-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.rv-photo-drop-text{text-align:center;color:rgba(13,43,107,.35);pointer-events:none}
+.rv-photo-drop-text i{font-size:2rem;display:block;margin-bottom:8px}
+.rv-photo-drop-text span{font-size:.78rem;font-weight:700}
+/* toggle */
+.rv-toggle-field{flex-direction:row;align-items:center;justify-content:space-between}
+.rv-toggle{position:relative;display:inline-block;width:52px;height:28px;flex-shrink:0}
+.rv-toggle input{opacity:0;width:0;height:0;position:absolute}
+.rv-toggle-slider{position:absolute;inset:0;background:rgba(13,43,107,.15);border-radius:999px;cursor:pointer;transition:background .25s}
+.rv-toggle-slider::before{content:'';position:absolute;height:22px;width:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .25s;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.rv-toggle input:checked + .rv-toggle-slider{background:#FECF0A}
+.rv-toggle input:checked + .rv-toggle-slider::before{transform:translateX(24px)}
+/* submit */
+.rv-submit-row{display:flex;gap:12px;margin-top:4px}
+.rv-btn-cancel{padding:13px 26px;border-radius:50px;border:2px solid rgba(13,43,107,.15);background:transparent;color:rgba(13,43,107,.6);font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:800;cursor:pointer;text-decoration:none;transition:all .2s}
+.rv-btn-cancel:hover{background:#f0f4ff}
+.rv-btn-submit{flex:1;padding:14px 30px;border-radius:50px;border:none;background:#0d2b6b;color:#FECF0A;font-family:'Fredoka One',cursive;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 8px 24px rgba(13,43,107,.3);transition:transform .2s,box-shadow .2s}
+.rv-btn-submit:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(13,43,107,.4)}
+
+@media(max-width:768px){
+  .rv-container{grid-template-columns:1fr;padding:20px 14px}
+  .rv-preview-col{display:flex;flex-direction:column;align-items:center}
+  .rv-polaroid-preview{max-width:200px}
+  .ap-header{padding:0 14px;height:56px}
+  .ap-brand-sub{display:none}
+  .ap-tabs{padding:0 14px}
+  .ap-tab{padding:10px 14px;font-size:.68rem}
+}
+</style>
+</head>
+<body>
+
+<header class="ap-header">
+  <div class="ap-brand">
+    <div class="ap-logo-ring">M</div>
+    <div>
+      <div class="ap-brand-name">Malola Admin</div>
+      <div class="ap-brand-sub">{{ action }} Review</div>
+    </div>
+  </div>
+  <a href="/manage/reviews/" class="ap-hdr-btn ap-hdr-site"><i class="fa-solid fa-arrow-left"></i> All Reviews</a>
+</header>
+
+<nav class="ap-tabs">
+  <a href="/manage/" class="ap-tab"><i class="fa-solid fa-box"></i> Products</a>
+  <a href="/manage/orders/" class="ap-tab">
+    <i class="fa-solid fa-bag-shopping"></i> Orders
+    {% if pending_orders %}<span class="ap-tab-badge">{{ pending_orders }}</span>{% endif %}
+  </a>
+  <a href="/manage/offers/" class="ap-tab"><i class="fa-solid fa-tag"></i> Offers / Deals</a>
+  <a href="/manage/categories/" class="ap-tab"><i class="fa-solid fa-layer-group"></i> Categories</a>
+  <a href="/manage/videos/" class="ap-tab"><i class="fa-solid fa-film"></i> Videos</a>
+  <a href="/manage/reviews/" class="ap-tab active"><i class="fa-solid fa-images"></i> Reviews</a>
+</nav>
+
+<form method="post" enctype="multipart/form-data" novalidate>
+{% csrf_token %}
+<div class="rv-container">
+  <a href="/manage/reviews/" class="rv-back"><i class="fa-solid fa-arrow-left"></i> Back to reviews</a>
+  <h1 class="rv-heading">{{ action }} Review</h1>
+
+  {% if error %}
+  <div class="rv-error"><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</div>
+  {% endif %}
+
+  <!-- LIVE POLAROID PREVIEW -->
+  <div class="rv-preview-col">
+    <div class="rv-preview-label"><i class="fa-solid fa-eye"></i> Live preview</div>
+    <div class="rv-polaroid-preview">
+      <div class="rv-pp-pin"></div>
+      <div class="rv-pp-photo" id="previewPhotoArea">
+        {% if review and review.photo %}
+        <img id="previewImg" src="{{ review.photo.url }}" alt="">
+        {% else %}
+        <div class="rv-pp-placeholder" id="previewInitial">?</div>
+        <img id="previewImg" src="" alt="" style="display:none">
+        {% endif %}
+      </div>
+      <div class="rv-pp-body">
+        <p class="rv-pp-text" id="previewText">{{ review.review_text|default:"Review text will appear here..." }}</p>
+        <div class="rv-pp-name" id="previewName">{{ review.name|default:"CUSTOMER NAME" }}</div>
+      </div>
+      <div class="rv-pp-foot"></div>
+    </div>
+  </div>
+
+  <!-- FIELDS -->
+  <div class="rv-fields-col">
+
+    <!-- Customer info -->
+    <div class="rv-card">
+      <div class="rv-card-title"><i class="fa-solid fa-user"></i> Customer Details</div>
+
+      <div class="rv-field">
+        <label class="rv-label">Customer Name *</label>
+        <input type="text" name="name" class="rv-input" id="nameInput"
+               placeholder="e.g. Priya Sharma"
+               value="{{ review.name|default:'' }}" required maxlength="100">
+      </div>
+
+      <div class="rv-field">
+        <label class="rv-label">Review Text *</label>
+        <textarea name="review_text" class="rv-textarea" id="reviewInput"
+                  placeholder="What did the customer say about Malola?" required>{{ review.review_text|default:'' }}</textarea>
+      </div>
+    </div>
+
+    <!-- Photo -->
+    <div class="rv-card">
+      <div class="rv-card-title"><i class="fa-solid fa-camera"></i> Customer Photo</div>
+      <div class="rv-field">
+        <label class="rv-label">Upload Photo <span style="text-transform:none;font-weight:700;color:rgba(13,43,107,.35)">— JPG / PNG recommended</span></label>
+        <div class="rv-photo-drop" id="photoDrop">
+          <div class="rv-photo-drop-text">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <span>Click or drag &amp; drop photo</span>
+          </div>
+          <input type="file" name="photo" id="photoInput" accept="image/*">
+        </div>
+        {% if review and review.photo %}
+        <div style="margin-top:8px;font-size:.72rem;color:rgba(13,43,107,.5)"><i class="fa-solid fa-circle-check" style="color:#2e7d32"></i> Current photo loaded — upload a new one to replace</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Visibility -->
+    <div class="rv-card">
+      <div class="rv-card-title"><i class="fa-solid fa-toggle-on"></i> Visibility</div>
+      <div class="rv-field rv-toggle-field">
+        <div>
+          <label class="rv-label" style="margin-bottom:3px">Show on site</label>
+          <div style="font-size:.78rem;color:rgba(13,43,107,.45);font-weight:600">Toggle off to temporarily hide this review</div>
+        </div>
+        <label class="rv-toggle">
+          <input type="checkbox" name="is_active" {% if not review or review.is_active %}checked{% endif %}>
+          <span class="rv-toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="rv-submit-row" style="margin-top:20px">
+        <a href="/manage/reviews/" class="rv-btn-cancel">Cancel</a>
+        <button type="submit" class="rv-btn-submit">
+          <i class="fa-solid fa-check"></i> {{ action }} Review
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</form>
+
+<script>
+const nameInput   = document.getElementById('nameInput');
+const reviewInput = document.getElementById('reviewInput');
+const photoInput  = document.getElementById('photoInput');
+const previewName = document.getElementById('previewName');
+const previewText = document.getElementById('previewText');
+const previewImg  = document.getElementById('previewImg');
+const previewInit = document.getElementById('previewInitial');
+
+nameInput.addEventListener('input', function(){
+  previewName.textContent = this.value.toUpperCase() || 'CUSTOMER NAME';
+  if(previewInit) previewInit.textContent = this.value.trim().charAt(0).toUpperCase() || '?';
+});
+reviewInput.addEventListener('input', function(){
+  previewText.textContent = this.value || 'Review text will appear here...';
+});
+photoInput.addEventListener('change', function(){
+  const file = this.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    previewImg.src = ev.target.result;
+    previewImg.style.display = 'block';
+    if(previewInit) previewInit.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+
+// drag-drop
+const drop = document.getElementById('photoDrop');
+['dragenter','dragover'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.style.borderColor='#FECF0A'; }));
+['dragleave','drop'].forEach(e => drop.addEventListener(e, () => drop.style.borderColor=''));
+drop.addEventListener('drop', function(e){
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if(!file || !file.type.startsWith('image/')) return;
+  const dt = new DataTransfer(); dt.items.add(file);
+  photoInput.files = dt.files;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    previewImg.src = ev.target.result; previewImg.style.display = 'block';
+    if(previewInit) previewInit.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+</script>
+</body>
+</html>

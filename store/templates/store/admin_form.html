@@ -12,17 +12,27 @@
 body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height:100vh}
 
 /* ── HEADER ── */
-.ap-header{background:#0d2b6b;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(13,43,107,.35);position:sticky;top:0;z-index:100}
+.ap-header{background:#0d2b6b;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(13,43,107,.35);position:sticky;top:0;z-index:200}
 .ap-brand{display:flex;align-items:center;gap:14px}
 .ap-logo-ring{width:40px;height:40px;border-radius:50%;background:#FECF0A;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.1rem;color:#0d2b6b;flex-shrink:0}
 .ap-brand-name{font-family:'Fredoka One',cursive;font-size:1.15rem;color:#fff;line-height:1}
 .ap-brand-sub{font-size:.68rem;color:rgba(255,255,255,.5);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.ap-header-actions{display:flex;align-items:center;gap:10px}
 .ap-hdr-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;text-decoration:none;border:none;transition:all .2s;letter-spacing:.04em}
 .ap-hdr-site{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.25)}
 .ap-hdr-site:hover{background:rgba(255,255,255,.22)}
+.ap-hdr-logout{background:#FECF0A;color:#0d2b6b}
+.ap-hdr-logout:hover{background:#ffd93d}
+
+/* ── NAV TABS ── */
+.ap-tabs{display:flex;background:#0a1f52;padding:0 32px;border-bottom:1px solid rgba(255,255,255,.08);overflow-x:auto;position:sticky;top:64px;z-index:199}
+.ap-tab{display:flex;align-items:center;gap:7px;white-space:nowrap;padding:13px 20px;color:rgba(255,255,255,.45);font-size:.75rem;font-weight:800;text-decoration:none;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;letter-spacing:.06em;text-transform:uppercase}
+.ap-tab:hover{color:rgba(255,255,255,.8)}
+.ap-tab.active{color:#FECF0A;border-bottom-color:#FECF0A}
+.ap-tab-badge{display:inline-flex;align-items:center;justify-content:center;background:#e53935;color:#fff;font-size:.6rem;font-weight:900;width:18px;height:18px;border-radius:50%}
 
 /* ── CONTAINER ── */
-.af-container{max-width:1100px;margin:0 auto;padding:32px}
+.af-container{max-width:1200px;margin:0 auto;padding:32px}
 
 /* ── BACK + TITLE ── */
 .af-back{display:inline-flex;align-items:center;gap:8px;color:rgba(13,43,107,.55);font-size:.82rem;font-weight:800;text-decoration:none;margin-bottom:18px;transition:color .2s}
@@ -33,47 +43,54 @@ body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height
 .af-error{background:#fce8e6;border:2px solid #e53935;border-radius:14px;padding:14px 20px;color:#b71c1c;font-weight:700;font-size:.88rem;margin-bottom:20px;display:flex;align-items:center;gap:10px}
 .af-error i{font-size:1.1rem;flex-shrink:0}
 
-/* ── FORM GRID ── */
-.af-form{}
+/* ── GRID ── */
 .af-grid{display:grid;grid-template-columns:300px 1fr;gap:28px;align-items:start}
 
-/* ── IMAGE COLUMN ── */
-.af-img-col{display:flex;flex-direction:column;gap:16px}
+/* ── IMAGE COLUMN (sticky) ── */
+.af-img-col{display:flex;flex-direction:column;gap:16px;position:sticky;top:calc(64px + 47px + 16px)}
 .af-section-title{font-size:.72rem;font-weight:900;color:rgba(13,43,107,.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
-
-.af-img-upload{
-  border:2.5px dashed rgba(13,43,107,.2);border-radius:20px;
-  background:#fff;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:240px;position:relative;cursor:pointer;
-  transition:border-color .2s,background .2s;overflow:hidden;
-}
+.af-img-upload{border:2.5px dashed rgba(13,43,107,.2);border-radius:20px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:220px;position:relative;cursor:pointer;transition:border-color .2s,background .2s;overflow:hidden}
 .af-img-upload:hover,.af-img-upload.drag-over{border-color:#FECF0A;background:#fffde7}
 .af-img-upload input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .af-img-placeholder{display:flex;flex-direction:column;align-items:center;gap:10px;color:rgba(13,43,107,.3);padding:30px;pointer-events:none;text-align:center}
 .af-img-placeholder i{font-size:2.8rem}
 .af-img-placeholder p{font-size:.82rem;font-weight:700}
 .af-img-placeholder span{font-size:.72rem}
-#imgPreview{width:100%;height:240px;object-fit:contain;padding:14px;display:block}
+#imgPreview{width:100%;height:220px;object-fit:contain;padding:14px;display:block}
 #imgPreview.hidden{display:none}
 .af-hint{font-size:.7rem;color:rgba(13,43,107,.4);font-weight:600;text-align:center}
 
-/* ── LIVE PREVIEW CARD ── */
+/* ── LIVE PREVIEW ── */
 .af-preview-wrap{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(13,43,107,.1);border:2px solid rgba(254,207,10,.3)}
 .af-preview-label{font-size:.62rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:rgba(13,43,107,.4);padding:10px 14px 4px;border-bottom:1px solid rgba(13,43,107,.06)}
-.af-preview-img-area{height:140px;display:flex;align-items:center;justify-content:center;position:relative;background:#f4f7ff;transition:background .3s}
-#previewImg{height:110px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(13,43,107,.15));display:none}
+.af-preview-img-area{height:130px;display:flex;align-items:center;justify-content:center;position:relative;background:#f4f7ff;transition:background .3s}
+#previewImg{height:100px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(13,43,107,.15));display:none}
 .af-preview-badge{position:absolute;top:8px;left:8px;font-size:.62rem;font-weight:800;color:#fff;padding:3px 10px;border-radius:999px;display:none}
 .af-preview-body{padding:10px 14px 14px}
-.af-preview-name{font-family:'Fredoka One',cursive;font-size:1rem;color:#0d2b6b;margin-bottom:4px}
-.af-preview-price{font-family:'Fredoka One',cursive;font-size:1.2rem;color:#1565C0}
+.af-preview-name{font-family:'Fredoka One',cursive;font-size:.95rem;color:#0d2b6b;margin-bottom:4px}
+.af-preview-price{font-family:'Fredoka One',cursive;font-size:1.1rem;color:#1565C0;display:flex;align-items:center;gap:6px}
+.af-preview-old{font-size:.78rem;color:rgba(13,43,107,.4);text-decoration:line-through;font-family:'Nunito',sans-serif;font-weight:700}
 
 /* ── FIELDS COLUMN ── */
 .af-fields-col{display:flex;flex-direction:column;gap:16px}
+
+/* ── FORM TAB BAR ── */
+.af-tabs-nav{background:#fff;border-radius:20px;padding:10px;box-shadow:0 4px 20px rgba(13,43,107,.06);display:flex;gap:4px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+.af-tab-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border-radius:12px;border:none;background:transparent;color:rgba(13,43,107,.5);font-family:'Nunito',sans-serif;font-size:.72rem;font-weight:800;cursor:pointer;transition:all .18s;white-space:nowrap;letter-spacing:.04em}
+.af-tab-btn:hover{background:#f0f4ff;color:#0d2b6b}
+.af-tab-btn.active{background:#0d2b6b;color:#FECF0A}
+.af-tab-btn i{font-size:.76rem}
+
+/* ── CARD ── */
 .af-card{background:#fff;border-radius:20px;padding:24px;box-shadow:0 4px 20px rgba(13,43,107,.06)}
 .af-card-title{font-family:'Fredoka One',cursive;font-size:1rem;color:#0d2b6b;margin-bottom:18px;display:flex;align-items:center;gap:8px}
 .af-card-title i{color:#1565C0}
 
+/* ── TAB PANES ── */
+.af-tab-pane{display:none}
+.af-tab-pane.active{display:flex;flex-direction:column;gap:16px}
+
+/* ── FIELDS ── */
 .af-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
 .af-field:last-child{margin-bottom:0}
 .af-label{font-size:.72rem;font-weight:900;color:rgba(13,43,107,.55);text-transform:uppercase;letter-spacing:.09em;display:flex;align-items:center;gap:6px}
@@ -82,24 +99,23 @@ body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height
 .af-input:focus,.af-select:focus,.af-textarea:focus{border-color:#FECF0A;box-shadow:0 0 0 3px rgba(254,207,10,.18)}
 .af-textarea{height:auto;padding:12px 16px;resize:vertical}
 .af-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230d2b6b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
-
 .af-field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.af-field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 
-/* slug wrapper */
+/* slug */
 .af-slug-wrap{display:flex;border:2px solid rgba(13,43,107,.12);border-radius:12px;overflow:hidden;transition:border-color .2s,box-shadow .2s;background:#fff}
 .af-slug-wrap:focus-within{border-color:#FECF0A;box-shadow:0 0 0 3px rgba(254,207,10,.18)}
 .af-slug-prefix{display:flex;align-items:center;padding:0 12px;background:#f0f4ff;color:rgba(13,43,107,.5);font-size:.78rem;font-weight:800;white-space:nowrap;border-right:1.5px solid rgba(13,43,107,.1)}
-.af-slug-input{border:none!important;border-radius:0!important;padding:0 14px!important;box-shadow:none!important;flex:1}
-.af-slug-input:focus{outline:none}
+.af-slug-input{border:none!important;border-radius:0!important;padding:0 14px!important;box-shadow:none!important;flex:1;min-width:0}
 
-/* color row */
+/* color pickers */
 .af-color-wrap{display:flex;align-items:center;gap:10px;height:48px;border:2px solid rgba(13,43,107,.12);border-radius:12px;padding:0 14px;background:#fff;transition:border-color .2s}
 .af-color-wrap:focus-within{border-color:#FECF0A}
 .af-color-input{width:34px;height:34px;border:none;border-radius:8px;cursor:pointer;background:none;padding:0}
 .af-color-label{font-size:.82rem;font-weight:800;color:rgba(13,43,107,.5);font-family:monospace}
 
-/* toggle */
-.af-toggle-field{flex-direction:row;align-items:center;justify-content:space-between}
+/* toggles */
+.af-toggle-field{display:flex;flex-direction:row!important;align-items:center;justify-content:space-between}
 .af-toggle{position:relative;display:inline-block;width:52px;height:28px;flex-shrink:0}
 .af-toggle input{opacity:0;width:0;height:0;position:absolute}
 .af-toggle-slider{position:absolute;inset:0;background:rgba(13,43,107,.15);border-radius:999px;cursor:pointer;transition:background .25s}
@@ -107,27 +123,66 @@ body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height
 .af-toggle input:checked + .af-toggle-slider{background:#FECF0A}
 .af-toggle input:checked + .af-toggle-slider::before{transform:translateX(24px)}
 
-/* submit row */
-.af-submit-row{display:flex;gap:12px;align-items:center;margin-top:4px}
+/* certifications */
+.af-cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.af-cert-item{display:flex;align-items:center;gap:12px;background:#f8faff;border-radius:14px;padding:12px 14px;border:2px solid transparent;transition:border-color .2s,background .2s}
+.af-cert-item:has(input:checked){border-color:rgba(254,207,10,.6);background:#fffde7}
+.af-cert-name{font-size:.82rem;font-weight:800;color:#0d2b6b}
+.af-cert-desc{font-size:.68rem;color:rgba(13,43,107,.45);font-weight:600;margin-top:1px}
+
+/* gallery */
+.af-gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;margin-bottom:14px}
+.af-gallery-item{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1;background:#f0f4ff}
+.af-gallery-item img{width:100%;height:100%;object-fit:cover;display:block}
+.af-gallery-del{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;border:none;background:rgba(183,28,28,.88);color:#fff;font-size:.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;padding:0}
+.af-gallery-del:hover{background:#c62828}
+
+/* SEO char counts */
+.af-char-count{font-size:.65rem;font-weight:700;color:rgba(13,43,107,.35);text-align:right;margin-top:3px}
+.af-char-count.warn{color:#e65100}
+.af-char-count.over{color:#c62828}
+
+/* submit */
+.af-submit-row{display:flex;gap:12px;align-items:center;margin-top:20px}
 .af-btn-cancel{padding:13px 26px;border-radius:50px;border:2px solid rgba(13,43,107,.15);background:transparent;color:rgba(13,43,107,.6);font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:800;cursor:pointer;text-decoration:none;transition:all .2s}
 .af-btn-cancel:hover{background:#f0f4ff;border-color:rgba(13,43,107,.25)}
 .af-btn-submit{flex:1;padding:14px 30px;border-radius:50px;border:none;background:#0d2b6b;color:#FECF0A;font-family:'Fredoka One',cursive;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 8px 24px rgba(13,43,107,.3);transition:transform .2s,box-shadow .2s}
 .af-btn-submit:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(13,43,107,.4)}
 
 /* ── RESPONSIVE ── */
-@media(max-width:900px){
+@media(max-width:960px){
   .af-container{padding:24px 20px}
   .af-grid{grid-template-columns:1fr;gap:20px}
-  .af-img-col{order:1}
-  .af-fields-col{order:2}
+  .af-img-col{position:static}
   .ap-header{padding:0 20px}
+  .ap-tabs{padding:0 20px}
 }
 @media(max-width:540px){
   .af-container{padding:18px 14px}
-  .af-field-row{grid-template-columns:1fr}
+  .af-field-row,.af-field-row-3{grid-template-columns:1fr}
   .ap-header{height:56px;padding:0 14px}
   .ap-brand-sub{display:none}
   .af-heading{font-size:1.6rem}
+  .ap-tab{padding:10px 14px;font-size:.68rem}
+  .af-cert-grid{grid-template-columns:1fr}
+}
+@media(min-width:1440px){
+  .ap-header{padding:0 clamp(32px,4vw,80px)}
+  .ap-tabs{padding:0 clamp(32px,4vw,80px)}
+  .af-container{max-width:1400px;padding:36px clamp(32px,4vw,80px)}
+  .af-grid{grid-template-columns:320px 1fr}
+  .ap-tab{font-size:.82rem;padding:14px 24px}
+}
+@media(min-width:2000px){
+  .ap-header{padding:0 100px;height:76px}
+  .ap-tabs{padding:0 100px;top:76px}
+  .ap-brand-name{font-size:1.4rem}
+  .ap-logo-ring{width:48px;height:48px;font-size:1.25rem}
+  .ap-hdr-btn{padding:10px 24px;font-size:.88rem}
+  .ap-tab{font-size:.9rem;padding:16px 30px}
+  .af-container{max-width:1800px;padding:40px 100px}
+  .af-grid{grid-template-columns:360px 1fr;gap:36px}
+  .af-heading{font-size:2.4rem}
 }
 </style>
 </head>
@@ -142,8 +197,25 @@ body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height
       <div class="ap-brand-sub">Product Manager</div>
     </div>
   </div>
-  <a href="/manage/" class="ap-hdr-btn ap-hdr-site"><i class="fa-solid fa-arrow-left"></i> All Products</a>
+  <div class="ap-header-actions">
+    <a href="/" class="ap-hdr-btn ap-hdr-site" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Site</a>
+    <form method="post" action="/api/logout/" style="display:inline">
+      {% csrf_token %}
+      <button type="submit" class="ap-hdr-btn ap-hdr-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </form>
+  </div>
 </header>
+
+<nav class="ap-tabs">
+  <a href="/manage/" class="ap-tab active"><i class="fa-solid fa-box"></i> Products</a>
+  <a href="/manage/orders/" class="ap-tab">
+    <i class="fa-solid fa-bag-shopping"></i> Orders
+    {% if pending_orders %}<span class="ap-tab-badge">{{ pending_orders }}</span>{% endif %}
+  </a>
+  <a href="/manage/offers/" class="ap-tab"><i class="fa-solid fa-tag"></i> Offers / Deals</a>
+  <a href="/manage/categories/" class="ap-tab"><i class="fa-solid fa-layer-group"></i> Categories</a>
+  <a href="/manage/videos/" class="ap-tab"><i class="fa-solid fa-film"></i> Videos</a>
+</nav>
 
 <div class="af-container">
   <a href="/manage/" class="af-back"><i class="fa-solid fa-arrow-left"></i> Back to products</a>
@@ -157,13 +229,14 @@ body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height
     {% csrf_token %}
     <div class="af-grid">
 
-      <!-- ── IMAGE + PREVIEW column ── -->
+      <!-- ── LEFT: Sticky image + live preview ── -->
       <div class="af-img-col">
 
         <div>
-          <div class="af-section-title">Product Image</div>
+          <div class="af-section-title">Main Product Image</div>
           <div class="af-img-upload" id="imgDrop">
-            <img id="imgPreview" src="{% if product and product.image %}{{ product.image.url }}{% endif %}"
+            <img id="imgPreview"
+                 src="{% if product and product.image %}{{ product.image.url }}{% endif %}"
                  class="{% if not product or not product.image %}hidden{% endif %}" alt="preview"/>
             <div class="af-img-placeholder" id="imgPlaceholder"
                  {% if product and product.image %}style="display:none"{% endif %}>
@@ -174,201 +247,549 @@ body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height
             <input type="file" name="image" id="imageInput" accept="image/*"
                    {% if not product %}required{% endif %}>
           </div>
-          <p class="af-hint" style="margin-top:8px">Recommended: 400 × 400 px, transparent background</p>
+          <p class="af-hint" style="margin-top:8px">Recommended: 400×400 px, transparent BG</p>
         </div>
 
-        <!-- live card preview -->
         <div class="af-preview-wrap">
-          <div class="af-preview-label"><i class="fa-solid fa-eye"></i> Live preview</div>
+          <div class="af-preview-label"><i class="fa-solid fa-eye"></i> Live card preview</div>
           <div class="af-preview-img-area" id="previewImgArea"
                style="background:{{ product.card_bg|default:'#f4f7ff' }}">
             <img id="previewImg"
                  src="{% if product and product.image %}{{ product.image.url }}{% endif %}"
                  {% if product and product.image %}style="display:block"{% endif %}/>
             <div class="af-preview-badge" id="previewBadge"
-                 style="background:{{ product.badge_color|default:'#1565C0' }};{% if product.badge %}display:block{% endif %}">
+                 style="background:{{ product.badge_color|default:'#1565C0' }};{% if product and product.badge %}display:block{% endif %}">
               {{ product.badge|default:'' }}
             </div>
           </div>
           <div class="af-preview-body">
             <div class="af-preview-name" id="previewName">{{ product.title|default:'Product Title' }}</div>
-            <div class="af-preview-price" id="previewPrice">₹{{ product.price|default:'0' }}</div>
+            <div class="af-preview-price">
+              <span id="previewPrice">&#8377;{{ product.price|default:'0' }}</span>
+              <span class="af-preview-old" id="previewOldPrice"
+                    {% if not product or not product.discount_price %}style="display:none"{% endif %}>
+                {% if product and product.discount_price %}&#8377;{{ product.discount_price }}{% endif %}
+              </span>
+            </div>
           </div>
         </div>
 
       </div><!-- /img col -->
 
-      <!-- ── FIELDS column ── -->
+      <!-- ── RIGHT: Form tabs ── -->
       <div class="af-fields-col">
 
-        <!-- Basic info card -->
-        <div class="af-card">
-          <div class="af-card-title"><i class="fa-solid fa-circle-info"></i> Basic Information</div>
+        <div class="af-tabs-nav" role="tablist">
+          <button type="button" class="af-tab-btn active" data-tab="basic"><i class="fa-solid fa-circle-info"></i> Basic Info</button>
+          <button type="button" class="af-tab-btn" data-tab="media"><i class="fa-solid fa-images"></i> Media</button>
+          <button type="button" class="af-tab-btn" data-tab="details"><i class="fa-solid fa-list-ul"></i> Details</button>
+          <button type="button" class="af-tab-btn" data-tab="nutrition"><i class="fa-solid fa-chart-pie"></i> Nutrition</button>
+          <button type="button" class="af-tab-btn" data-tab="recipe"><i class="fa-solid fa-utensils"></i> Recipe</button>
+          <button type="button" class="af-tab-btn" data-tab="health"><i class="fa-solid fa-leaf"></i> Health &amp; Certs</button>
+          <button type="button" class="af-tab-btn" data-tab="seo"><i class="fa-solid fa-magnifying-glass"></i> SEO</button>
+          <button type="button" class="af-tab-btn" data-tab="appearance"><i class="fa-solid fa-palette"></i> Appearance</button>
+        </div>
 
-          <div class="af-field">
-            <label class="af-label" for="titleInput">Product Title *</label>
-            <input type="text" name="title" id="titleInput" class="af-input"
-                   placeholder="e.g. Choco Millet Bites"
-                   value="{{ product.title|default:'' }}" required maxlength="200">
-          </div>
+        <!-- ═══ BASIC INFO ═══ -->
+        <div id="tab-basic" class="af-tab-pane active">
+          <div class="af-card">
+            <div class="af-card-title"><i class="fa-solid fa-circle-info"></i> Basic Information</div>
 
-          <div class="af-field">
-            <label class="af-label" for="slugInput">
-              URL Slug *
-              <span class="af-hint-inline">auto-filled from title — must be unique</span>
-            </label>
-            <div class="af-slug-wrap">
-              <span class="af-slug-prefix">/product/?id=</span>
-              <input type="text" name="slug" id="slugInput" class="af-input af-slug-input"
-                     placeholder="choco-millet-bites"
-                     value="{{ product.slug|default:'' }}" required
-                     pattern="[a-z0-9][a-z0-9\-]*" title="Lowercase letters, numbers and hyphens only">
-            </div>
-          </div>
-
-          <div class="af-field">
-            <label class="af-label" for="descInput">Description *</label>
-            <textarea name="description" id="descInput" class="af-textarea" rows="3"
-                      placeholder="Short description shown on product cards..." required>{{ product.description|default:'' }}</textarea>
-          </div>
-
-          <div class="af-field-row">
             <div class="af-field">
-              <label class="af-label" for="priceInput">Price (₹) *</label>
-              <input type="number" name="price" id="priceInput" class="af-input"
-                     placeholder="299" value="{{ product.price|default:'' }}"
-                     step="0.01" min="0" required>
+              <label class="af-label" for="titleInput">Product Title *</label>
+              <input type="text" name="title" id="titleInput" class="af-input"
+                     placeholder="e.g. Choco Millet Bites"
+                     value="{{ product.title|default:'' }}" required maxlength="200">
             </div>
+
             <div class="af-field">
-              <label class="af-label" for="catSelect">Section *</label>
-              <select name="category" id="catSelect" class="af-select">
-                <option value="our_products" {% if not product or product.category == 'our_products' %}selected{% endif %}>🛍 Our Products</option>
-                <option value="new_arrival"  {% if product and product.category == 'new_arrival' %}selected{% endif %}>🆕 New Arrival</option>
+              <label class="af-label" for="slugInput">URL Slug * <span class="af-hint-inline">auto-filled · must be unique</span></label>
+              <div class="af-slug-wrap">
+                <span class="af-slug-prefix">/product/?id=</span>
+                <input type="text" name="slug" id="slugInput" class="af-input af-slug-input"
+                       placeholder="choco-millet-bites"
+                       value="{{ product.slug|default:'' }}" required
+                       pattern="[a-z0-9][a-z0-9\-]*">
+              </div>
+            </div>
+
+            <div class="af-field">
+              <label class="af-label" for="shortDescInput">Short Description <span class="af-hint-inline">shown on cards</span></label>
+              <input type="text" name="short_description" id="shortDescInput" class="af-input"
+                     placeholder="e.g. Wholesome millet snack packed with natural goodness"
+                     value="{{ product.short_description|default:'' }}" maxlength="300">
+            </div>
+
+            <div class="af-field">
+              <label class="af-label" for="descInput">Description *</label>
+              <textarea name="description" id="descInput" class="af-textarea" rows="4"
+                        placeholder="Full product description..." required>{{ product.description|default:'' }}</textarea>
+            </div>
+
+            <div class="af-field-row">
+              <div class="af-field">
+                <label class="af-label" for="priceInput">Selling Price (&#8377;) *</label>
+                <input type="number" name="price" id="priceInput" class="af-input"
+                       placeholder="299" value="{{ product.price|default:'' }}" step="0.01" min="0" required>
+              </div>
+              <div class="af-field">
+                <label class="af-label" for="discountPriceInput">MRP / Original Price (&#8377;) <span class="af-hint-inline">strikethrough</span></label>
+                <input type="number" name="discount_price" id="discountPriceInput" class="af-input"
+                       placeholder="399" value="{{ product.discount_price|default:'' }}" step="0.01" min="0">
+              </div>
+            </div>
+
+            <div class="af-field-row">
+              <div class="af-field">
+                <label class="af-label" for="brandInput">Brand</label>
+                <input type="text" name="brand" id="brandInput" class="af-input"
+                       placeholder="e.g. Malola" value="{{ product.brand|default:'' }}" maxlength="100">
+              </div>
+              <div class="af-field">
+                <label class="af-label" for="skuInput">SKU / Product Code</label>
+                <input type="text" name="sku" id="skuInput" class="af-input"
+                       placeholder="e.g. MLM-001" value="{{ product.sku|default:'' }}" maxlength="100">
+              </div>
+            </div>
+
+            <div class="af-field-row">
+              <div class="af-field">
+                <label class="af-label" for="stockInput">Stock Quantity</label>
+                <input type="number" name="stock_quantity" id="stockInput" class="af-input"
+                       placeholder="100" value="{{ product.stock_quantity|default:'0' }}" min="0">
+              </div>
+              <div class="af-field">
+                <label class="af-label" for="catSelect">Section *</label>
+                <select name="category" id="catSelect" class="af-select">
+                  <option value="our_products" {% if not product or product.category == 'our_products' %}selected{% endif %}>Our Products</option>
+                  <option value="new_arrival" {% if product and product.category == 'new_arrival' %}selected{% endif %}>New Arrival</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="af-field">
+              <label class="af-label" for="prodCatSelect">Product Category <span class="af-hint-inline">e.g. Bites &amp; Crunchies — <a href="/manage/categories/" target="_blank" style="color:#1565C0;font-weight:700">Manage categories</a></span></label>
+              <select name="product_category" id="prodCatSelect" class="af-select">
+                <option value="">— No category —</option>
+                {% for cat in categories %}
+                <option value="{{ cat.pk }}" {% if product and product.product_category_id == cat.pk %}selected{% endif %}>{{ cat.name }}</option>
+                {% empty %}
+                <option disabled>No categories yet — add one first</option>
+                {% endfor %}
               </select>
             </div>
           </div>
         </div>
 
-        <!-- Product Details card -->
-        <div class="af-card">
-          <div class="af-card-title"><i class="fa-solid fa-list-ul"></i> Product Details</div>
+        <!-- ═══ MEDIA ═══ -->
+        <div id="tab-media" class="af-tab-pane">
 
-          <div class="af-field-row">
-            <div class="af-field">
-              <label class="af-label" for="prodTypeInput">Product Type <span class="af-hint-inline">shown on product page</span></label>
-              <input type="text" name="product_type" id="prodTypeInput" class="af-input"
-                     placeholder="e.g. Bites &amp; Crunchies"
-                     value="{{ product.product_type|default:'' }}" maxlength="100">
+          <div class="af-card">
+            <div class="af-card-title"><i class="fa-solid fa-images"></i> Gallery Images <span style="font-size:.72rem;font-weight:700;color:rgba(13,43,107,.35);font-family:'Nunito',sans-serif">— optional</span></div>
+
+            {% if gallery_images %}
+            <div class="af-section-title" style="margin-bottom:10px">Existing ({{ gallery_images|length }}) — click &times; to delete</div>
+            <div class="af-gallery-grid">
+              {% for img in gallery_images %}
+              <div class="af-gallery-item">
+                <img src="{{ img.image.url }}" alt="gallery {{ forloop.counter }}">
+                <form method="post" action="/manage/products/{{ product.pk }}/gallery/{{ img.pk }}/delete/"
+                      onsubmit="return confirm('Delete this gallery image?')" style="display:contents">
+                  {% csrf_token %}
+                  <button type="submit" class="af-gallery-del" title="Delete"><i class="fa-solid fa-xmark"></i></button>
+                </form>
+              </div>
+              {% endfor %}
             </div>
+            {% endif %}
+
             <div class="af-field">
-              <label class="af-label" for="weightsInput">Weight Options <span class="af-hint-inline">comma-separated</span></label>
-              <input type="text" name="weights" id="weightsInput" class="af-input"
-                     placeholder="100g,200g,500g"
-                     value="{{ product.weights|default:'100g,200g,500g' }}">
+              <label class="af-label">Add Gallery Images <span class="af-hint-inline">select multiple</span></label>
+              <input type="file" name="gallery_images" id="galleryInput" multiple accept="image/*" class="af-input"
+                     style="height:auto;padding:10px 14px;cursor:pointer">
             </div>
+            <div id="galleryPreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div>
           </div>
 
-          <div class="af-field">
-            <label class="af-label" for="ingredientsInput">Ingredients <span class="af-hint-inline">comma-separated</span></label>
-            <input type="text" name="ingredients" id="ingredientsInput" class="af-input"
-                   placeholder="Whole Millet, Natural Vanilla, Jaggery, Rice Flour, No Artificial Colours"
-                   value="{{ product.ingredients|default:'' }}">
+          <div class="af-card">
+            <div class="af-card-title"><i class="fa-solid fa-video"></i> Product Video <span style="font-size:.72rem;font-weight:700;color:rgba(13,43,107,.35);font-family:'Nunito',sans-serif">— optional</span></div>
+            <div class="af-field">
+              <label class="af-label">Upload Video <span class="af-hint-inline">MP4 / WebM &middot; max 50 MB</span></label>
+              <input type="file" name="video" id="videoInput" class="af-input"
+                     accept="video/mp4,video/webm,video/ogg"
+                     style="height:auto;padding:10px 14px;cursor:pointer">
+            </div>
+            {% if product and product.video %}
+            <div style="margin-top:10px">
+              <div class="af-section-title" style="margin-bottom:6px">Current Video</div>
+              <video id="videoPreview" src="{{ product.video.url }}" controls
+                     style="width:100%;max-height:200px;border-radius:14px;background:#000;display:block"></video>
+            </div>
+            {% else %}
+            <video id="videoPreview" controls
+                   style="width:100%;max-height:200px;border-radius:14px;background:#000;display:none;margin-top:10px"></video>
+            {% endif %}
+          </div>
+
+        </div>
+
+        <!-- ═══ PRODUCT DETAILS ═══ -->
+        <div id="tab-details" class="af-tab-pane">
+          <div class="af-card">
+            <div class="af-card-title"><i class="fa-solid fa-list-ul"></i> Product Details</div>
+
+            <div class="af-field-row">
+              <div class="af-field">
+                <label class="af-label">Product Type</label>
+                <input type="text" name="product_type" class="af-input"
+                       placeholder="e.g. Bites &amp; Crunchies"
+                       value="{{ product.product_type|default:'' }}" maxlength="100">
+              </div>
+              <div class="af-field">
+                <label class="af-label">Weight Options <span class="af-hint-inline">comma-separated</span></label>
+                <input type="text" name="weights" class="af-input"
+                       placeholder="100g,200g,500g"
+                       value="{{ product.weights|default:'100g,200g,500g' }}">
+              </div>
+            </div>
+
+            <div class="af-field">
+              <label class="af-label">Ingredients <span class="af-hint-inline">comma-separated</span></label>
+              <input type="text" name="ingredients" class="af-input"
+                     placeholder="Whole Millet, Natural Vanilla, Jaggery, Rice Flour"
+                     value="{{ product.ingredients|default:'' }}">
+            </div>
+
+            <div class="af-field-row">
+              <div class="af-field">
+                <label class="af-label">Package Size</label>
+                <input type="text" name="package_size" class="af-input"
+                       placeholder="e.g. 200g box" value="{{ product.package_size|default:'' }}" maxlength="100">
+              </div>
+              <div class="af-field">
+                <label class="af-label">Country of Origin</label>
+                <input type="text" name="country_of_origin" class="af-input"
+                       placeholder="India" value="{{ product.country_of_origin|default:'India' }}" maxlength="100">
+              </div>
+            </div>
+
+            <div class="af-field">
+              <label class="af-label">Shelf Life</label>
+              <input type="text" name="shelf_life" class="af-input"
+                     placeholder="e.g. 12 months from date of manufacture"
+                     value="{{ product.shelf_life|default:'' }}" maxlength="100">
+            </div>
+
+            <div class="af-field">
+              <label class="af-label">Storage Instructions</label>
+              <textarea name="storage_instructions" class="af-textarea" rows="2"
+                        placeholder="e.g. Store in a cool, dry place. Keep away from direct sunlight. Seal after opening.">{{ product.storage_instructions|default:'' }}</textarea>
+            </div>
+
+            <div class="af-field">
+              <label class="af-label">Manufacturer / Importer Details</label>
+              <textarea name="manufacturer_details" class="af-textarea" rows="3"
+                        placeholder="Name and full address of manufacturer or importer...">{{ product.manufacturer_details|default:'' }}</textarea>
+            </div>
           </div>
         </div>
 
-        <!-- Nutrition card -->
-        <div class="af-card">
-          <div class="af-card-title"><i class="fa-solid fa-chart-pie"></i> Nutrition (per 100g) <span style="font-size:.72rem;font-weight:700;color:rgba(13,43,107,.35);font-family:'Nunito',sans-serif">— optional</span></div>
+        <!-- ═══ NUTRITION ═══ -->
+        <div id="tab-nutrition" class="af-tab-pane">
+          <div class="af-card">
+            <div class="af-card-title"><i class="fa-solid fa-chart-pie"></i> Nutrition Facts <span style="font-size:.72rem;font-weight:700;color:rgba(13,43,107,.35);font-family:'Nunito',sans-serif">per 100g &mdash; optional</span></div>
 
-          <div class="af-field-row">
-            <div class="af-field">
-              <label class="af-label">Calories</label>
-              <input type="text" name="nut_calories" class="af-input" placeholder="e.g. 400 kcal"
-                     value="{{ product.nut_calories|default:'' }}">
+            <div class="af-field-row">
+              <div class="af-field">
+                <label class="af-label">Energy / Calories</label>
+                <input type="text" name="nut_calories" class="af-input" placeholder="e.g. 400 kcal"
+                       value="{{ product.nut_calories|default:'' }}">
+              </div>
+              <div class="af-field">
+                <label class="af-label">Protein</label>
+                <input type="text" name="nut_protein" class="af-input" placeholder="e.g. 7g"
+                       value="{{ product.nut_protein|default:'' }}">
+              </div>
             </div>
-            <div class="af-field">
-              <label class="af-label">Protein</label>
-              <input type="text" name="nut_protein" class="af-input" placeholder="e.g. 7g"
-                     value="{{ product.nut_protein|default:'' }}">
-            </div>
-          </div>
-          <div class="af-field-row">
-            <div class="af-field">
-              <label class="af-label">Fat</label>
-              <input type="text" name="nut_fat" class="af-input" placeholder="e.g. 12g"
-                     value="{{ product.nut_fat|default:'' }}">
-            </div>
-            <div class="af-field">
-              <label class="af-label">Carbs</label>
-              <input type="text" name="nut_carbs" class="af-input" placeholder="e.g. 64g"
-                     value="{{ product.nut_carbs|default:'' }}">
-            </div>
-          </div>
-          <div class="af-field" style="max-width:50%">
-            <label class="af-label">Fibre</label>
-            <input type="text" name="nut_fibre" class="af-input" placeholder="e.g. 6g"
-                   value="{{ product.nut_fibre|default:'' }}">
-          </div>
-        </div>
 
-        <!-- Reviews card -->
-        <div class="af-card">
-          <div class="af-card-title"><i class="fa-solid fa-star"></i> Ratings &amp; Reviews <span style="font-size:.72rem;font-weight:700;color:rgba(13,43,107,.35);font-family:'Nunito',sans-serif">— optional</span></div>
-
-          <div class="af-field-row">
-            <div class="af-field">
-              <label class="af-label">Rating <span class="af-hint-inline">0 – 5</span></label>
-              <input type="number" name="rating" class="af-input" placeholder="4.5"
-                     min="0" max="5" step="0.1"
-                     value="{{ product.rating|default:'4.5' }}">
+            <div class="af-field-row">
+              <div class="af-field">
+                <label class="af-label">Total Fat</label>
+                <input type="text" name="nut_fat" class="af-input" placeholder="e.g. 12g"
+                       value="{{ product.nut_fat|default:'' }}">
+              </div>
+              <div class="af-field">
+                <label class="af-label">Carbohydrates</label>
+                <input type="text" name="nut_carbs" class="af-input" placeholder="e.g. 64g"
+                       value="{{ product.nut_carbs|default:'' }}">
+              </div>
             </div>
-            <div class="af-field">
-              <label class="af-label">Reviews Count</label>
-              <input type="number" name="reviews_count" class="af-input" placeholder="0"
-                     min="0"
-                     value="{{ product.reviews_count|default:'0' }}">
+
+            <div class="af-field-row-3">
+              <div class="af-field">
+                <label class="af-label">Dietary Fibre</label>
+                <input type="text" name="nut_fibre" class="af-input" placeholder="e.g. 6g"
+                       value="{{ product.nut_fibre|default:'' }}">
+              </div>
+              <div class="af-field">
+                <label class="af-label">Sugar</label>
+                <input type="text" name="nut_sugar" class="af-input" placeholder="e.g. 8g"
+                       value="{{ product.nut_sugar|default:'' }}">
+              </div>
+              <div class="af-field">
+                <label class="af-label">Sodium</label>
+                <input type="text" name="nut_sodium" class="af-input" placeholder="e.g. 120mg"
+                       value="{{ product.nut_sodium|default:'' }}">
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Visual card -->
-        <div class="af-card">
-          <div class="af-card-title"><i class="fa-solid fa-palette"></i> Appearance</div>
+        <!-- ═══ RECIPE ═══ -->
+        <div id="tab-recipe" class="af-tab-pane">
+          <div class="af-card">
+            <div class="af-card-title"><i class="fa-solid fa-utensils"></i> Recipe <span style="font-size:.72rem;font-weight:700;color:rgba(13,43,107,.35);font-family:'Nunito',sans-serif">&mdash; optional</span></div>
 
-          <div class="af-field-row">
             <div class="af-field">
-              <label class="af-label" for="badgeInput">Badge Text <span class="af-hint-inline">optional</span></label>
-              <input type="text" name="badge" id="badgeInput" class="af-input"
-                     placeholder="e.g. NEW ✨ or HOT 🔥"
-                     value="{{ product.badge|default:'' }}" maxlength="30">
+              <label class="af-label">Recipe Name</label>
+              <input type="text" name="recipe_name" class="af-input"
+                     placeholder="e.g. Crispy Millet Ladoo"
+                     value="{{ product.recipe_name|default:'' }}" maxlength="200">
             </div>
+
+            <div class="af-field-row-3">
+              <div class="af-field">
+                <label class="af-label">Prep Time</label>
+                <input type="text" name="recipe_prep_time" class="af-input"
+                       placeholder="10 mins" value="{{ product.recipe_prep_time|default:'' }}" maxlength="50">
+              </div>
+              <div class="af-field">
+                <label class="af-label">Cook Time</label>
+                <input type="text" name="recipe_cook_time" class="af-input"
+                       placeholder="20 mins" value="{{ product.recipe_cook_time|default:'' }}" maxlength="50">
+              </div>
+              <div class="af-field">
+                <label class="af-label">Servings</label>
+                <input type="text" name="recipe_servings" class="af-input"
+                       placeholder="4 servings" value="{{ product.recipe_servings|default:'' }}" maxlength="50">
+              </div>
+            </div>
+
             <div class="af-field">
-              <label class="af-label">Badge Colour</label>
+              <label class="af-label">Ingredients <span class="af-hint-inline">one per line</span></label>
+              <textarea name="recipe_ingredients" class="af-textarea" rows="6"
+                        placeholder="1 cup Malola Millet Bites&#10;2 tbsp ghee&#10;3 tbsp jaggery powder&#10;1 tsp cardamom powder&#10;Chopped nuts (optional)">{{ product.recipe_ingredients|default:'' }}</textarea>
+            </div>
+
+            <div class="af-field">
+              <label class="af-label">Instructions <span class="af-hint-inline">step by step</span></label>
+              <textarea name="recipe_instructions" class="af-textarea" rows="7"
+                        placeholder="Step 1: Heat ghee in a heavy-bottomed pan over medium heat.&#10;Step 2: Add jaggery and stir until dissolved.&#10;Step 3: Mix in the millet and cardamom...">{{ product.recipe_instructions|default:'' }}</textarea>
+            </div>
+
+            <div class="af-field-row">
+              <div class="af-field">
+                <label class="af-label">Recipe Image <span class="af-hint-inline">optional</span></label>
+                {% if product and product.recipe_image %}
+                <div style="margin-bottom:8px">
+                  <img src="{{ product.recipe_image.url }}" alt="recipe image"
+                       style="max-width:100%;max-height:120px;border-radius:10px;object-fit:cover">
+                </div>
+                {% endif %}
+                <input type="file" name="recipe_image" class="af-input" accept="image/*"
+                       style="height:auto;padding:10px 14px;cursor:pointer">
+              </div>
+              <div class="af-field">
+                <label class="af-label">Recipe Video URL <span class="af-hint-inline">YouTube / Vimeo</span></label>
+                <input type="url" name="recipe_video_url" class="af-input"
+                       placeholder="https://youtube.com/watch?v=..."
+                       value="{{ product.recipe_video_url|default:'' }}">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ HEALTH & CERTIFICATIONS ═══ -->
+        <div id="tab-health" class="af-tab-pane">
+
+          <div class="af-card">
+            <div class="af-card-title"><i class="fa-solid fa-heart-pulse"></i> Health Benefits <span style="font-size:.72rem;font-weight:700;color:rgba(13,43,107,.35);font-family:'Nunito',sans-serif">&mdash; optional</span></div>
+            <div class="af-field">
+              <label class="af-label">Benefits <span class="af-hint-inline">one per line</span></label>
+              <textarea name="health_benefits" class="af-textarea" rows="6"
+                        placeholder="Rich in dietary fibre&#10;Supports healthy digestion&#10;No artificial preservatives&#10;Good source of plant-based protein&#10;Naturally sweetened with jaggery">{{ product.health_benefits|default:'' }}</textarea>
+            </div>
+          </div>
+
+          <div class="af-card">
+            <div class="af-card-title"><i class="fa-solid fa-certificate"></i> Certifications</div>
+            <div class="af-cert-grid">
+
+              <div class="af-cert-item">
+                <label class="af-toggle">
+                  <input type="checkbox" name="cert_organic" {% if product and product.cert_organic %}checked{% endif %}>
+                  <span class="af-toggle-slider"></span>
+                </label>
+                <div>
+                  <div class="af-cert-name">Organic Certified</div>
+                  <div class="af-cert-desc">NPOP / NOP / EU Organic</div>
+                </div>
+              </div>
+
+              <div class="af-cert-item">
+                <label class="af-toggle">
+                  <input type="checkbox" name="cert_non_gmo" {% if product and product.cert_non_gmo %}checked{% endif %}>
+                  <span class="af-toggle-slider"></span>
+                </label>
+                <div>
+                  <div class="af-cert-name">Non-GMO</div>
+                  <div class="af-cert-desc">Non-Genetically Modified</div>
+                </div>
+              </div>
+
+              <div class="af-cert-item">
+                <label class="af-toggle">
+                  <input type="checkbox" name="cert_vegan" {% if product and product.cert_vegan %}checked{% endif %}>
+                  <span class="af-toggle-slider"></span>
+                </label>
+                <div>
+                  <div class="af-cert-name">Vegan</div>
+                  <div class="af-cert-desc">100% Plant-Based</div>
+                </div>
+              </div>
+
+              <div class="af-cert-item">
+                <label class="af-toggle">
+                  <input type="checkbox" name="cert_halal" {% if product and product.cert_halal %}checked{% endif %}>
+                  <span class="af-toggle-slider"></span>
+                </label>
+                <div>
+                  <div class="af-cert-name">Halal Certified</div>
+                  <div class="af-cert-desc">Certified Halal</div>
+                </div>
+              </div>
+
+              <div class="af-cert-item">
+                <label class="af-toggle">
+                  <input type="checkbox" name="cert_iso" {% if product and product.cert_iso %}checked{% endif %}>
+                  <span class="af-toggle-slider"></span>
+                </label>
+                <div>
+                  <div class="af-cert-name">ISO Certified</div>
+                  <div class="af-cert-desc">ISO 22000 / FSSC 22000</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ SEO ═══ -->
+        <div id="tab-seo" class="af-tab-pane">
+          <div class="af-card">
+            <div class="af-card-title"><i class="fa-solid fa-magnifying-glass"></i> Search Engine Optimisation</div>
+
+            <div class="af-field">
+              <label class="af-label">Meta Title <span class="af-hint-inline">50&ndash;60 chars recommended</span></label>
+              <input type="text" name="seo_title" id="seoTitleInput" class="af-input"
+                     placeholder="Malola Choco Millet Bites &mdash; Healthy Snack"
+                     value="{{ product.seo_title|default:'' }}" maxlength="200">
+              <div class="af-char-count" id="seoTitleCount">{{ product.seo_title|default:''|length }}/200</div>
+            </div>
+
+            <div class="af-field">
+              <label class="af-label">Meta Description <span class="af-hint-inline">150&ndash;160 chars recommended</span></label>
+              <textarea name="seo_description" id="seoDescInput" class="af-textarea" rows="3"
+                        placeholder="Discover Malola Choco Millet Bites &mdash; a wholesome snack made with organic millet, jaggery and dark cocoa. No preservatives, no artificial colours.">{{ product.seo_description|default:'' }}</textarea>
+              <div class="af-char-count" id="seoDescCount">{{ product.seo_description|default:''|length }}/500</div>
+            </div>
+
+            <div class="af-field">
+              <label class="af-label">Meta Keywords <span class="af-hint-inline">comma-separated</span></label>
+              <input type="text" name="seo_keywords" class="af-input"
+                     placeholder="millet snack, healthy snack, organic, no preservatives"
+                     value="{{ product.seo_keywords|default:'' }}" maxlength="500">
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ APPEARANCE ═══ -->
+        <div id="tab-appearance" class="af-tab-pane">
+
+          <div class="af-card">
+            <div class="af-card-title"><i class="fa-solid fa-palette"></i> Appearance</div>
+
+            <div class="af-field-row">
+              <div class="af-field">
+                <label class="af-label" for="badgeInput">Badge Text <span class="af-hint-inline">optional</span></label>
+                <input type="text" name="badge" id="badgeInput" class="af-input"
+                       placeholder="e.g. NEW or HOT"
+                       value="{{ product.badge|default:'' }}" maxlength="30">
+              </div>
+              <div class="af-field">
+                <label class="af-label">Badge Colour</label>
+                <div class="af-color-wrap">
+                  <input type="color" name="badge_color" id="badgeColorInput" class="af-color-input"
+                         value="{{ product.badge_color|default:'#1565C0' }}">
+                  <span class="af-color-label" id="badgeColorLabel">{{ product.badge_color|default:'#1565C0' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="af-field">
+              <label class="af-label">Card Background Colour <span class="af-hint-inline">image area bg</span></label>
               <div class="af-color-wrap">
-                <input type="color" name="badge_color" id="badgeColorInput" class="af-color-input"
-                       value="{{ product.badge_color|default:'#1565C0' }}">
-                <span class="af-color-label" id="badgeColorLabel">{{ product.badge_color|default:'#1565C0' }}</span>
+                <input type="color" name="card_bg" id="cardBgInput" class="af-color-input"
+                       value="{{ product.card_bg|default:'#f4f7ff' }}">
+                <span class="af-color-label" id="cardBgLabel">{{ product.card_bg|default:'#f4f7ff' }}</span>
               </div>
             </div>
           </div>
 
-          <div class="af-field">
-            <label class="af-label">Card Background Colour <span class="af-hint-inline">image area</span></label>
-            <div class="af-color-wrap">
-              <input type="color" name="card_bg" id="cardBgInput" class="af-color-input"
-                     value="{{ product.card_bg|default:'#f4f7ff' }}">
-              <span class="af-color-label" id="cardBgLabel">{{ product.card_bg|default:'#f4f7ff' }}</span>
+          <div class="af-card">
+            <div class="af-card-title"><i class="fa-solid fa-tag"></i> Offer / Deal Group <span style="font-size:.72rem;font-weight:700;color:rgba(13,43,107,.35);font-family:'Nunito',sans-serif">&mdash; optional</span></div>
+            <div class="af-field">
+              <label class="af-label">Assign to Offer</label>
+              <select name="offer_group" id="offerGroupSelect" class="af-select">
+                <option value="">&#8212; No offer &#8212;</option>
+                {% for og in offer_groups %}
+                <option value="{{ og.pk }}"
+                  {% if product and product.offer_group_id == og.pk %}selected{% endif %}>
+                  {{ og.name }}{% if og.discount_pct %} ({{ og.discount_pct }}% off){% endif %}
+                </option>
+                {% endfor %}
+              </select>
+              {% if not offer_groups %}
+              <div class="af-hint-inline" style="margin-top:4px">No offer groups yet &mdash; <a href="/manage/offers/add/" style="color:#1565C0">create one first</a></div>
+              {% endif %}
             </div>
           </div>
+
+          <div class="af-card">
+            <div class="af-card-title"><i class="fa-solid fa-star"></i> Ratings &amp; Reviews <span style="font-size:.72rem;font-weight:700;color:rgba(13,43,107,.35);font-family:'Nunito',sans-serif">&mdash; optional override</span></div>
+            <div class="af-field-row">
+              <div class="af-field">
+                <label class="af-label">Rating <span class="af-hint-inline">0&ndash;5</span></label>
+                <input type="number" name="rating" class="af-input" placeholder="4.5"
+                       min="0" max="5" step="0.1" value="{{ product.rating|default:'4.5' }}">
+              </div>
+              <div class="af-field">
+                <label class="af-label">Reviews Count</label>
+                <input type="number" name="reviews_count" class="af-input" placeholder="0"
+                       min="0" value="{{ product.reviews_count|default:'0' }}">
+              </div>
+            </div>
+          </div>
+
         </div>
 
-        <!-- Publish card -->
+        <!-- ═══ VISIBILITY + SUBMIT (always visible) ═══ -->
         <div class="af-card">
           <div class="af-card-title"><i class="fa-solid fa-toggle-on"></i> Visibility</div>
           <div class="af-field af-toggle-field">
             <div>
-              <label class="af-label" style="margin-bottom:3px">Active — visible on site</label>
-              <div style="font-size:.78rem;color:rgba(13,43,107,.45);font-weight:600">Turn off to hide this product without deleting it</div>
+              <div class="af-label" style="margin-bottom:3px">Active &mdash; visible on site</div>
+              <div style="font-size:.78rem;color:rgba(13,43,107,.45);font-weight:600">Turn off to hide without deleting</div>
             </div>
             <label class="af-toggle">
               <input type="checkbox" name="is_active" id="activeToggle"
@@ -376,8 +797,7 @@ body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height
               <span class="af-toggle-slider"></span>
             </label>
           </div>
-
-          <div class="af-submit-row" style="margin-top:20px">
+          <div class="af-submit-row">
             <a href="/manage/" class="af-btn-cancel">Cancel</a>
             <button type="submit" class="af-btn-submit">
               <i class="fa-solid fa-check"></i> {{ action }} Product
@@ -385,24 +805,38 @@ body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height
           </div>
         </div>
 
-      </div><!-- /fields col -->
+      </div><!-- /fields-col -->
     </div><!-- /grid -->
   </form>
 </div>
 
 <script>
-// ── helpers ──────────────────────────────────────────────────────────────────
 const $ = id => document.getElementById(id);
 
-function setPreviewImg(src){
-  const el = $('previewImg');
-  el.src = src; el.style.display = 'block';
-}
+// ── TAB SWITCHING ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.af-tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.af-tab-btn').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.af-tab-pane').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+    history.replaceState(null, '', '#' + this.dataset.tab);
+  });
+});
+(function() {
+  const hash = location.hash.replace('#', '');
+  if (hash) {
+    const btn = document.querySelector('.af-tab-btn[data-tab="' + hash + '"]');
+    if (btn) btn.click();
+  }
+})();
 
-// ── image upload + preview ────────────────────────────────────────────────────
-$('imageInput').addEventListener('change', function(){
-  const file = this.files[0];
-  if(!file) return;
+// ── MAIN IMAGE: upload + drag-drop ────────────────────────────────────────────
+function setPreviewImg(src) {
+  const el = $('previewImg'); el.src = src; el.style.display = 'block';
+}
+$('imageInput').addEventListener('change', function() {
+  const file = this.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = ev => {
     $('imgPreview').src = ev.target.result;
@@ -412,18 +846,14 @@ $('imageInput').addEventListener('change', function(){
   };
   reader.readAsDataURL(file);
 });
-
-// drag-and-drop
 const drop = $('imgDrop');
 ['dragenter','dragover'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.add('drag-over'); }));
 ['dragleave','drop'].forEach(e => drop.addEventListener(e, () => drop.classList.remove('drag-over')));
-drop.addEventListener('drop', function(e){
+drop.addEventListener('drop', function(e) {
   e.preventDefault();
   const file = e.dataTransfer.files[0];
-  if(!file || !file.type.startsWith('image/')) return;
-  // assign to input (DataTransfer trick)
-  const dt = new DataTransfer();
-  dt.items.add(file);
+  if (!file || !file.type.startsWith('image/')) return;
+  const dt = new DataTransfer(); dt.items.add(file);
   $('imageInput').files = dt.files;
   const reader = new FileReader();
   reader.onload = ev => {
@@ -435,45 +865,79 @@ drop.addEventListener('drop', function(e){
   reader.readAsDataURL(file);
 });
 
-// ── title → slug auto-fill ────────────────────────────────────────────────────
-{% if not product %}  // only auto-fill for new products
-$('titleInput').addEventListener('input', function(){
-  const slug = this.value.toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .trim()
-    .replace(/\s+/g, '-');
-  $('slugInput').value = slug;
+// ── GALLERY PREVIEW ───────────────────────────────────────────────────────────
+const galleryInput = $('galleryInput');
+if (galleryInput) {
+  galleryInput.addEventListener('change', function() {
+    const preview = $('galleryPreview'); preview.innerHTML = '';
+    Array.from(this.files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const img = document.createElement('img');
+        img.src = ev.target.result;
+        img.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid rgba(13,43,107,.1)';
+        preview.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+}
+
+// ── SLUG AUTO-FILL (add only) ─────────────────────────────────────────────────
+{% if not product %}
+$('titleInput').addEventListener('input', function() {
+  $('slugInput').value = this.value.toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
   $('previewName').textContent = this.value || 'Product Title';
 });
 {% else %}
-$('titleInput').addEventListener('input', function(){
+$('titleInput').addEventListener('input', function() {
   $('previewName').textContent = this.value || 'Product Title';
 });
 {% endif %}
 
-// ── price live preview ────────────────────────────────────────────────────────
-$('priceInput').addEventListener('input', function(){
+// ── LIVE CARD PREVIEW ─────────────────────────────────────────────────────────
+$('priceInput').addEventListener('input', function() {
   $('previewPrice').textContent = '₹' + (this.value || '0');
 });
-
-// ── badge live preview ────────────────────────────────────────────────────────
-$('badgeInput').addEventListener('input', function(){
-  const b = $('previewBadge');
-  b.textContent = this.value;
+$('discountPriceInput').addEventListener('input', function() {
+  const old = $('previewOldPrice');
+  if (this.value) { old.textContent = '₹' + this.value; old.style.display = 'inline'; }
+  else { old.textContent = ''; old.style.display = 'none'; }
+});
+$('badgeInput').addEventListener('input', function() {
+  const b = $('previewBadge'); b.textContent = this.value;
   b.style.display = this.value ? 'block' : 'none';
 });
-
-// ── badge colour ──────────────────────────────────────────────────────────────
-$('badgeColorInput').addEventListener('input', function(){
+$('badgeColorInput').addEventListener('input', function() {
   $('badgeColorLabel').textContent = this.value;
   $('previewBadge').style.background = this.value;
 });
-
-// ── card bg colour ────────────────────────────────────────────────────────────
-$('cardBgInput').addEventListener('input', function(){
+$('cardBgInput').addEventListener('input', function() {
   $('cardBgLabel').textContent = this.value;
   $('previewImgArea').style.background = this.value;
 });
+
+// ── VIDEO PREVIEW ─────────────────────────────────────────────────────────────
+$('videoInput').addEventListener('change', function() {
+  const file = this.files[0]; if (!file) return;
+  const vid = $('videoPreview');
+  vid.src = URL.createObjectURL(file); vid.style.display = 'block';
+});
+
+// ── SEO CHAR COUNTS ───────────────────────────────────────────────────────────
+function initCharCount(inputId, countId, soft, hard) {
+  const el = document.getElementById(inputId), counter = document.getElementById(countId);
+  if (!el || !counter) return;
+  function update() {
+    const len = el.value.length;
+    counter.textContent = len + '/' + hard;
+    counter.className = 'af-char-count' + (len > hard ? ' over' : len > soft ? ' warn' : '');
+  }
+  el.addEventListener('input', update); update();
+}
+initCharCount('seoTitleInput', 'seoTitleCount', 60, 200);
+initCharCount('seoDescInput', 'seoDescCount', 160, 500);
 </script>
 </body>
 </html>

@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Write a Review — Malola</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height:100vh;display:flex;flex-direction:column}
+
+/* HEADER */
+.rv-header{background:#0d2b6b;padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.rv-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.rv-logo img{height:36px;object-fit:contain;filter:brightness(0) invert(1)}
+.rv-home-link{color:rgba(255,255,255,.6);font-size:.8rem;font-weight:800;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+.rv-home-link:hover{color:#FECF0A}
+
+/* PAGE */
+.rv-page{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:40px 20px 80px}
+.rv-box{background:#fff;border-radius:28px;box-shadow:0 8px 40px rgba(13,43,107,.1);max-width:520px;width:100%;overflow:hidden}
+
+/* TOP BANNER */
+.rv-banner{background:linear-gradient(135deg,#0d2b6b 0%,#1565C0 100%);padding:32px 32px 28px;text-align:center;position:relative}
+.rv-banner::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:24px;background:#fff;clip-path:ellipse(60% 100% at 50% 100%)}
+.rv-order-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(254,207,10,.2);border:1.5px solid rgba(254,207,10,.5);border-radius:999px;padding:5px 16px;font-size:.75rem;font-weight:800;color:#FECF0A;margin-bottom:14px}
+.rv-banner-title{font-family:'Fredoka One',cursive;font-size:1.9rem;color:#fff;margin-bottom:6px}
+.rv-banner-sub{font-size:.82rem;color:rgba(255,255,255,.65);font-weight:600}
+
+/* SUCCESS / ALREADY */
+.rv-result{padding:44px 32px;text-align:center}
+.rv-result-icon{font-size:4rem;margin-bottom:18px;display:block}
+.rv-result-title{font-family:'Fredoka One',cursive;font-size:1.7rem;margin-bottom:10px}
+.rv-result-sub{font-size:.88rem;color:rgba(13,43,107,.55);font-weight:600;margin-bottom:28px}
+.rv-result-btn{display:inline-flex;align-items:center;gap:8px;background:#FECF0A;color:#0d2b6b;border-radius:999px;padding:12px 28px;font-family:'Fredoka One',cursive;font-size:1rem;text-decoration:none;box-shadow:0 6px 20px rgba(254,207,10,.4);transition:transform .2s}
+.rv-result-btn:hover{transform:translateY(-2px)}
+
+/* FORM */
+.rv-form-body{padding:32px 32px 36px}
+.rv-error{background:#fce8e6;border:2px solid #e53935;border-radius:14px;padding:12px 18px;color:#b71c1c;font-weight:700;font-size:.85rem;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+
+/* STAR RATING */
+.rv-stars-label{font-size:.72rem;font-weight:900;color:rgba(13,43,107,.5);text-transform:uppercase;letter-spacing:.09em;margin-bottom:8px}
+.rv-stars{display:flex;gap:4px;margin-bottom:22px;flex-direction:row-reverse;justify-content:flex-end}
+.rv-stars input{display:none}
+.rv-stars label{font-size:2.2rem;color:#ddd;cursor:pointer;transition:color .15s;line-height:1}
+.rv-stars label:hover,.rv-stars label:hover~label,.rv-stars input:checked~label{color:#FECF0A}
+.rv-star-hint{font-size:.75rem;color:rgba(13,43,107,.4);font-weight:700;margin-left:8px;align-self:center}
+
+/* FIELDS */
+.rv-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.rv-label{font-size:.72rem;font-weight:900;color:rgba(13,43,107,.5);text-transform:uppercase;letter-spacing:.09em}
+.rv-input,.rv-textarea{width:100%;height:48px;border:2px solid rgba(13,43,107,.12);border-radius:14px;padding:0 16px;font-family:'Nunito',sans-serif;font-size:.92rem;font-weight:700;color:#0d2b6b;background:#fff;outline:none;transition:border-color .2s,box-shadow .2s}
+.rv-input:focus,.rv-textarea:focus{border-color:#FECF0A;box-shadow:0 0 0 3px rgba(254,207,10,.18)}
+.rv-textarea{height:auto;padding:12px 16px;resize:vertical;min-height:110px}
+
+/* PHOTO UPLOAD */
+.rv-photo-zone{border:2.5px dashed rgba(13,43,107,.2);border-radius:14px;padding:22px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:#fafcff;position:relative}
+.rv-photo-zone:hover{border-color:#FECF0A;background:#fffde7}
+.rv-photo-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.rv-photo-zone i{font-size:1.6rem;color:rgba(13,43,107,.25);margin-bottom:8px;display:block}
+.rv-photo-zone p{font-size:.8rem;color:rgba(13,43,107,.45);font-weight:700}
+.rv-photo-zone span{font-size:.7rem;color:rgba(13,43,107,.3);font-weight:600}
+.rv-photo-preview{width:100%;height:160px;object-fit:cover;border-radius:10px;display:none;margin-top:10px}
+
+/* ORDER SUMMARY */
+.rv-order-summary{background:#f8f9ff;border-radius:14px;padding:14px 16px;margin-bottom:20px;border:1.5px solid rgba(13,43,107,.07)}
+.rv-order-summary-label{font-size:.68rem;font-weight:900;color:rgba(13,43,107,.4);text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px}
+.rv-order-item{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;font-weight:700;color:#0d2b6b;padding:3px 0}
+.rv-order-item span{color:rgba(13,43,107,.45)}
+
+/* SUBMIT */
+.rv-submit{width:100%;padding:15px;border-radius:999px;border:none;background:#0d2b6b;color:#FECF0A;font-family:'Fredoka One',cursive;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 8px 24px rgba(13,43,107,.3);transition:transform .2s,box-shadow .2s;margin-top:8px}
+.rv-submit:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(13,43,107,.4)}
+
+@media(max-width:540px){
+  .rv-form-body,.rv-result{padding:24px 20px 30px}
+  .rv-banner{padding:24px 20px 22px}
+  .rv-banner-title{font-size:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<header class="rv-header">
+  <a href="/" class="rv-logo">
+    <img src="{% static 'images/Malola_Logo_600x300-01-1536x768.webp' %}" alt="Malola">
+  </a>
+  <a href="/" class="rv-home-link"><i class="fa-solid fa-house"></i> Back to Home</a>
+</header>
+
+<div class="rv-page">
+  <div class="rv-box">
+
+    <div class="rv-banner">
+      <div class="rv-order-chip"><i class="fa-solid fa-bag-shopping"></i> Order #{{ order.id }}</div>
+      <div class="rv-banner-title">Share Your Experience</div>
+      <div class="rv-banner-sub">{{ order.name }} — help other families discover Malola!</div>
+    </div>
+
+    {% if success %}
+    <div class="rv-result">
+      <span class="rv-result-icon">🎉</span>
+      <div class="rv-result-title" style="color:#2e7d32">Thank you, {{ order.name|title }}!</div>
+      <p class="rv-result-sub">Your review has been submitted and will appear on our home page soon.</p>
+      <a href="/" class="rv-result-btn"><i class="fa-solid fa-house"></i> Back to Home</a>
+    </div>
+
+    {% elif already_reviewed %}
+    <div class="rv-result">
+      <span class="rv-result-icon">✅</span>
+      <div class="rv-result-title" style="color:#1565C0">Already Reviewed!</div>
+      <p class="rv-result-sub">You've already shared your feedback for Order #{{ order.id }}. Thank you!</p>
+      <a href="/" class="rv-result-btn"><i class="fa-solid fa-house"></i> Back to Home</a>
+    </div>
+
+    {% else %}
+    <div class="rv-form-body">
+
+      {% if error %}
+      <div class="rv-error"><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</div>
+      {% endif %}
+
+      <!-- Order summary -->
+      <div class="rv-order-summary">
+        <div class="rv-order-summary-label">Your Order</div>
+        {% for item in order.items %}
+        <div class="rv-order-item">{{ item.name }} <span>× {{ item.qty }}</span></div>
+        {% endfor %}
+      </div>
+
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Star Rating -->
+        <div class="rv-stars-label">Your Rating *</div>
+        <div style="display:flex;align-items:center;margin-bottom:22px">
+          <div class="rv-stars">
+            <input type="radio" name="rating" id="s5" value="5" checked>
+            <label for="s5"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" name="rating" id="s4" value="4">
+            <label for="s4"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" name="rating" id="s3" value="3">
+            <label for="s3"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" name="rating" id="s2" value="2">
+            <label for="s2"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" name="rating" id="s1" value="1">
+            <label for="s1"><i class="fa-solid fa-star"></i></label>
+          </div>
+          <span class="rv-star-hint" id="starHint">Excellent!</span>
+        </div>
+
+        <!-- Name -->
+        <div class="rv-field">
+          <label class="rv-label" for="rvName">Your Name</label>
+          <input type="text" id="rvName" name="name" class="rv-input"
+                 value="{{ order.name }}" maxlength="100" required>
+        </div>
+
+        <!-- Review text -->
+        <div class="rv-field">
+          <label class="rv-label" for="rvText">Your Review *</label>
+          <textarea id="rvText" name="review_text" class="rv-textarea"
+                    placeholder="Tell us about your experience with Malola products..." required></textarea>
+        </div>
+
+        <!-- Photo upload -->
+        <div class="rv-field">
+          <label class="rv-label">Add a Photo <span style="text-transform:none;font-weight:600;color:rgba(13,43,107,.35)">(optional)</span></label>
+          <div class="rv-photo-zone" id="photoZone">
+            <input type="file" name="photo" id="photoInput" accept="image/*">
+            <i class="fa-solid fa-camera"></i>
+            <p>Click to upload your photo</p>
+            <span>JPG, PNG, WEBP · Max 10 MB</span>
+            <img id="photoPreview" class="rv-photo-preview" alt="Preview">
+          </div>
+        </div>
+
+        <button type="submit" class="rv-submit">
+          <i class="fa-solid fa-paper-plane"></i> Submit Review
+        </button>
+      </form>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<script>
+/* Star rating hint text */
+const hints = {5:'Excellent!', 4:'Very Good', 3:'Good', 2:'Fair', 1:'Poor'};
+document.querySelectorAll('.rv-stars input').forEach(inp => {
+  inp.addEventListener('change', () => {
+    document.getElementById('starHint').textContent = hints[inp.value] || '';
+  });
+});
+
+/* Photo preview */
+document.getElementById('photoInput')?.addEventListener('change', function(){
+  if(!this.files[0]) return;
+  const prev = document.getElementById('photoPreview');
+  prev.src = URL.createObjectURL(this.files[0]);
+  prev.style.display = 'block';
+  document.querySelector('#photoZone i').style.display = 'none';
+  document.querySelector('#photoZone p').textContent = this.files[0].name;
+  document.querySelector('#photoZone span').textContent = '';
+});
+</script>
+</body>
+</html>

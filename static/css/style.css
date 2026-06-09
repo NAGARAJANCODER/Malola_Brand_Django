@@ -17,16 +17,13 @@ html,body{width:100%;min-height:100%;overflow-x:hidden;font-family:'Nunito',sans
 #mainNav{
   position:fixed;top:0;left:0;right:0;z-index:900;
   display:flex;align-items:center;justify-content:space-between;
-  padding:14px 40px;
+  padding:14px clamp(20px,4vw,80px);
   transition:background .35s ease,box-shadow .35s ease,padding .35s ease;
 }
-/* .fa-solid, .fas{
-  color: white;
-} */
 #mainNav.nav-scrolled{
   background:#fff;
   box-shadow:0 4px 24px rgba(21,101,192,.18);
-  padding:10px 40px;
+  padding:30px clamp(20px,4vw,80px);
 }
 #mainNav.nav-scrolled .logo-text{color:#1a2408}
 #mainNav.nav-scrolled .logo-text small{color:rgba(26,36,8,.55)}
@@ -36,7 +33,46 @@ html,body{width:100%;min-height:100%;overflow-x:hidden;font-family:'Nunito',sans
 #mainNav.nav-scrolled .nav-cart-btn{color:#1a2408;border-color:rgba(26,36,8,.2)}
 #mainNav.nav-scrolled .btn-login{color:#1a2408;border-color:rgba(26,36,8,.3)}
 
-#hero{position:relative;width:100vw;height:100vh;overflow:hidden;transition:background 1s var(--trans);padding-top:0;background:#7fa83a}
+#hero{position:relative;width:100vw;height:100vh;overflow:hidden;background:#000}
+
+/* ── Hero image slider ── */
+.hs-slider{position:absolute;inset:0;width:100%;height:100%}
+.hs-track{display:flex;width:100%;height:100%;transition:transform .7s cubic-bezier(.4,0,.2,1)}
+.hs-slide{flex:0 0 100%;width:100%;height:100%}
+.hs-slide img{width:102%;object-fit:cover;object-position:center;display:block}
+
+/* Shop Now overlay button */
+.hs-shop-btn{
+  position:absolute;bottom:clamp(180px,28%,280px);left:87px;
+  z-index:50;
+  display:inline-flex;align-items:center;gap:10px;
+  background:#2d5a1b;color:#fff;
+  font-family:'Fredoka One',cursive;font-size:clamp(1rem,2vw,1.25rem);
+  padding:35px 120px;border-radius:50px;
+  text-decoration:none;
+  box-shadow:0 8px 32px rgba(0,0,0,.35);
+  transition:background .25s,transform .2s,box-shadow .2s;
+  border:2px solid rgba(255,255,255,.25);
+}
+.hs-shop-btn:hover{background:#1a3d0e;transform:translateY(-3px);box-shadow:0 14px 40px rgba(0,0,0,.45)}
+.hs-shop-btn i{font-size:.9em}
+
+/* Arrows */
+.hs-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:50;width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.88);color:#0d2b6b;border:none;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.25);transition:background .2s,transform .2s}
+.hs-arrow:hover{background:#FECF0A;transform:translateY(-50%) scale(1.1)}
+.hs-prev{left:24px}
+.hs-next{right:24px}
+
+/* Dots */
+.hs-dots{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:50}
+.hs-dot{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.5);border:2px solid rgba(255,255,255,.85);cursor:pointer;padding:0;transition:all .35s}
+.hs-dot.active{background:#FECF0A;border-color:#FECF0A;width:30px;border-radius:999px}
+
+@media(max-width:640px){
+  .hs-arrow{width:40px;height:40px;font-size:.9rem}
+  .hs-prev{left:12px}
+  .hs-next{right:12px}
+}
 
 .logo{display:flex;align-items:center;gap:10px;cursor:pointer}
 .logo-ring{width:42px;height:42px;border-radius:50%;background:rgba(26,36,8,.55);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;border:1.5px solid rgba(247,242,227,.25);color:var(--cream)}
@@ -198,7 +234,7 @@ html,body{width:100%;min-height:100%;overflow-x:hidden;font-family:'Nunito',sans
 .k-star{width:40px;height:40px;background:var(--yellow);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);animation-delay:var(--d,0s)}
 .k-circle{border-radius:50%;background:var(--aqua);opacity:.7;animation-delay:var(--d,0s)}
 .k-triangle{width:0;height:0;border-left:22px solid transparent;border-right:22px solid transparent;border-bottom:38px solid var(--yellow);animation-delay:var(--d,0s)}
-.kids-about-grid{max-width:1220px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:80px;position:relative;z-index:2}
+.kids-about-grid{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:80px;position:relative;z-index:2}
 .kids-about-text .k-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:var(--kids-dark);border-radius:999px;padding:8px 22px;font-family:'Fredoka One',cursive;font-size:.9rem;letter-spacing:.04em;margin-bottom:24px;box-shadow:4px 4px 0 rgba(0,0,0,.12)}
 .kids-about-text h2{font-family:'Fredoka One',cursive;font-size:clamp(2.4rem,5vw,4.2rem);color:var(--kids-dark);line-height:1.1;margin-bottom:20px}
 .kids-about-text h2 span{color:var(--aqua2)}
@@ -238,7 +274,7 @@ html,body{width:100%;min-height:100%;overflow-x:hidden;font-family:'Nunito',sans
 .k-section-head .k-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--aqua);color:#fff;border-radius:999px;padding:8px 22px;font-family:'Fredoka One',cursive;font-size:.9rem;margin-bottom:18px;box-shadow:4px 4px 0 rgba(0,0,0,.1)}
 .k-section-head h2{font-family:'Fredoka One',cursive;font-size:clamp(2.2rem,4.5vw,3.8rem);color:var(--kids-dark);line-height:1.1;margin-bottom:14px}
 .k-section-head p{font-size:1rem;color:rgba(13,43,107,.6);font-weight:600;line-height:1.7}
-.kids-product-grid{max-width:1220px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative;z-index:2}
+.kids-product-grid{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative;z-index:2}
 .k-prod-card{background:#fff;border-radius:28px;border:3px solid transparent;overflow:hidden;box-shadow:6px 6px 0 rgba(21,101,192,.18);transition:transform .35s var(--trans),box-shadow .35s,border-color .3s;cursor:pointer}
 .k-prod-card:hover{transform:translateY(-12px) rotate(-1deg);box-shadow:10px 10px 0 var(--yellow);border-color:var(--yellow)}
 .k-prod-img{height:220px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
@@ -369,7 +405,7 @@ html,body{width:100%;min-height:100%;overflow-x:hidden;font-family:'Nunito',sans
 
 /* BENEFITS */
 .kids-benefits{background:var(--kids-bg);padding:90px 60px;position:relative;overflow:hidden}
-.kids-benefits-grid{max-width:1220px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:80px}
+.kids-benefits-grid{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:80px}
 .kb-img-side{position:relative;height:500px;display:flex;align-items:center;justify-content:center}
 .kb-blob{display:none}
 
@@ -432,7 +468,7 @@ html,body{width:100%;min-height:100%;overflow-x:hidden;font-family:'Nunito',sans
 .kids-stats .k-section-head h2{color:var(--kids-dark)}
 .kids-stats .k-section-head p{color:rgba(13,43,107,.65)}
 .kids-stats .k-section-head .k-eyebrow{background:var(--kids-dark);color:var(--yellow)}
-.k-stat-grid{max-width:1220px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:22px;position:relative;z-index:2}
+.k-stat-grid{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:22px;position:relative;z-index:2}
 .k-stat-card{background:#fff;border-radius:24px;padding:36px 22px 28px;text-align:center;box-shadow:6px 6px 0 rgba(0,0,0,.12);transition:transform .3s var(--trans);border-top:4px solid var(--kids-dark)}
 .k-stat-card:hover{transform:translateY(-8px) rotate(1deg)}
 .k-stat-icon{width:60px;height:60px;border-radius:18px;background:var(--kids-dark);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.4rem;color:var(--yellow)}
@@ -440,21 +476,142 @@ html,body{width:100%;min-height:100%;overflow-x:hidden;font-family:'Nunito',sans
 .k-stat-label{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--cm);margin-bottom:10px}
 .k-stat-card p{font-size:.82rem;color:rgba(13,43,107,.55);line-height:1.65;font-weight:600}
 
-/* TESTIMONIALS */
-.kids-reviews{background:var(--kids-bg);padding:90px 60px;position:relative;overflow:hidden}
-.kids-reviews::before{content:"★ ✿ ♥ ☀ ★ ✿ ♥ ☀ ★ ✿ ♥ ☀ ★ ✿ ♥ ☀";position:absolute;top:20px;left:0;right:0;font-size:1.4rem;color:rgba(254,207,10,.3);letter-spacing:2rem;white-space:nowrap;overflow:hidden;animation:scrollSymbols 20s linear infinite;pointer-events:none}
-.k-review-card{background:#fff;border-radius:24px;padding:32px 26px;border:3px solid rgba(254,207,10,.3);box-shadow:5px 5px 0 rgba(21,101,192,.15);transition:transform .35s var(--trans),box-shadow .35s,border-color .3s;margin:8px 10px 20px}
-.k-review-card:hover{transform:translateY(-8px) rotate(-0.5deg);box-shadow:8px 8px 0 var(--yellow);border-color:var(--yellow)}
-.k-quote{font-family:'Fredoka One',cursive;font-size:4rem;color:rgba(254,207,10,.4);line-height:1;margin-bottom:8px}
-.k-review-text{font-size:.95rem;line-height:1.8;color:rgba(13,43,107,.7);font-weight:600;font-style:italic;margin-bottom:22px}
-.k-review-footer{display:flex;align-items:center;gap:12px}
-.k-avatar{width:46px;height:46px;border-radius:50%;font-family:'Fredoka One',cursive;font-size:1.2rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:3px solid var(--yellow)}
-.k-review-name{font-family:'Fredoka One',cursive;font-size:.95rem;color:var(--kids-dark)}
-.k-stars{color:var(--yellow);font-size:.88rem;margin-top:2px}
+/* ═══ REVIEW CAROUSEL ═══ */
+.kids-reviews{background:#FECF0A;padding:70px 0 60px;position:relative;overflow:hidden}
+
+/* Carousel layout — full width */
+.rv-wrap{display:flex;align-items:center;gap:16px;padding:0 32px;margin:32px 0 0;width:100%;box-sizing:border-box}
+.rv-viewport{overflow:hidden;flex:1;min-width:0}
+.rv-track{display:flex;gap:20px;transition:transform .45s cubic-bezier(.4,0,.2,1);will-change:transform}
+
+/* Cards — 3 visible on desktop (allows scrolling through 5) */
+.rv-card{
+  flex:0 0 calc((100% - 40px) / 3);
+  background:#fff;border-radius:20px;padding:30px 26px 24px;
+  box-shadow:0 6px 28px rgba(13,43,107,.1);
+  display:flex;flex-direction:column;gap:14px;
+}
+.rv-card-quote{font-family:Georgia,serif;font-size:3.5rem;color:#FECF0A;line-height:.8;margin-bottom:-6px}
+.rv-card-text{font-size:.9rem;font-weight:600;color:rgba(13,43,107,.75);line-height:1.78;margin:0;flex:1}
+.rv-card-footer{display:flex;align-items:center;gap:14px;margin-top:auto;padding-top:18px;border-top:1.5px dashed rgba(13,43,107,.1)}
+.rv-card-avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.3rem;color:#fff;flex-shrink:0}
+.rv-card-name{font-weight:800;font-size:.88rem;color:#0d2b6b}
+.rv-card-stars{color:#FECF0A;font-size:.82rem;letter-spacing:2px;margin-top:2px}
+
+/* Arrow buttons */
+.rv-arrow{width:48px;height:48px;border-radius:50%;background:#0d2b6b;color:#FECF0A;border:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s,transform .15s;box-shadow:0 4px 16px rgba(13,43,107,.25)}
+.rv-arrow:hover{background:#1565C0;transform:scale(1.08)}
+
+/* Dot indicators */
+.rv-dots{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:28px}
+.rv-dot{width:9px;height:9px;border-radius:50%;background:rgba(13,43,107,.25);cursor:pointer;border:none;padding:0;transition:all .3s}
+.rv-dot.active{background:#0d2b6b;width:26px;border-radius:999px}
+
+/* Responsive */
+@media(max-width:900px){
+  .rv-card{flex:0 0 calc((100% - 20px) / 2)}
+}
+@media(max-width:640px){
+  .rv-wrap{padding:0 16px;gap:10px}
+  .rv-card{flex:0 0 100%}
+  .rv-arrow{width:36px;height:36px;font-size:.85rem}
+}
+@media(max-width:420px){
+  .rv-card{flex:0 0 100%}
+}
+
+/* ── CSS marquee for reviews ── */
+.k-reviews-marquee{overflow:hidden;width:100%}
+.k-reviews-track{
+  display:flex;
+  align-items:flex-end;
+  width:max-content;
+  gap:28px;
+  padding:30px 14px 50px;
+  animation:reviewsScroll 55s linear infinite;
+}
+.k-reviews-track:hover{animation-play-state:paused}
+@keyframes reviewsScroll{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+
+/* Each slide: give room for tilt + pin shadow */
+.k-pol-slide{
+  display:flex;
+  align-items:flex-end;
+  padding-top:18px;
+}
+
+/* POLAROID CARD */
+.k-polaroid{
+  width:185px;background:#fff;
+  padding:10px 10px 0;
+  border-radius:2px;
+  box-shadow:0 10px 40px rgba(0,0,0,.22),0 2px 8px rgba(0,0,0,.1);
+  position:relative;
+  transition:transform .35s ease,box-shadow .35s;
+  flex-shrink:0;
+}
+.k-pol-l{transform:rotate(-2.5deg)}
+.k-pol-r{transform:rotate(2deg)}
+.k-polaroid:hover{transform:rotate(0deg) scale(1.06) translateY(-12px)!important;box-shadow:0 24px 60px rgba(0,0,0,.28);z-index:10}
+
+.k-pol-pin{
+  width:18px;height:18px;border-radius:50%;
+  position:absolute;top:-9px;left:50%;transform:translateX(-50%);
+  z-index:3;box-shadow:0 3px 10px rgba(0,0,0,.35);
+}
+
+.k-pol-photo{
+  width:165px;height:185px;
+  overflow:hidden;background:#e0e0e0;border-radius:1px;
+}
+.k-pol-photo img{
+  width:100%;height:100%;object-fit:cover;
+  object-position:top center;display:block;
+}
+.k-pol-avatar{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fredoka One',cursive;font-size:4rem;color:rgba(255,255,255,.85);
+}
+
+.k-pol-body{padding:10px 4px 14px}
+.k-pol-text{
+  font-size:.7rem;color:#333;line-height:1.55;font-weight:600;
+  margin-bottom:9px;
+  display:-webkit-box;-webkit-line-clamp:5;
+  -webkit-box-orient:vertical;overflow:hidden;
+}
+.k-pol-name{
+  font-family:'Fredoka One',cursive;font-size:.9rem;
+  color:#c62828;text-transform:uppercase;letter-spacing:.05em;
+}
+
+.k-pol-foot{
+  height:30px;background:#FECF0A;
+  margin:0 -10px;
+  clip-path:polygon(0 100%,100% 100%,100% 15%,0 75%);
+}
+
+@media(max-width:768px){
+  .kids-reviews{padding:60px 0 40px}
+  .k-reviews-track{gap:20px;padding:24px 10px 44px;animation-duration:45s}
+  .k-polaroid{width:165px}
+  .k-pol-photo{width:145px;height:165px}
+}
+@media(max-width:480px){
+  .k-reviews-track{gap:16px;padding:20px 8px 38px;animation-duration:38s}
+  .k-polaroid{width:148px}
+  .k-pol-photo{width:128px;height:145px}
+  .k-pol-text{font-size:.65rem;-webkit-line-clamp:4}
+  .k-pol-name{font-size:.8rem}
+}
 
 /* GALLERY */
 .kids-gallery{background:#fffde7;padding:90px 60px;position:relative;overflow:hidden}
-.k-gallery-grid{max-width:1220px;margin:0 auto;display:grid;grid-template-columns:1.1fr .85fr 1.05fr;grid-auto-rows:250px;gap:18px}
+.k-gallery-grid{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:1.1fr .85fr 1.05fr;grid-auto-rows:250px;gap:18px}
 .k-gal-item{position:relative;border-radius:24px;overflow:hidden;background:#fff;box-shadow:5px 5px 0 rgba(254,207,10,.3);border:3px solid transparent;transition:transform .4s var(--trans),border-color .3s,box-shadow .3s}
 .k-gal-item:hover{transform:scale(1.04) rotate(-1deg);border-color:var(--yellow);box-shadow:8px 8px 0 var(--yellow)}
 .k-gal-item.tall{grid-row:span 2}
@@ -468,7 +625,7 @@ html,body{width:100%;min-height:100%;overflow-x:hidden;font-family:'Nunito',sans
 /* FOOTER */
 .kids-footer{background:#0d2b6b;color:var(--cream);padding:120px 60px 50px;position:relative;overflow:hidden}
 .kids-footer::before{content:"";position:absolute;top:-80px;left:50%;width:120vw;height:160px;border-radius:50%;background:var(--kids-bg);transform:translateX(-50%)}
-.k-footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;max-width:1220px;margin:0 auto 60px}
+.k-footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;max-width:1440px;margin:0 auto 60px}
 .k-footer-logo{display:flex;align-items:center;gap:12px;margin-bottom:22px}
 .kids-footer p{color:rgba(247,242,227,.62);line-height:1.82;max-width:380px;margin-bottom:28px;font-size:.95rem;font-weight:600}
 .k-social-links{display:flex;gap:12px}
@@ -480,7 +637,7 @@ html,body{width:100%;min-height:100%;overflow-x:hidden;font-family:'Nunito',sans
 .k-footer-form input::placeholder{color:rgba(247,242,227,.4)}
 .k-footer-form button{height:52px;border:0;border-radius:999px;background:var(--yellow);color:var(--kids-dark);font-family:'Fredoka One',cursive;font-size:1.1rem;letter-spacing:.04em;cursor:pointer;box-shadow:0 8px 28px rgba(254,207,10,.3);transition:transform .25s,box-shadow .25s;display:flex;align-items:center;justify-content:center;gap:10px}
 .k-footer-form button:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 16px 44px rgba(254,207,10,.4)}
-.k-footer-bottom{border-top:2px dashed rgba(255,255,255,.1);padding-top:28px;max-width:1220px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;font-size:.78rem;color:rgba(247,242,227,.38);font-weight:700}
+.k-footer-bottom{border-top:2px dashed rgba(255,255,255,.1);padding-top:28px;max-width:1440px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;font-size:.78rem;color:rgba(247,242,227,.38);font-weight:700}
 .k-footer-links{display:flex;gap:24px}
 .k-footer-links a{color:rgba(247,242,227,.38);text-decoration:none;transition:color .2s;font-weight:700}
 .k-footer-links a:hover{color:var(--yellow)}
@@ -553,7 +710,7 @@ html,body{width:100%;min-height:100%;overflow-x:hidden;font-family:'Nunito',sans
   .nav-search-box.open{width:180px;right:-40px}
   .nav-search-results{width:240px;right:-40px}
 
-  /* HERO — stack layout */
+  /* HERO */
   #hero{height:80vh}
   .side-cup{display:none}
   #bgWord{font-size:clamp(70px,22vw,110px)}
@@ -1305,4 +1462,107 @@ html,body{width:100%;min-height:100%;overflow-x:hidden;font-family:'Nunito',sans
   .mob-menu{width:min(290px,92vw)}
   .mob-nav-links li a{font-size:.85rem}
   .mob-signup-btn,.mob-login-btn{padding:10px;font-size:.8rem}
+}
+
+/* ══ STATS TICKER (below hero) ══ */
+.stats-ticker{
+  width:100%;background:#73cedd;overflow:hidden;
+  border-top:3px solid #FECF0A;border-bottom:3px solid #FECF0A;
+  position:relative;z-index:10;
+}
+.ticker-track{
+  display:flex;align-items:center;white-space:nowrap;
+  width:max-content;
+  animation:tickerScroll 32s linear infinite;
+}
+.ticker-track:hover{animation-play-state:paused}
+@keyframes tickerScroll{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+.ticker-item{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:40px 28px;flex-shrink:0;
+}
+.ticker-num{
+  font-family:'Fredoka One',cursive;font-size:1.25rem;
+  color:#FECF0A;letter-spacing:.02em;
+}
+.ticker-label{
+  font-family:'Nunito',sans-serif;font-size:.82rem;font-weight:800;
+  color:#fff;letter-spacing:.06em;text-transform:uppercase;
+}
+.ticker-sep{
+  color:#FECF0A;font-size:.9rem;padding:0 6px;
+  flex-shrink:0;opacity:.55;
+}
+@media(max-width:600px){
+  .ticker-item{padding:18px 18px}
+  .ticker-num{font-size:1.05rem}
+  .ticker-label{font-size:.72rem}
+}
+
+/* ══ LARGE SCREENS (1440px+) ══ */
+@media(min-width:1440px){
+  .kids-gallery{padding:90px clamp(60px,6vw,120px)}
+  .kids-footer{padding:120px clamp(60px,6vw,120px) 60px}
+  .kids-video .k-section-head{padding:0 clamp(60px,6vw,120px)}
+  .k-section-head{padding:0 clamp(20px,4vw,60px)}
+  .kids-about,.kids-benefits{padding:100px clamp(40px,5vw,80px)}
+  .reels-slider-wrap{padding:0 clamp(20px,5vw,80px)}
+  .ticker-item{padding:40  px 36px}
+  .ticker-num{font-size:1.45rem}
+  .ticker-label{font-size:.92rem}
+  .k-pol-slide{padding:24px 12px 44px}
+  .k-polaroid{width:200px}
+  .k-pol-photo{width:180px;height:200px}
+  .k-reviews-track{gap:36px}
+  .ap-stat-num{font-size:2.4rem}
+}
+
+/* ══ 4K / ULTRA-WIDE (2000px+) ══ */
+@media(min-width:2000px){
+  html{font-size:19px}
+  #mainNav{padding:18px clamp(60px,5vw,140px)}
+  #mainNav.nav-scrolled{padding:14px clamp(60px,5vw,140px)}
+  .nav-logo-img{height:56px}
+  .nav-links a{font-size:1rem}
+  .nav-cart-btn,.nav-btn{width:52px;height:52px;font-size:1.05rem}
+  .nav-search-btn{width:52px;height:52px}
+
+  .slide-title{font-size:clamp(3.8rem,5.5vw,5.5rem)}
+  .slide-sub{font-size:1.1rem}
+  .hero-slide-btns .hero-btn{padding:16px 40px;font-size:1rem}
+
+  .k-section-head h2{font-size:clamp(3rem,4vw,4.5rem)}
+  .k-section-head p{font-size:1.05rem}
+  .k-eyebrow{font-size:1rem;padding:10px 28px}
+
+  .kids-about,.kids-benefits{padding:120px clamp(60px,7vw,120px)}
+  .ka-main-img,.kb-main-img{width:640px;height:480px}
+
+  .k-prod-name{font-size:1.1rem}
+  .k-prod-price{font-size:1.1rem}
+  .k-prod-card{border-radius:28px}
+
+  .kids-gallery{padding:110px clamp(80px,7vw,140px)}
+  .k-gallery-grid{grid-auto-rows:300px;gap:24px}
+  .k-gal-label{font-size:1.2rem}
+
+  .kids-footer{padding:160px clamp(80px,7vw,140px) 80px}
+  .k-footer-grid{gap:160px}
+  .k-social-link{width:54px;height:54px;font-size:1.1rem}
+
+  .ticker-item{padding:32px 48px}
+  .ticker-num{font-size:1.65rem}
+  .ticker-label{font-size:1rem}
+
+  .k-pol-slide{padding:28px 14px 50px}
+  .k-polaroid{width:230px}
+  .k-pol-photo{width:210px;height:235px}
+  .k-pol-text{font-size:.8rem}
+  .k-pol-name{font-size:1rem}
+
+  .toast{font-size:.95rem;padding:16px 24px}
+  .auth-modal{width:min(560px,94vw);padding:52px 56px}
 }

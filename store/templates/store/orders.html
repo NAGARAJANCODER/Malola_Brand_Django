@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,6 +53,9 @@
 .order-item-price{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--aqua2);flex-shrink:0}
 
 .order-card-footer{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:rgba(254,207,10,.07);border-top:2px solid rgba(254,207,10,.3);flex-wrap:wrap;gap:12px}
+.order-review-btn{display:inline-flex;align-items:center;gap:7px;background:#FECF0A;color:#0d2b6b;border-radius:999px;padding:9px 20px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:900;text-decoration:none;box-shadow:0 4px 14px rgba(254,207,10,.35);transition:transform .2s;white-space:nowrap}
+.order-review-btn:hover{transform:translateY(-2px)}
+.order-reviewed-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(46,125,50,.1);color:#2e7d32;border-radius:999px;padding:9px 16px;font-size:.78rem;font-weight:800;white-space:nowrap}
 .order-total-block{display:flex;flex-direction:column}
 .order-total-label{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(13,43,107,.4)}
 .order-total-val{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--kids-dark)}
@@ -66,7 +69,21 @@
   .order-total-val{font-size:1.3rem}
   .order-addr{max-width:100%}
 }
-</style>
+
+/* ── LARGE SCREEN RESPONSIVE ── */
+@media(min-width:1440px){
+  .orders-main{max-width:1100px;padding:106px 32px 80px}
+}
+@media(min-width:2000px){
+  .orders-main{max-width:1300px;padding:120px 40px 100px}
+  .orders-title{font-size:3.5rem}
+  .order-card{border-radius:28px}
+  .order-card-header,.order-card-body,.order-card-footer{padding:24px 32px}
+  .order-num{font-size:1.3rem}
+  .order-item-name{font-size:.95rem}
+  .order-total-val{font-size:1.9rem}
+  .order-item-img{width:64px;height:64px}
+}</style>
 </head>
 <body class="orders-body">
 
@@ -156,7 +173,16 @@
           <div class="order-total-label">Order Total</div>
           <div class="order-total-val">&#8377;{{ order.total|floatformat:0 }}</div>
         </div>
-        <div class="order-addr"><i class="fa-solid fa-location-dot"></i><span>{{ order.address }}</span></div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          {% if order.status == 'delivered' %}
+            {% if order.review %}
+              <span class="order-reviewed-badge"><i class="fa-solid fa-star"></i> Reviewed</span>
+            {% else %}
+              <a href="/review/{{ order.id }}/" class="order-review-btn"><i class="fa-solid fa-pen-to-square"></i> Write a Review</a>
+            {% endif %}
+          {% endif %}
+          <div class="order-addr"><i class="fa-solid fa-location-dot"></i><span>{{ order.address }}</span></div>
+        </div>
       </div>
     </div>
     {% endwith %}

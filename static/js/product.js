@@ -501,6 +501,9 @@ document.querySelectorAll('.mega-item[data-pdp]').forEach(item=>{
   const thumbsRow=document.getElementById('pdpThumbsRow');
   const thumbImgs=[product.image];
   if(product.imageBack&&product.imageBack!==product.image)thumbImgs.push(product.imageBack);
+  if(product.galleryImages&&product.galleryImages.length){
+    product.galleryImages.forEach(u=>{if(!thumbImgs.includes(u))thumbImgs.push(u);});
+  }
   thumbImgs.forEach((src,i)=>{
     const d=document.createElement('div');
     d.className='pdp-thumb-item'+(i===0?' active':'');
@@ -524,7 +527,17 @@ document.querySelectorAll('.mega-item[data-pdp]').forEach(item=>{
   const priceEl=document.getElementById('pdpPrice');
   const baseGrams=parseInt(product.weights[0]);
   let currentPrice=product.price;
-  priceEl.innerHTML='&#8377;'+currentPrice;
+
+  function _renderPrice(p){
+    const mrp=product.discountPrice;
+    if(mrp&&mrp>p){
+      const pct=Math.round((mrp-p)/mrp*100);
+      priceEl.innerHTML='&#8377;'+p+'<span class="pdp-mrp">&#8377;'+mrp+'</span><span class="pdp-savings">'+pct+'% off</span>';
+    }else{
+      priceEl.innerHTML='&#8377;'+p;
+    }
+  }
+  _renderPrice(currentPrice);
 
   const weightsEl=document.getElementById('pdpWeights');
   weightsEl.innerHTML=product.weights.map((w,i)=>`<button class="pdp-w-btn${i===0?' active':''}">${w}</button>`).join('');
@@ -534,7 +547,7 @@ document.querySelectorAll('.mega-item[data-pdp]').forEach(item=>{
       btn.classList.add('active');
       const selectedGrams=parseInt(btn.textContent);
       currentPrice=Math.round(product.price*selectedGrams/baseGrams);
-      priceEl.innerHTML='&#8377;'+currentPrice;
+      _renderPrice(currentPrice);
     });
   });
 
@@ -567,5 +580,69 @@ document.querySelectorAll('.mega-item[data-pdp]').forEach(item=>{
         <div class="pdp-rel-footer"><div class="pdp-rel-price">&#8377;${p.price}</div><button class="pdp-rel-btn">View</button></div>
       </div>
     </div>`).join('');
+
+  /* ── Brand / SKU / short desc row ── */
+  const metaRowEl=document.getElementById('pdpMetaRow');
+  if(metaRowEl){
+    const parts=[];
+    if(product.brand)parts.push('<span class="pdp-brand"><i class="fa-solid fa-building"></i> '+_esc(product.brand)+'</span>');
+    if(product.sku)parts.push('<span class="pdp-sku">SKU: '+_esc(product.sku)+'</span>');
+    if(parts.length)metaRowEl.innerHTML='<div class="pdp-meta-chips">'+parts.join('')+'</div>';
+    if(product.shortDesc)metaRowEl.innerHTML+='<p class="pdp-shortdesc">'+_esc(product.shortDesc)+'</p>';
+  }
+
+  /* ── Health Benefits & Certifications ── */
+  const healthCertsEl=document.getElementById('pdpHealthCerts');
+  if(healthCertsEl){
+    let html='';
+    if(product.healthBenefits){
+      const lines=product.healthBenefits.split('\n').map(l=>l.trim()).filter(Boolean);
+      if(lines.length){
+        html+='<div class="pdp-info-sec"><div class="pdp-sec-label"><i class="fa-solid fa-heart-pulse"></i> Health Benefits</div><ul class="pdp-benefits-list">'+lines.map(l=>'<li>'+_esc(l)+'</li>').join('')+'</ul></div>';
+      }
+    }
+    const c=product.certifications||{};
+    const certs=[];
+    if(c.organic)certs.push('<span class="pdp-cert-badge cert-organic"><i class="fa-solid fa-leaf"></i> Organic</span>');
+    if(c.nonGmo) certs.push('<span class="pdp-cert-badge cert-ngmo"><i class="fa-solid fa-dna"></i> Non-GMO</span>');
+    if(c.vegan)  certs.push('<span class="pdp-cert-badge cert-vegan"><i class="fa-solid fa-seedling"></i> Vegan</span>');
+    if(c.halal)  certs.push('<span class="pdp-cert-badge cert-halal"><i class="fa-solid fa-moon"></i> Halal</span>');
+    if(c.iso)    certs.push('<span class="pdp-cert-badge cert-iso"><i class="fa-solid fa-award"></i> ISO</span>');
+    if(certs.length){
+      html+='<div class="pdp-info-sec"><div class="pdp-sec-label"><i class="fa-solid fa-certificate"></i> Certifications</div><div class="pdp-cert-row">'+certs.join('')+'</div></div>';
+    }
+    healthCertsEl.innerHTML=html;
+  }
+
+  /* ── Product Details table ── */
+  const detailsEl=document.getElementById('pdpDetailsSection');
+  if(detailsEl&&product.productInfo){
+    const pi=product.productInfo;
+    const rows=[];
+    if(pi.packageSize)       rows.push(['Package Size',pi.packageSize]);
+    if(pi.countryOfOrigin)   rows.push(['Country of Origin',pi.countryOfOrigin]);
+    if(pi.shelfLife)         rows.push(['Shelf Life',pi.shelfLife]);
+    if(pi.storageInstructions)rows.push(['Storage Instructions',pi.storageInstructions]);
+    if(pi.manufacturerDetails)rows.push(['Manufacturer',pi.manufacturerDetails]);
+    if(rows.length){
+      detailsEl.innerHTML='<div class="pdp-section"><h3 class="pdp-section-title"><i class="fa-solid fa-list-ul"></i> Product Details</h3><table class="pdp-details-table">'+rows.map(([k,v])=>'<tr><th>'+k+'</th><td>'+_esc(v)+'</td></tr>').join('')+'</table></div>';
+    }
+  }
+
+  /* ── Recipe section ── */
+  const recipeEl=document.getElementById('pdpRecipeSection');
+  if(recipeEl&&product.recipe){
+    const r=product.recipe;
+    const metaItems=[];
+    if(r.prepTime)metaItems.push('<span><i class="fa-regular fa-clock"></i> Prep: '+_esc(r.prepTime)+'</span>');
+    if(r.cookTime)metaItems.push('<span><i class="fa-solid fa-fire"></i> Cook: '+_esc(r.cookTime)+'</span>');
+    if(r.servings)metaItems.push('<span><i class="fa-solid fa-utensils"></i> Serves '+_esc(r.servings)+'</span>');
+    const ingLines=r.ingredients?r.ingredients.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>'<li>'+_esc(l)+'</li>').join(''):'';
+    const instLines=r.instructions?r.instructions.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>'<li>'+_esc(l)+'</li>').join(''):'';
+    const colsHtml=(ingLines||instLines)?'<div class="pdp-recipe-cols">'+(ingLines?'<div class="pdp-recipe-col"><h4>Ingredients</h4><ul>'+ingLines+'</ul></div>':'')+(instLines?'<div class="pdp-recipe-col"><h4>Instructions</h4><ol>'+instLines+'</ol></div>':'')+'</div>':'';
+    const imgHtml=r.image?'<div class="pdp-recipe-img-wrap"><img src="'+r.image+'" alt="'+_esc(r.name)+'"></div>':'';
+    const vidHtml=r.videoUrl?'<div style="margin-top:18px"><a href="'+_esc(r.videoUrl)+'" target="_blank" rel="noopener" class="pdp-recipe-video-link"><i class="fa-brands fa-youtube"></i> Watch Recipe Video</a></div>':'';
+    recipeEl.innerHTML='<div class="pdp-section"><h3 class="pdp-section-title"><i class="fa-solid fa-utensils"></i> '+_esc(r.name)+'</h3>'+(metaItems.length?'<div class="pdp-recipe-meta">'+metaItems.join('')+'</div>':'')+'<div class="pdp-recipe-body">'+imgHtml+colsHtml+vidHtml+'</div></div>';
+  }
 })();
 

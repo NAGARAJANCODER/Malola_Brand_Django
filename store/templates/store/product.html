@@ -6,7 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="csrf-token" content="{{ csrf_token }}">
 <script>window.MALOLA_AUTH={% if user.is_authenticated %}{"authenticated":true,"name":"{{ user.first_name|default:user.username|escapejs }}"}{% else %}{"authenticated":false}{% endif %};</script>
-<title>Product — NaturNest</title>
+{% if db_product %}<title>{{ db_product.seo_title|default:db_product.title }} — Malola</title>
+<meta name="description" content="{{ db_product.seo_description|default:db_product.short_description|default:db_product.description|truncatechars:160 }}">
+{% if db_product.seo_keywords %}<meta name="keywords" content="{{ db_product.seo_keywords }}">{% endif %}
+{% else %}<title>Product — NaturNest</title>{% endif %}
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Cormorant+Garamond:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
@@ -294,6 +297,9 @@
         <span class="rev-verified"><i class="fa-solid fa-circle-check"></i> Verified</span>
       </div>
 
+      <!-- Brand / SKU / short-desc row filled by product.js -->
+      <div id="pdpMetaRow"></div>
+
       <div class="pdp-price-block">
         <div class="pdp-price" id="pdpPrice"></div>
       </div>
@@ -314,6 +320,9 @@
         <div class="pdp-sec-label"><i class="fa-solid fa-chart-bar"></i> Nutrition per 100g</div>
         <div class="pdp-nut-row" id="pdpNut"></div>
       </div>
+
+      <!-- Health benefits & certifications filled by product.js -->
+      <div id="pdpHealthCerts"></div>
 
       <!-- CTA -->
       <div class="pdp-cta">
@@ -336,6 +345,10 @@
       </div>
     </div>
   </div>
+
+  <!-- Product details table & recipe section, filled by product.js -->
+  <div id="pdpDetailsSection"></div>
+  <div id="pdpRecipeSection"></div>
 
   <!-- Related Products -->
   <div class="pdp-related">
@@ -387,25 +400,106 @@
 {% if db_product %}
 <script>
 window.DB_PRODUCT_DATA = {
-  id:           '{{ db_product.slug|escapejs }}',
-  name:         '{{ db_product.title|escapejs }}',
-  category:     '{{ db_product.product_type|default:db_product.get_category_display|escapejs }}',
-  categoryId:   '{{ db_product.category|escapejs }}',
-  price:        {{ db_product.price }},
-  badge:        '{{ db_product.badge|escapejs }}',
-  badgeColor:   '{{ db_product.badge_color|escapejs }}',
-  bg:           '{{ db_product.card_bg|escapejs }}',
-  image:        '{{ db_product.image.url|escapejs }}',
-  imageBack:    '{{ db_product.image.url|escapejs }}',
-  description:  '{{ db_product.description|escapejs }}',
-  ingredients:  {{ db_ingredients_json|safe }},
-  nutrition:    {{ db_nutrition_json|safe }},
-  weights:      {{ db_weights_json|safe }},
-  rating:       {{ db_product.rating }},
-  reviewCount:  {{ db_product.reviews_count }},
+  id:            '{{ db_product.slug|escapejs }}',
+  name:          '{{ db_product.title|escapejs }}',
+  category:      '{{ db_product.product_type|default:db_product.get_category_display|escapejs }}',
+  categoryId:    '{{ db_product.category|escapejs }}',
+  price:         {{ db_product.price }},
+  discountPrice: {% if db_product.discount_price %}{{ db_product.discount_price }}{% else %}null{% endif %},
+  badge:         '{{ db_product.badge|escapejs }}',
+  badgeColor:    '{{ db_product.badge_color|escapejs }}',
+  bg:            '{{ db_product.card_bg|escapejs }}',
+  image:         '{{ db_product.image.url|escapejs }}',
+  imageBack:     '{{ db_product.image.url|escapejs }}',
+  description:   '{{ db_product.description|escapejs }}',
+  ingredients:   {{ db_ingredients_json|safe }},
+  nutrition:     {{ db_nutrition_json|safe }},
+  weights:       {{ db_weights_json|safe }},
+  galleryImages: {{ db_gallery_json|safe }},
+  rating:        {{ db_product.rating }},
+  reviewCount:   {{ db_product.reviews_count }},
+  brand:         '{{ db_product.brand|escapejs }}',
+  sku:           '{{ db_product.sku|escapejs }}',
+  shortDesc:     '{{ db_product.short_description|escapejs }}',
+  healthBenefits:'{{ db_product.health_benefits|escapejs }}',
+  certifications:{
+    organic:{% if db_product.cert_organic %}true{% else %}false{% endif %},
+    nonGmo: {% if db_product.cert_non_gmo %}true{% else %}false{% endif %},
+    vegan:  {% if db_product.cert_vegan %}true{% else %}false{% endif %},
+    halal:  {% if db_product.cert_halal %}true{% else %}false{% endif %},
+    iso:    {% if db_product.cert_iso %}true{% else %}false{% endif %},
+  },
+  recipe:{% if db_product.recipe_name %}{
+    name:        '{{ db_product.recipe_name|escapejs }}',
+    prepTime:    '{{ db_product.recipe_prep_time|escapejs }}',
+    cookTime:    '{{ db_product.recipe_cook_time|escapejs }}',
+    servings:    '{{ db_product.recipe_servings|escapejs }}',
+    ingredients: '{{ db_product.recipe_ingredients|escapejs }}',
+    instructions:'{{ db_product.recipe_instructions|escapejs }}',
+    image:       '{% if db_product.recipe_image %}{{ db_product.recipe_image.url|escapejs }}{% endif %}',
+    videoUrl:    '{{ db_product.recipe_video_url|escapejs }}',
+  }{% else %}null{% endif %},
+  productInfo:{
+    packageSize:        '{{ db_product.package_size|escapejs }}',
+    countryOfOrigin:    '{{ db_product.country_of_origin|escapejs }}',
+    shelfLife:          '{{ db_product.shelf_life|escapejs }}',
+    storageInstructions:'{{ db_product.storage_instructions|escapejs }}',
+    manufacturerDetails:'{{ db_product.manufacturer_details|escapejs }}',
+  },
 };
 </script>
 {% endif %}
+<style>
+/* ── Discount / MRP price ─────────────────────────────── */
+.pdp-mrp{font-size:.82rem;color:#888;text-decoration:line-through;margin-left:10px;font-weight:600}
+.pdp-savings{font-size:.75rem;font-weight:800;color:#2e7d32;background:#e8f5e9;border-radius:999px;padding:3px 10px;margin-left:8px}
+
+/* ── Brand / SKU row ──────────────────────────────────── */
+.pdp-meta-chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0 12px}
+.pdp-brand{font-size:.78rem;font-weight:800;color:#1565C0;background:#e3f2fd;border-radius:999px;padding:4px 12px}
+.pdp-sku{font-size:.75rem;font-weight:700;color:#555;background:#f5f5f5;border-radius:999px;padding:4px 12px}
+.pdp-meta-sep{color:#ccc;font-size:.85rem}
+.pdp-shortdesc{font-size:.82rem;color:rgba(13,43,107,.6);font-weight:600;line-height:1.55;margin:0 0 4px}
+
+/* ── Health Benefits ──────────────────────────────────── */
+.pdp-benefits-list{margin:8px 0 0 18px;padding:0;color:rgba(13,43,107,.75);font-size:.85rem;font-weight:600;line-height:1.8}
+.pdp-benefits-list li::marker{color:var(--aqua2,#26a69a)}
+
+/* ── Certifications ───────────────────────────────────── */
+.pdp-cert-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.pdp-cert-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:.75rem;font-weight:800;border:1.5px solid currentColor}
+.cert-organic{color:#2e7d32;background:#f1f8e9}
+.cert-ngmo{color:#1565C0;background:#e3f2fd}
+.cert-vegan{color:#558b2f;background:#f9fbe7}
+.cert-halal{color:#6a1b9a;background:#f3e5f5}
+.cert-iso{color:#e65100;background:#fff3e0}
+
+/* ── Full-width sections wrapper ──────────────────────── */
+.pdp-section{max-width:1200px;margin:32px auto 0;padding:0 24px}
+.pdp-section-title{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--kids-dark,#0d2b6b);margin:0 0 18px;display:flex;align-items:center;gap:10px}
+.pdp-section-title i{color:var(--aqua2,#26a69a)}
+
+/* ── Product Details table ────────────────────────────── */
+.pdp-details-table{width:100%;border-collapse:collapse;font-size:.88rem}
+.pdp-details-table th,.pdp-details-table td{padding:10px 14px;text-align:left;border-bottom:1px solid rgba(21,101,192,.08)}
+.pdp-details-table th{font-weight:800;color:rgba(13,43,107,.55);width:35%;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.pdp-details-table td{color:var(--kids-dark,#0d2b6b);font-weight:600;line-height:1.6}
+.pdp-details-table tr:last-child th,.pdp-details-table tr:last-child td{border-bottom:none}
+
+/* ── Recipe section ───────────────────────────────────── */
+.pdp-recipe-meta{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:20px}
+.pdp-recipe-meta span{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;font-weight:700;color:rgba(13,43,107,.6);background:#f7f9ff;border-radius:999px;padding:6px 14px}
+.pdp-recipe-meta i{color:var(--aqua2,#26a69a)}
+.pdp-recipe-body{display:grid;gap:24px}
+.pdp-recipe-img-wrap{border-radius:18px;overflow:hidden;max-height:320px}
+.pdp-recipe-img-wrap img{width:100%;height:100%;object-fit:cover}
+.pdp-recipe-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:640px){.pdp-recipe-cols{grid-template-columns:1fr}}
+.pdp-recipe-col h4{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--kids-dark,#0d2b6b);margin:0 0 10px}
+.pdp-recipe-col ul,.pdp-recipe-col ol{margin:0 0 0 18px;padding:0;font-size:.88rem;font-weight:600;color:rgba(13,43,107,.75);line-height:1.85}
+.pdp-recipe-video-link{display:inline-flex;align-items:center;gap:8px;background:#ff0000;color:#fff;font-weight:800;font-size:.88rem;padding:10px 20px;border-radius:999px;text-decoration:none}
+.pdp-recipe-video-link:hover{opacity:.88}
+</style>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="{% static 'js/product.js' %}"></script>
 </body>

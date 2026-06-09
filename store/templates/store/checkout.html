@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -198,7 +198,18 @@ body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height
   .co-pay-wrap{padding:16px}
   .co-trust-bar{gap:12px}
 }
-</style>
+
+/* ── LARGE SCREEN RESPONSIVE ── */
+@media(min-width:1440px){
+  .co-body{max-width:1400px;padding:40px 32px}
+}
+@media(min-width:2000px){
+  .co-body{max-width:1600px;padding:52px 40px;grid-template-columns:1fr 480px;gap:40px}
+  .co-header{padding:0 100px;height:76px}
+  .co-logo img{height:48px}
+  .co-card-header h2{font-size:1.55rem}
+  .co-input,.co-select{height:56px;font-size:.95rem}
+}</style>
 </head>
 <body>
 

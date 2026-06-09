@@ -1,0 +1,242 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>{{ action }} Offer — Malola Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:#0d2b6b;min-height:100vh}
+.ap-header{background:#0d2b6b;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(13,43,107,.35);position:sticky;top:0;z-index:100}
+.ap-brand{display:flex;align-items:center;gap:14px}
+.ap-logo-ring{width:40px;height:40px;border-radius:50%;background:#FECF0A;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.1rem;color:#0d2b6b;flex-shrink:0}
+.ap-brand-name{font-family:'Fredoka One',cursive;font-size:1.15rem;color:#fff;line-height:1}
+.ap-brand-sub{font-size:.68rem;color:rgba(255,255,255,.5);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.ap-hdr-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;text-decoration:none;border:none;transition:all .2s;letter-spacing:.04em}
+.ap-hdr-site{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.25)}
+.ap-hdr-site:hover{background:rgba(255,255,255,.22)}
+.ap-tabs{display:flex;background:#0a1f52;padding:0 32px;border-bottom:1px solid rgba(255,255,255,.08);overflow-x:auto}
+.ap-tab{display:flex;align-items:center;gap:7px;white-space:nowrap;padding:13px 20px;color:rgba(255,255,255,.45);font-size:.75rem;font-weight:800;text-decoration:none;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;letter-spacing:.06em;text-transform:uppercase}
+.ap-tab:hover{color:rgba(255,255,255,.8)}
+.ap-tab.active{color:#FECF0A;border-bottom-color:#FECF0A}
+.ap-tab-badge{display:inline-flex;align-items:center;justify-content:center;background:#e53935;color:#fff;font-size:.6rem;font-weight:900;width:18px;height:18px;border-radius:50%}
+/* FORM */
+.of-container{max-width:900px;margin:0 auto;padding:32px}
+.of-back{display:inline-flex;align-items:center;gap:8px;color:rgba(13,43,107,.55);font-size:.82rem;font-weight:800;text-decoration:none;margin-bottom:18px;transition:color .2s}
+.of-back:hover{color:#0d2b6b}
+.of-heading{font-family:'Fredoka One',cursive;font-size:2rem;color:#0d2b6b;margin-bottom:24px}
+.of-error{background:#fce8e6;border:2px solid #e53935;border-radius:14px;padding:14px 20px;color:#b71c1c;font-weight:700;font-size:.88rem;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.of-card{background:#fff;border-radius:20px;padding:24px;box-shadow:0 4px 20px rgba(13,43,107,.06);margin-bottom:16px}
+.of-card-title{font-family:'Fredoka One',cursive;font-size:1rem;color:#0d2b6b;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.of-card-title i{color:#1565C0}
+.of-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.of-field:last-child{margin-bottom:0}
+.of-label{font-size:.72rem;font-weight:900;color:rgba(13,43,107,.55);text-transform:uppercase;letter-spacing:.09em}
+.of-input,.of-textarea,.of-select{width:100%;height:48px;border:2px solid rgba(13,43,107,.12);border-radius:12px;padding:0 16px;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;color:#0d2b6b;background:#fff;outline:none;transition:border-color .2s,box-shadow .2s}
+.of-input:focus,.of-textarea:focus,.of-select:focus{border-color:#FECF0A;box-shadow:0 0 0 3px rgba(254,207,10,.18)}
+.of-textarea{height:auto;padding:12px 16px;resize:vertical}
+.of-field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.of-color-wrap{display:flex;align-items:center;gap:10px;height:48px;border:2px solid rgba(13,43,107,.12);border-radius:12px;padding:0 14px;background:#fff}
+.of-color-wrap:focus-within{border-color:#FECF0A}
+.of-color-input{width:34px;height:34px;border:none;border-radius:8px;cursor:pointer;background:none;padding:0}
+.of-color-label{font-size:.82rem;font-weight:800;color:rgba(13,43,107,.5);font-family:monospace}
+/* BADGE PREVIEW */
+.of-badge-preview{display:inline-flex;align-items:center;padding:5px 14px;border-radius:999px;font-size:.78rem;font-weight:800;color:#fff;margin-top:8px;transition:background .2s}
+/* PRODUCT CHECKBOXES */
+.of-prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:4px}
+.of-prod-item{position:relative}
+.of-prod-item input[type=checkbox]{position:absolute;opacity:0;width:0;height:0}
+.of-prod-item label{display:flex;align-items:center;gap:10px;padding:10px 12px;border:2px solid rgba(13,43,107,.1);border-radius:14px;cursor:pointer;transition:border-color .2s,background .2s;background:#fff}
+.of-prod-item input:checked + label{border-color:#FECF0A;background:#fffde7}
+.of-prod-item label img{width:36px;height:36px;object-fit:contain;border-radius:8px;flex-shrink:0}
+.of-prod-item label span{font-size:.76rem;font-weight:800;color:#0d2b6b;line-height:1.3}
+/* TOGGLE */
+.of-toggle-field{flex-direction:row;align-items:center;justify-content:space-between}
+.of-toggle{position:relative;display:inline-block;width:52px;height:28px;flex-shrink:0}
+.of-toggle input{opacity:0;width:0;height:0;position:absolute}
+.of-toggle-slider{position:absolute;inset:0;background:rgba(13,43,107,.15);border-radius:999px;cursor:pointer;transition:background .25s}
+.of-toggle-slider::before{content:'';position:absolute;height:22px;width:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .25s;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.of-toggle input:checked + .of-toggle-slider{background:#FECF0A}
+.of-toggle input:checked + .of-toggle-slider::before{transform:translateX(24px)}
+/* SUBMIT */
+.of-submit-row{display:flex;gap:12px;margin-top:4px}
+.of-btn-cancel{padding:13px 26px;border-radius:50px;border:2px solid rgba(13,43,107,.15);background:transparent;color:rgba(13,43,107,.6);font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:800;cursor:pointer;text-decoration:none;transition:all .2s}
+.of-btn-cancel:hover{background:#f0f4ff}
+.of-btn-submit{flex:1;padding:14px 30px;border-radius:50px;border:none;background:#0d2b6b;color:#FECF0A;font-family:'Fredoka One',cursive;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 8px 24px rgba(13,43,107,.3);transition:transform .2s,box-shadow .2s}
+.of-btn-submit:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(13,43,107,.4)}
+@media(max-width:640px){
+  .of-container{padding:20px 14px}
+  .of-field-row{grid-template-columns:1fr}
+  .ap-header{padding:0 14px;height:56px}
+  .ap-brand-sub{display:none}
+  .ap-tabs{padding:0 14px}
+  .ap-tab{padding:10px 14px;font-size:.68rem}
+}
+
+/* ── LARGE SCREEN RESPONSIVE ── */
+@media(min-width:1440px){
+  .ap-header{padding:0 clamp(32px,4vw,80px)}
+  .ap-tabs{padding:0 clamp(32px,4vw,80px)}
+  .ap-tab{font-size:.82rem;padding:14px 24px}
+  .of-container{max-width:1100px;padding:40px}
+}
+@media(min-width:2000px){
+  .ap-header{padding:0 100px;height:76px}
+  .ap-tabs{padding:0 100px}
+  .ap-brand-name{font-size:1.4rem}
+  .ap-logo-ring{width:48px;height:48px;font-size:1.25rem}
+  .ap-hdr-btn{padding:10px 24px;font-size:.88rem}
+  .ap-tab{font-size:.9rem;padding:16px 30px}
+  .of-container{max-width:1300px;padding:52px}
+  .of-heading{font-size:2.5rem}
+  .of-card{padding:32px;border-radius:24px}
+  .of-input,.of-select{height:56px;font-size:1rem}
+  .of-textarea{font-size:1rem}
+}</style>
+</head>
+<body>
+
+<header class="ap-header">
+  <div class="ap-brand">
+    <div class="ap-logo-ring">M</div>
+    <div>
+      <div class="ap-brand-name">Malola Admin</div>
+      <div class="ap-brand-sub">{{ action }} Offer</div>
+    </div>
+  </div>
+  <a href="/manage/offers/" class="ap-hdr-btn ap-hdr-site"><i class="fa-solid fa-arrow-left"></i> All Offers</a>
+</header>
+
+<nav class="ap-tabs">
+  <a href="/manage/" class="ap-tab"><i class="fa-solid fa-box"></i> Products</a>
+  <a href="/manage/orders/" class="ap-tab">
+    <i class="fa-solid fa-bag-shopping"></i> Orders
+    {% if pending_orders %}<span class="ap-tab-badge">{{ pending_orders }}</span>{% endif %}
+  </a>
+  <a href="/manage/offers/" class="ap-tab active"><i class="fa-solid fa-tag"></i> Offers / Deals</a>
+  <a href="/manage/categories/" class="ap-tab"><i class="fa-solid fa-layer-group"></i> Categories</a>
+  <a href="/manage/videos/" class="ap-tab"><i class="fa-solid fa-film"></i> Videos</a>
+</nav>
+
+<div class="of-container">
+  <a href="/manage/offers/" class="of-back"><i class="fa-solid fa-arrow-left"></i> Back to offers</a>
+  <h1 class="of-heading">{{ action }} Offer Group</h1>
+
+  {% if error %}
+  <div class="of-error"><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</div>
+  {% endif %}
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+
+    <!-- Basic Details -->
+    <div class="of-card">
+      <div class="of-card-title"><i class="fa-solid fa-tag"></i> Offer Details</div>
+
+      <div class="of-field">
+        <label class="of-label">Offer Name *</label>
+        <input type="text" name="name" class="of-input"
+               placeholder="e.g. Summer Sale 2025"
+               value="{{ offer.name|default:'' }}" required maxlength="200">
+      </div>
+
+      <div class="of-field">
+        <label class="of-label">Description <span style="text-transform:none;font-weight:700;color:rgba(13,43,107,.35)">— optional</span></label>
+        <textarea name="description" class="of-textarea" rows="2"
+                  placeholder="Short note about this offer...">{{ offer.description|default:'' }}</textarea>
+      </div>
+
+      <div class="of-field-row">
+        <div class="of-field">
+          <label class="of-label">Discount %</label>
+          <input type="number" name="discount_pct" class="of-input"
+                 placeholder="0" min="0" max="100"
+                 value="{{ offer.discount_pct|default:'0' }}">
+        </div>
+        <div class="of-field">
+          <label class="of-label">Badge Label <span style="text-transform:none;font-weight:700;color:rgba(13,43,107,.35)">shown on product</span></label>
+          <input type="text" name="badge_label" class="of-input" id="badgeInput"
+                 placeholder="e.g. SALE 20% OFF"
+                 value="{{ offer.badge_label|default:'' }}" maxlength="60">
+        </div>
+      </div>
+
+      <div class="of-field">
+        <label class="of-label">Badge Colour</label>
+        <div class="of-color-wrap">
+          <input type="color" name="badge_color" id="badgeColorInput" class="of-color-input"
+                 value="{{ offer.badge_color|default:'#c62828' }}">
+          <span class="of-color-label" id="badgeColorLabel">{{ offer.badge_color|default:'#c62828' }}</span>
+        </div>
+        <div style="margin-top:6px">
+          <span style="font-size:.72rem;color:rgba(13,43,107,.5);font-weight:700">Preview: </span>
+          <span class="of-badge-preview" id="badgePreview"
+                style="background:{{ offer.badge_color|default:'#c62828' }}">{{ offer.badge_label|default:'Badge Preview' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assign Products -->
+    <div class="of-card">
+      <div class="of-card-title"><i class="fa-solid fa-boxes-stacked"></i> Assign New Arrival Products</div>
+      {% if all_products %}
+      <div class="of-prod-grid">
+        {% for p in all_products %}
+        <div class="of-prod-item">
+          <input type="checkbox" name="products" id="prod_{{ p.pk }}" value="{{ p.pk }}"
+                 {% if assigned_ids and p.pk in assigned_ids %}checked{% endif %}>
+          <label for="prod_{{ p.pk }}">
+            <img src="{{ p.image.url }}" alt="{{ p.title }}" style="background:{{ p.card_bg }};padding:3px">
+            <span>{{ p.title }}<br><span style="color:rgba(13,43,107,.45);font-size:.7rem">₹{{ p.price }}</span></span>
+          </label>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p style="font-size:.84rem;color:rgba(13,43,107,.45);font-style:italic">No new arrival products yet. Add some products first.</p>
+      {% endif %}
+    </div>
+
+    <!-- Visibility -->
+    <div class="of-card">
+      <div class="of-card-title"><i class="fa-solid fa-toggle-on"></i> Visibility</div>
+      <div class="of-field of-toggle-field">
+        <div>
+          <label class="of-label" style="margin-bottom:3px">Active — show this offer on site</label>
+          <div style="font-size:.78rem;color:rgba(13,43,107,.45);font-weight:600">Inactive offers are hidden from customers</div>
+        </div>
+        <label class="of-toggle">
+          <input type="checkbox" name="is_active" {% if not offer or offer.is_active %}checked{% endif %}>
+          <span class="of-toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="of-submit-row" style="margin-top:20px">
+        <a href="/manage/offers/" class="of-btn-cancel">Cancel</a>
+        <button type="submit" class="of-btn-submit">
+          <i class="fa-solid fa-check"></i> {{ action }} Offer
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+const badgeInput = document.getElementById('badgeInput');
+const badgeColorInput = document.getElementById('badgeColorInput');
+const badgeColorLabel = document.getElementById('badgeColorLabel');
+const badgePreview = document.getElementById('badgePreview');
+
+badgeInput.addEventListener('input', function(){
+  badgePreview.textContent = this.value || 'Badge Preview';
+});
+badgeColorInput.addEventListener('input', function(){
+  badgeColorLabel.textContent = this.value;
+  badgePreview.style.background = this.value;
+});
+</script>
+</body>
+</html>
